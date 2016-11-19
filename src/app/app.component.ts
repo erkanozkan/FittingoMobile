@@ -2,9 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
- import { LoginPage } from '../pages/login-page/login-page';
- import { HomePage } from '../pages/home-page/home-page';
-
+import { LoginPage } from '../pages/login-page/login-page';
+import { HomePage } from '../pages/home-page/home-page';
 
 @Component({
   templateUrl: 'app.html'

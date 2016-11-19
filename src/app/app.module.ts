@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component'; 
+
 import { HomePage } from '../pages/home-page/home-page';
 import { LoginPage } from '../pages/login-page/login-page';
+import { FittingoServiceApi } from '../pages/shared/shared';
+ 
 @NgModule({
   declarations: [
     MyApp, 
@@ -18,6 +21,8 @@ import { LoginPage } from '../pages/login-page/login-page';
     HomePage,
     LoginPage
   ],
-  providers: []
+  providers: [
+    FittingoServiceApi
+  ]
 })
 export class AppModule {}
