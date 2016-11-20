@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoadingController, NavController } from 'ionic-angular';
 import { HomePage } from '../home-page/home-page';
 import { FittingoServiceApi } from '../shared/shared';
@@ -11,6 +11,7 @@ import { IUserInfo } from '../login-page/userinfo';
 export class LoginPage {
   userInfo: IUserInfo;
   errorMessage: string;
+ loading = false;
 
   constructor(public navCtrl: NavController,
     private service: FittingoServiceApi,
@@ -19,6 +20,7 @@ export class LoginPage {
   }
 
   login(form) {
+    this.loading = true;
     let loader = this.loadingController.create({
       content: 'Giriş yapılıyor...',
       //spinner: 'dots'
