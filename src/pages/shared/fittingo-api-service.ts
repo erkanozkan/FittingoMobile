@@ -34,12 +34,19 @@ export class FittingoServiceApi {
         return this.http.post(this.baseUrl+ '/login', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
-                console.log(res.UserInfo);
-                return <IUserInfo>{
+                if(res != null && res.UserInfo != null && res.IsSuccess == true){
+                 return <IUserInfo>{
                     userId: res.UserInfo.UserId,
                     email: res.UserInfo.Email,
-                    name: res.UserInfo.Name
+                    name: res.UserInfo.Name,
+                    success: true
                 }
+                } else{
+                    return <IUserInfo>{
+                            success: false
+                        } 
+                }
+                
             })
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
