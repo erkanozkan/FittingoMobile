@@ -3,4 +3,5 @@ export interface IUserInfo{
     email: string;
     name: string;
     success: boolean;
+    password: string;
 } 

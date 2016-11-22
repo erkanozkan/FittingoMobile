@@ -1,0 +1,40 @@
+<ion-content>
+  <div>
+    <h1>Hero Form</h1>
+    <form *ngIf="active" (ngSubmit)="onSubmit()" #heroForm="ngForm">
+      <ion-list>
+      <ion-item>
+        <ion-label floating >Name</ion-label>
+        <ion-input type="text" id="name"
+               required
+               [(ngModel)]="model.name" name="name"
+               #name="ngModel" ></ion-input>
+        <div [hidden]="name.valid || name.pristine">
+          Name is required
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked for="alterEgo">Alter Ego</ion-label>
+        <ion-input type="text" id="alterEgo"
+               [(ngModel)]="model.alterEgo" name="alterEgo" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label for="power">Hero Power</ion-label>
+        <ion-select id="power"
+                required
+                [(ngModel)]="model.power" name="power" 
+                #power="ngModel" >
+          <ion-option *ngFor="let p of powers" [value]="p">{{p}}</ion-option>
+        </ion-select>
+        <div [hidden]="power.valid || power.pristine" class="alert alert-danger">
+          Power is required
+        </div>
+      </ion-item>
+      <button ion-button  type="submit"  [disabled]="!heroForm.form.valid">Submit</button>
+      <button ion-button type="button" (click)="newHero()">New Hero</button>
+      </ion-list>
+    </form>
+  </div>
+  
+ 
+</ion-content>

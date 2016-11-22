@@ -10,8 +10,11 @@ import { IUserInfo } from '../login-page/userinfo';
 
 export class LoginPage {
   userInfo: IUserInfo;
+
+    username:string;
+    password: string;
   errorMessage: string;
- loading = false;
+  loading = false;
 
   constructor(public navCtrl: NavController,
     private service: FittingoServiceApi,
@@ -26,7 +29,7 @@ export class LoginPage {
       //spinner: 'dots'
     });
 
-
+console.log(form.value);
     loader.present().then(() => {
       this.service.Login(form.value.email, form.value.password).subscribe(data => {
         if (data.success == false) {

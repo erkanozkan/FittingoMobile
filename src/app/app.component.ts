@@ -4,8 +4,11 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { LoginPage } from '../pages/login-page/login-page';
 import { HomePage } from '../pages/home-page/home-page';
+import { FormPage } from '../pages/form/form';
+import { HeroFormComponent } from '../pages/hero/hero-form.component';
 
 @Component({
+  
   templateUrl: 'app.html'
 })
 export class MyApp {
