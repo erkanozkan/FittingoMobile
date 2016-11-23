@@ -9,6 +9,8 @@ import { LoginPage } from '../pages/login-page/login-page';
 import { FittingoServiceApi } from '../pages/shared/shared';
 import { FormPage } from '../pages/form/form';
 import { HeroFormComponent } from '../pages/hero/hero-form.component';
+import { Food } from '../pages/food/food';
+import { FoodListPage } from '../pages/food-list/food-list';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { HeroFormComponent } from '../pages/hero/hero-form.component';
     HomePage,
     LoginPage,
     FormPage,
-    HeroFormComponent
+    HeroFormComponent,
+    Food,
+    FoodListPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -30,10 +34,13 @@ import { HeroFormComponent } from '../pages/hero/hero-form.component';
     HomePage,
     LoginPage,
     FormPage,
-    HeroFormComponent
+    HeroFormComponent,
+    Food,
+    FoodListPage
   ],
   providers: [
-    FittingoServiceApi
+    FittingoServiceApi,
+    Food
   ]
 })
 export class AppModule {}

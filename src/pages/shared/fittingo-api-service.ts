@@ -31,26 +31,28 @@ export class FittingoServiceApi {
 
         let body = 'UserName=' + userName + '&Password=' + password;
         console.log(body);
-        return this.http.post(this.baseUrl+ '/login', body, options)
+        return this.http.post(this.baseUrl + '/login', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
-                if(res != null && res.UserInfo != null && res.IsSuccess == true){
-                 return <IUserInfo>{
-                    userId: res.UserInfo.UserId,
-                    email: res.UserInfo.Email,
-                    name: res.UserInfo.Name,
-                    success: true
-                }
-                } else{
+                if (res != null && res.UserInfo != null && res.IsSuccess == true) {
                     return <IUserInfo>{
-                            success: false
-                        } 
+                        userId: res.UserInfo.UserId,
+                        email: res.UserInfo.Email,
+                        name: res.UserInfo.Name,
+                        success: true
+                    }
+                } else {
+                    return <IUserInfo>{
+                        success: false
+                    }
                 }
-                
             })
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
+    }
 
+    AddFood() : string{
+        return "başarılı";
     }
 
     private handleError(error: Response) {

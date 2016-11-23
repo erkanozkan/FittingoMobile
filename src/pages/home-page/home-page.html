@@ -6,11 +6,10 @@
     <ion-title>Page One</ion-title>
   </ion-navbar>
 </ion-header>
+<ion-content>
+ 
+ <button ion-button (click)="OpenFoodListPage()">Yemek Ekle</button>
 
-<ion-content padding>
-{{userInfo.name}}
-{{userInfo.email}}
-{{userInfo.userId}}
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+<!--<ion-addfood  (onFoodAdded)="onFoodAdded($event)"></ion-addfood>!-->
+ 
 </ion-content>

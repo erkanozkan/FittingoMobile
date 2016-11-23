@@ -1,15 +1,27 @@
-import {Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { IUserInfo } from '../login-page/userinfo'; 
+import { IUserInfo } from '../login-page/userinfo';
+import { FoodListPage } from '../food-list/food-list';
+import {IFoodInfo} from '../food-list/foodInfo';
+
+import { FittingoServiceApi } from '../shared/shared';
 
 @Component({
- templateUrl: 'home-page.html'
+    templateUrl: 'home-page.html'
 })
 
-export class HomePage{
+export class HomePage {
     userInfo: IUserInfo;
- constructor(public nav: NavController, private navParams : NavParams){
-     this.userInfo = navParams.data;
-     console.log(this.navParams);
- }
+    foodInfo: IFoodInfo
+    constructor(public navCtrl: NavController, 
+            private navParams: NavParams, private api: FittingoServiceApi ) {
+        this.userInfo = navParams.data;
+    }
+
+    OpenFoodListPage() {
+        this.navCtrl.push(FoodListPage, this.userInfo);
+    }
+    /*onFoodAdded(foodInfo: IFoodInfo){
+        console.log(foodInfo.foodId);
+    }*/
 }

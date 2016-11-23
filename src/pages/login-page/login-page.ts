@@ -28,8 +28,6 @@ export class LoginPage {
       content: 'Giriş yapılıyor...',
       //spinner: 'dots'
     });
-
-console.log(form.value);
     loader.present().then(() => {
       this.service.Login(form.value.email, form.value.password).subscribe(data => {
         if (data.success == false) {
