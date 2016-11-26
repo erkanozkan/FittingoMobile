@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoadingController, NavController } from 'ionic-angular';
+import { LoadingController, NavController,ToastController } from 'ionic-angular';
 import { HomePage } from '../home-page/home-page';
 import { FittingoServiceApi } from '../shared/shared';
 import { IUserInfo } from '../login-page/userinfo';
@@ -13,13 +13,11 @@ export class LoginPage {
   userInfo: IUserInfo;
   username: string;
   password: string;
-  errorMessage: string;
   loading = false;
 
   constructor(public navCtrl: NavController,
     private service: FittingoServiceApi,
-    private loadingController: LoadingController) {
-    this.errorMessage = '';
+    private loadingController: LoadingController, private toastCtrl: ToastController) {
   }
 
   login(form) {
@@ -31,15 +29,25 @@ export class LoginPage {
     loader.present().then(() => {
       this.service.Login(form.value.email, form.value.password).subscribe(data => {
         if (data.success == false) {
-          this.errorMessage = 'Hatalı email veya şifre girdiniz.';
+            this.presentToast("Hatalı email veya şifre girdiniz.")
         } else {
           this.userInfo = data
           this.navCtrl.setRoot(TabsPage,this.userInfo);          
         }
         loader.dismiss();
-
       });
     });
   }
+
+     presentToast(message: string) {
+
+        console.log(message);
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            cssClass: "toast"
+        });
+        toast.present();
+    }
 
 }

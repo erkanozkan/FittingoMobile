@@ -16,9 +16,7 @@
         <ion-input (ngModel)="password" name="password" 
         required #password="ngModel" 
         type="password"></ion-input>
-      </ion-item>
-    
-         <ion-label id='lblError'>{{errorMessage}}</ion-label>
+      </ion-item>    
        <button ion-button [disabled]="!form.form.valid" type="submit" block>Login</button>
   </form>
  
