@@ -12,13 +12,14 @@ import {FoodInfo} from '../food-list/foodInfo';
 export class HomePage {
     userInfo: IUserInfo;
     foodInfo: FoodInfo
-    constructor(public navCtrl: NavController, 
+    constructor(private navCtrl: NavController, 
             private navParams: NavParams ) {
         this.userInfo = navParams.data;
     }
 
     OpenFoodListPage() {
-        this.navCtrl.push(FoodListPage, this.userInfo);
+        console.log(this.userInfo);
+        this.navCtrl.push(FoodListPage, this.userInfo.userId);
     }
     /*onFoodAdded(foodInfo: IFoodInfo){
         console.log(foodInfo.foodId);

@@ -11,7 +11,6 @@ import { TabsPage } from '../tabs/tabs';
 
 export class LoginPage {
   userInfo: IUserInfo;
-
   username: string;
   password: string;
   errorMessage: string;
@@ -36,7 +35,6 @@ export class LoginPage {
         } else {
           this.userInfo = data
           this.navCtrl.setRoot(TabsPage,this.userInfo);          
-          //this.navCtrl.push(HomePage, this.userInfo);
         }
         loader.dismiss();
 

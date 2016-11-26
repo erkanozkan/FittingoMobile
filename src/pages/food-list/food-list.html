@@ -1,23 +1,49 @@
 <ion-header>
   <ion-navbar>
-   
+
     <ion-title>Yemek Listesi</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
 
-  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 3 harf giriniz"
-  [formControl]="searchControl" (input)="onSearchInput()" >
-  
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 3 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
+
   </ion-searchbar>
+  <ion-item>
+    <ion-label>Tarih</ion-label>
+    <ion-datetime 
+       [(ngModel)]="MealDate" displayFormat="DD MMM,YYYY HH:mm" 
+       pickerFormat="DD/MM/YYYY HH:mm">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Gram</ion-label>
+    <ion-input [(ngModel)]="amount">
+    </ion-input>
+  </ion-item>
+  <ion-list>
+    <ion-item>
+      <ion-label>Öğün</ion-label>
+      <ion-select [(ngModel)]="MealType" okText="Tamam" 
+            cancelText="İptal" placeholder="Seçiniz">
+        <ion-option value="1">Kahvaltı</ion-option>
+        <ion-option value="2">Ara Öğün 1</ion-option>
+        <ion-option value="3">Öğle</ion-option>
+        <ion-option value="4">Ara Öğün 2</ion-option>
+        <ion-option value="5">Akşam</ion-option>
+        <ion-option value="6">Ara Öğün 3</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
 
   <div *ngIf="searching" class="spinner-container">
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-list>
-    <ion-item *ngFor="let item of foodList">
-      {{item.ProductName}}
+  <ion-list >
+    <ion-item *ngFor="let item of foodList" (click)="AddFood(item)">
+     {{item.ProductName}} 
     </ion-item>
   </ion-list>
 </ion-content>
