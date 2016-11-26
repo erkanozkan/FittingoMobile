@@ -41,10 +41,12 @@ export class FoodListPage {
         });
     }
     onSearchInput() {
+        if(this.searchTerm.length > 2){
         this.searching = true;
+        }
     }
     setFilteredItems() {
-        if (this.tempFoodList != null && this.searchTerm.length > 0) {
+        if (this.tempFoodList != null && this.searchTerm.length > 2) {
             this.foodList = this.tempFoodList.filter((item) => {
                 return item.ProductName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
             });

@@ -1,31 +1,23 @@
-
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+   
     <ion-title>Yemek Listesi</ion-title>
   </ion-navbar>
 </ion-header>
- <ion-content padding>
+<ion-content padding>
 
- 
-      <ion-row>
-      <ion-col>
-        <img src="assets/images/Fittingo_Logo.png" />
-      </ion-col>
-    </ion-row>
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 3 harf giriniz"
+  [formControl]="searchControl" (input)="onSearchInput()" >
+  
+  </ion-searchbar>
 
- <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (input)="onSearchInput()"></ion-searchbar>
- 
-    <div *ngIf="searching" class="spinner-container">
-        <ion-spinner></ion-spinner>
-    </div>
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
 
-    <ion-list>
-        <ion-item *ngFor="let item of foodList">
-            {{item.ProductName}}
-        </ion-item>
-    </ion-list> 
-
-     </ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of foodList">
+      {{item.ProductName}}
+    </ion-item>
+  </ion-list>
+</ion-content>
