@@ -3,6 +3,7 @@ import { LoadingController, NavController } from 'ionic-angular';
 import { HomePage } from '../home-page/home-page';
 import { FittingoServiceApi } from '../shared/shared';
 import { IUserInfo } from '../login-page/userinfo';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   templateUrl: 'login-page.html'
@@ -11,15 +12,15 @@ import { IUserInfo } from '../login-page/userinfo';
 export class LoginPage {
   userInfo: IUserInfo;
 
-    username:string;
-    password: string;
+  username: string;
+  password: string;
   errorMessage: string;
   loading = false;
 
   constructor(public navCtrl: NavController,
     private service: FittingoServiceApi,
     private loadingController: LoadingController) {
-      this.errorMessage = '';
+    this.errorMessage = '';
   }
 
   login(form) {
@@ -34,7 +35,8 @@ export class LoginPage {
           this.errorMessage = 'Hatalı email veya şifre girdiniz.';
         } else {
           this.userInfo = data
-          this.navCtrl.push(HomePage, this.userInfo);
+          this.navCtrl.setRoot(TabsPage,this.userInfo);          
+          //this.navCtrl.push(HomePage, this.userInfo);
         }
         loader.dismiss();
 

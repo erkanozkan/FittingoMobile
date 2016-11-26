@@ -1,28 +1,5 @@
 .ios, .md {
- img {
-      width: 50%;
-      height: auto;
-      margin: 0 auto;
-    }
-
-    .scroll-content {
-      background-color: white;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    #cloud-layer {
-      background-size: cover;
-      width: 100%;
-      height: 100%;
-    }
   
-      ion-item {
-          padding-left: 10px !important;
-          margin-bottom: 10px;
-      }
-      
 
       #lblError {
         color:red;

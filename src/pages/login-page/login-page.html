@@ -1,29 +1,28 @@
 <ion-content>
  
-  <div padding id="cloud-layer">
- 
+  <div padding>
     <ion-row>
       <ion-col>
         <img src="assets/images/Fittingo_Logo.png" />
       </ion-col>
     </ion-row>
   <form #form="ngForm" (ngSubmit)="login(form)">
+    
       <ion-item>
-        <ion-label floating for="email">Email</ion-label>
+        <ion-label fixed for="email">Email</ion-label>
         <ion-input type="email" required #email="ngModel"
         (ngModel)="username" name="email"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label floating for="password">Şifre</ion-label>
+        <ion-label fixed for="password">Şifre</ion-label>
         <ion-input (ngModel)="password" name="password" 
         required #password="ngModel" 
         type="password"></ion-input>
       </ion-item>
+    
          <ion-label id='lblError'>{{errorMessage}}</ion-label>
        <button ion-button [disabled]="!form.form.valid" type="submit" block>Login</button>
   </form>
  
   </div>
-
- 
 </ion-content>

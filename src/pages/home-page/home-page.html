@@ -1,15 +1,18 @@
-<ion-header>
+   <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Page One</ion-title>
+    <ion-title>Ana Sayfa</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
+   <ion-content padding> 
+   <ion-row>
+      <ion-col>
+        <img src="assets/images/Fittingo_Logo.png" />
+      </ion-col>
+    </ion-row>
  
  <button ion-button (click)="OpenFoodListPage()">Yemek Ekle</button>
-
-<!--<ion-addfood  (onFoodAdded)="onFoodAdded($event)"></ion-addfood>!-->
  
 </ion-content>

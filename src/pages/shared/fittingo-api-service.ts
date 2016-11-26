@@ -7,10 +7,11 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { IUserInfo } from '../login-page/userinfo';
+import { FoodInfo } from '../food-list/foodInfo';
 
 @Injectable()
 export class FittingoServiceApi {
-    data: IUserInfo
+
     private baseUrl = 'http://api.fittingo.com'
 
     constructor(private http: Http) {
@@ -30,7 +31,6 @@ export class FittingoServiceApi {
         });
 
         let body = 'UserName=' + userName + '&Password=' + password;
-        console.log(body);
         return this.http.post(this.baseUrl + '/login', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
@@ -51,7 +51,9 @@ export class FittingoServiceApi {
             .catch(this.handleError);
     }
 
-    AddFood() : string{
+
+
+    AddFood(): string {
         return "başarılı";
     }
 

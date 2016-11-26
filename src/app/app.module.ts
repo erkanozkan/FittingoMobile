@@ -6,11 +6,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HomePage } from '../pages/home-page/home-page';
 import { LoginPage } from '../pages/login-page/login-page';
-import { FittingoServiceApi } from '../pages/shared/shared';
+import { FittingoServiceApi , FoodService} from '../pages/shared/shared';
+
 import { FormPage } from '../pages/form/form';
-import { HeroFormComponent } from '../pages/hero/hero-form.component';
-import { Food } from '../pages/food/food';
 import { FoodListPage } from '../pages/food-list/food-list';
+import { TabsPage } from '../pages/tabs/tabs';
 
 
 @NgModule({
@@ -19,12 +19,11 @@ import { FoodListPage } from '../pages/food-list/food-list';
     HomePage,
     LoginPage,
     FormPage,
-    HeroFormComponent,
-    Food,
-    FoodListPage
+    FoodListPage,
+    TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{tabsPlacement: 'bottom'}),
      BrowserModule,
      FormsModule
   ],
@@ -34,13 +33,12 @@ import { FoodListPage } from '../pages/food-list/food-list';
     HomePage,
     LoginPage,
     FormPage,
-    HeroFormComponent,
-    Food,
-    FoodListPage
-  ],
+    FoodListPage,
+    TabsPage
+      ],
   providers: [
-    FittingoServiceApi,
-    Food
+    FoodService,
+    FittingoServiceApi
   ]
 })
 export class AppModule {}

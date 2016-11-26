@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodListPage } from '../food-list/food-list';
-import {IFoodInfo} from '../food-list/foodInfo';
+import {FoodInfo} from '../food-list/foodInfo';
 
-import { FittingoServiceApi } from '../shared/shared';
 
 @Component({
     templateUrl: 'home-page.html'
@@ -12,9 +11,9 @@ import { FittingoServiceApi } from '../shared/shared';
 
 export class HomePage {
     userInfo: IUserInfo;
-    foodInfo: IFoodInfo
+    foodInfo: FoodInfo
     constructor(public navCtrl: NavController, 
-            private navParams: NavParams, private api: FittingoServiceApi ) {
+            private navParams: NavParams ) {
         this.userInfo = navParams.data;
     }
 
