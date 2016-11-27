@@ -5,11 +5,13 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-<button ion-button (click)="AddFood(item)">Kaydet</button>
+   <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
   <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 3 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
 
   </ion-searchbar>
-  <ion-item>
+  <!--<ion-item>
     <ion-label>Tarih</ion-label>
     <ion-datetime 
        [(ngModel)]="MealDate" displayFormat="DD MMM,YYYY HH:mm" 
@@ -35,14 +37,11 @@
         <ion-option value="6">Ara Öğün 3</ion-option>
       </ion-select>
     </ion-item>
-  </ion-list>
-
-  <div *ngIf="searching" class="spinner-container">
-    <ion-spinner></ion-spinner>
-  </div>
-
-  <ion-list >
-    <ion-item *ngFor="let item of foodList" class="listitem" (click)="GetItemDetails(item)">
+  </ion-list>-->
+  
+  <ion-list>
+    <ion-item *ngFor="let item of foodList" cursor="hand" 
+        detail-push (click)="OpenItemDetailsPage(item)">
         {{item.ProductName}}
     </ion-item>
   </ion-list>

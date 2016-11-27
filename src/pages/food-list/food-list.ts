@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { FoodInfo } from '../food-list/foodInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
 import { NavController, NavParams } from 'ionic-angular';
+import { FoodDetailPage } from '../food-detail/food-detail';
 
 import { LoadingController, ToastController } from 'ionic-angular';
 
@@ -20,24 +21,33 @@ export class FoodListPage {
     searching: any = false;
     isLoaded: boolean = false;
     loading = false;
-    MealType: number;
-    MealDate: string;
     userId: number;
-    amount: number;
     success: boolean;
     productItem: FoodInfo;
+    items: any[];
+
 
     constructor(private navCtrl: NavController,
         private dataService: FoodService,
         private loadingController: LoadingController,
         private navParams: NavParams, private toastCtrl: ToastController) {
 
+
+        this.items = [
+            {
+                ProductName: "Test1",
+            },
+            {
+                ProductName: "Test2",
+            },
+            {
+                ProductName: "Test3",
+            }
+
+        ]
         this.userId = this.navParams.data;
-        console.log(this.userId);
 
         this.searchControl = new FormControl();
-
-        this.MealDate = new Date().toISOString();;
 
         this.loading = true;
         let loader = this.loadingController.create({
@@ -60,8 +70,14 @@ export class FoodListPage {
             this.searching = true;
         }
     }
-    GetItemDetails(product: FoodInfo) {
-        this.productItem = product;
+    OpenItemDetailsPage(product: FoodInfo) {
+
+        var foodDetailInfo = {
+            product: product,
+            userId: this.userId
+        };
+
+        this.navCtrl.push(FoodDetailPage, foodDetailInfo);
     }
 
     setFilteredItems() {
@@ -74,24 +90,4 @@ export class FoodListPage {
         }
     }
 
-    AddFood() {
-        console.log(this.productItem)
-        var calorie = (this.amount * this.productItem.Kalori100Gram * this.productItem.Type1Gram) / 100;
-        var activityInfo = new ActivityInfo(this.productItem, this.MealDate, this.MealType, this.amount,
-            this.userId, calorie);
-        this.dataService.AddFoodActivity(activityInfo).
-            subscribe(data => {
-                this.success == data;
-                this.presentToast("Yemek eklendi.");
-            });
-    }
-
-    presentToast(message: string) {
-        let toast = this.toastCtrl.create({
-            message: message,
-            duration: 3000,
-            cssClass: "toast"
-        });
-        toast.present();
-    }
 }

@@ -1,5 +1,6 @@
 import { FoodInfo } from '../food-list/foodInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
+import { ServingTypeInfo } from '../food-detail/serve-type-info';
 
 import { Injectable } from '@angular/core'
 import { Http, Response, RequestOptions, Headers } from '@angular/http'
@@ -42,7 +43,7 @@ export class FoodService {
             + '&UserActivityId=' + activityInfo.product.ProductsId
             + '&UserId=' + activityInfo.userId
             + '&ActivityName=' + activityInfo.product.ProductName;
-                console.log(body);
+        console.log(body);
 
         return this.http.post(this.baseUrl + '/activities/add', body, options)
             .map((response: Response) => {
@@ -54,6 +55,13 @@ export class FoodService {
                     return false;
                 }
             })
+            .do(data => console.log('All: ' + JSON.stringify(data)))
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+       }
+
+    GetServiceTypeList(servingTypeId: number): Observable<ServingTypeInfo[]> {
+        return this.http.get(this.baseUrl + '/activities/servingTypes?servingTypeId=' + servingTypeId)
+            .map((res: Response) => res.json().ServingTypes as ServingTypeInfo[])
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }

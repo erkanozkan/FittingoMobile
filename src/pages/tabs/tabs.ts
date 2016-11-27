@@ -16,6 +16,5 @@ export class TabsPage {
     constructor(private navCtrl: NavController,
         private navParams: NavParams) {
         this.userInfo = navParams.data;
-        console.log(this.userInfo);
     }
 }

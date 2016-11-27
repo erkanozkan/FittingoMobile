@@ -11,6 +11,7 @@ import { FittingoServiceApi , FoodService} from '../pages/shared/shared';
 import { FormPage } from '../pages/form/form';
 import { FoodListPage } from '../pages/food-list/food-list';
 import { TabsPage } from '../pages/tabs/tabs';
+import { FoodDetailPage } from '../pages/food-detail/food-detail';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { TabsPage } from '../pages/tabs/tabs';
     LoginPage,
     FormPage,
     FoodListPage,
-    TabsPage
+    TabsPage,
+    FoodDetailPage
   ],
   imports: [
     IonicModule.forRoot(MyApp,{tabsPlacement: 'bottom'}),
@@ -34,7 +36,8 @@ import { TabsPage } from '../pages/tabs/tabs';
     LoginPage,
     FormPage,
     FoodListPage,
-    TabsPage
+    TabsPage,
+    FoodDetailPage
       ],
   providers: [
     FoodService,

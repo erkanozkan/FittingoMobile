@@ -1,0 +1,146 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Yemek Detayları</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+
+    <ion-item>
+        <ion-label>Tarih</ion-label>
+        <ion-datetime [(ngModel)]="MealDate" displayFormat="DD MMM,YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm">
+        </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Öğün</ion-label>
+        <ion-select [(ngModel)]="MealType" okText="Tamam" cancelText="İptal" placeholder="Seçiniz">
+            <ion-option value="1">Kahvaltı</ion-option>
+            <ion-option value="2">Ara Öğün 1</ion-option>
+            <ion-option value="3">Öğle</ion-option>
+            <ion-option value="4">Ara Öğün 2</ion-option>
+            <ion-option value="5">Akşam</ion-option>
+            <ion-option value="6">Ara Öğün 3</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+            <ion-col width-50>
+                <ion-item>
+                    <ion-select style="padding:0px;" okText="Tamam" [(ngModel)]="servingType" cancelText="İptal" placeholder="Seçiniz">
+                        <ion-option *ngFor="let item of ServingTypesArray" value="{{item.Value}}">{{item.Text}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col width-50>
+
+                <ion-item>
+                    <ion-input  *ngIf="CheckServingType(0)" placeholder="Miktar giriniz." [(ngModel)]="gram"></ion-input>
+
+                    <ion-select style="padding:0px;max-width: 100%;" *ngIf="CheckServingType(productItem.Type1)" [(ngModel)]="type1Gram" okText="Tamam"
+                        cancelText="İptal" placeholder="Seçiniz">
+                        <ion-option value="0" selected="true">Seçiniz</ion-option>
+                        <ion-option value="0.25">1/4 {{type1Name}}</ion-option>
+                        <ion-option value="0.5">1/2 {{type1Name}}</ion-option>
+                        <ion-option value="1">1 {{type1Name}}</ion-option>
+                        <ion-option value="2">2 {{type1Name}}</ion-option>
+                        <ion-option value="3">3 {{type1Name}}</ion-option>
+                        <ion-option value="4">4 {{type1Name}}</ion-option>
+                        <ion-option value="5">5 {{type1Name}}</ion-option>
+                    </ion-select>
+
+                    <ion-select style="padding:0px;max-width: 100%;" *ngIf="CheckServingType(productItem.Type2)" [(ngModel)]="type2Gram" okText="Tamam"
+                        cancelText="İptal" placeholder="Seçiniz">
+                        <ion-option value="0" selected="true">Seçiniz</ion-option>
+
+                        <ion-option value="0.25">1/4 {{type2Name}}</ion-option>
+                        <ion-option value="0.5">1/2 {{type2Name}}</ion-option>
+                        <ion-option value="1">1 {{type2Name}}</ion-option>
+                        <ion-option value="2">2 {{type2Name}}</ion-option>
+                        <ion-option value="3">3 {{type2Name}}</ion-option>
+                        <ion-option value="4">4 {{type2Name}}</ion-option>
+                        <ion-option value="5">5 {{type2Name}}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <!--<ion-grid>
+                <ion-row>
+                    <ion-col width-100>
+                        <ion-item>
+                            <ion-select okText="Tamam" [(ngModel)]="servingType" cancelText="İptal" placeholder="Seçiniz">
+                                <ion-option *ngFor="let item of ServingTypesArray" value="{{item.Value}}">{{item.Text}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                    
+                        <ion-col width-100>
+                            <ion-item *ngIf="CheckServingType(0)">
+                                <ion-input placeholder="Miktar giriniz." [(ngModel)]="gram"></ion-input>
+                            </ion-item>
+                            <ion-item *ngIf="CheckServingType(productItem.Type1)">
+                                <ion-select [(ngModel)]="type1Gram" okText="Tamam" cancelText="İptal" placeholder="Seçiniz">
+                                    <ion-option value="0" selected="true">Seçiniz</ion-option>
+                                    <ion-option value="0.25">1/4 {{type1Name}}</ion-option>
+                                    <ion-option value="0.5">1/2 {{type1Name}}</ion-option>
+                                    <ion-option value="1">1 {{type1Name}}</ion-option>
+                                    <ion-option value="2">2 {{type1Name}}</ion-option>
+                                    <ion-option value="3">3 {{type1Name}}</ion-option>
+                                    <ion-option value="4">4 {{type1Name}}</ion-option>
+                                    <ion-option value="5">5 {{type1Name}}</ion-option>
+                                </ion-select>
+                            </ion-item>
+                            <ion-item *ngIf="CheckServingType(productItem.Type2)">
+                                <ion-select [(ngModel)]="type2Gram" okText="Tamam" cancelText="İptal" placeholder="Seçiniz">
+                                    <ion-option value="0" selected="true">Seçiniz</ion-option>
+
+                                    <ion-option value="0.25">1/4 {{type2Name}}</ion-option>
+                                    <ion-option value="0.5">1/2 {{type2Name}}</ion-option>
+                                    <ion-option value="1">1 {{type2Name}}</ion-option>
+                                    <ion-option value="2">2 {{type2Name}}</ion-option>
+                                    <ion-option value="3">3 {{type2Name}}</ion-option>
+                                    <ion-option value="4">4 {{type2Name}}</ion-option>
+                                    <ion-option value="5">5 {{type2Name}}</ion-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+            </ion-grid>-->
+    <!--</ion-card-content>
+    </ion-card>-->
+
+
+    <ion-card>
+        <ion-card-header>
+            1 porsiyon {{productItem.ProductName}}
+        </ion-card-header>
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col width-40>Kalori</ion-col>
+                    <ion-col width-10>:</ion-col>
+                    <ion-col width-50>{{productItem.Kalori100Gram}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col width-40>Karbonhidrat</ion-col>
+                    <ion-col width-10>:</ion-col>
+                    <ion-col width-50>{{productItem.Carbonhydrate}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col width-40>Protein</ion-col>
+                    <ion-col width-10>:</ion-col>
+                    <ion-col width-50>{{productItem.Protein}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col width-40>Yağ</ion-col>
+                    <ion-col width-10>:</ion-col>
+                    <ion-col width-50>{{productItem.Fat}}</ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+
+    <button ion-button (click)="AddFood()">Kaydet</button>
+
+</ion-content>

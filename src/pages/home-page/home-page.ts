@@ -18,7 +18,6 @@ export class HomePage {
     }
 
     OpenFoodListPage() {
-        console.log(this.userInfo);
         this.navCtrl.push(FoodListPage, this.userInfo.userId);
     }
     /*onFoodAdded(foodInfo: IFoodInfo){
