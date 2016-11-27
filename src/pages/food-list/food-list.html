@@ -5,7 +5,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-
+<button ion-button (click)="AddFood(item)">Kaydet</button>
   <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 3 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
 
   </ion-searchbar>
@@ -42,8 +42,8 @@
   </div>
 
   <ion-list >
-    <ion-item *ngFor="let item of foodList" (click)="AddFood(item)">
-     {{item.ProductName}} 
+    <ion-item *ngFor="let item of foodList" class="listitem" (click)="GetItemDetails(item)">
+        {{item.ProductName}}
     </ion-item>
   </ion-list>
 </ion-content>

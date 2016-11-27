@@ -9,13 +9,13 @@
       <ion-item>
         <ion-label floating for="email">Email</ion-label>
         <ion-input type="email" required #email="ngModel"
-        (ngModel)="username" name="email"></ion-input>
+        [ngModel]="username" name="email" ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating for="password">Şifre</ion-label>
-        <ion-input (ngModel)="password" name="password" 
+        <ion-input [ngModel]="userPassword" name="password" 
         required #password="ngModel" 
-        type="password"></ion-input>
+        type="password" > </ion-input>
       </ion-item>    
        <button ion-button [disabled]="!form.form.valid" type="submit" block>Login</button>
   </form>

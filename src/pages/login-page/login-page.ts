@@ -12,12 +12,14 @@ import { TabsPage } from '../tabs/tabs';
 export class LoginPage {
   userInfo: IUserInfo;
   username: string;
-  password: string;
+  userPassword: string;
   loading = false;
 
   constructor(public navCtrl: NavController,
     private service: FittingoServiceApi,
     private loadingController: LoadingController, private toastCtrl: ToastController) {
+      this.username = "ozkn.erkan@gmail.com";
+      this.userPassword="Erkan23?";
   }
 
   login(form) {

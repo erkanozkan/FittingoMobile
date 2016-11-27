@@ -25,6 +25,7 @@ export class FoodListPage {
     userId: number;
     amount: number;
     success: boolean;
+    productItem: FoodInfo;
 
     constructor(private navCtrl: NavController,
         private dataService: FoodService,
@@ -59,6 +60,10 @@ export class FoodListPage {
             this.searching = true;
         }
     }
+    GetItemDetails(product: FoodInfo) {
+        this.productItem = product;
+    }
+
     setFilteredItems() {
         if (this.tempFoodList != null && this.searchTerm.length > 2) {
             this.foodList = this.tempFoodList.filter((item) => {
@@ -69,11 +74,10 @@ export class FoodListPage {
         }
     }
 
-    AddFood(product: FoodInfo) {
-
-
-        var calorie = (this.amount * product.Kalori100Gram * product.Type1Gram) / 100;
-        var activityInfo = new ActivityInfo(product, this.MealDate, this.MealType, this.amount,
+    AddFood() {
+        console.log(this.productItem)
+        var calorie = (this.amount * this.productItem.Kalori100Gram * this.productItem.Type1Gram) / 100;
+        var activityInfo = new ActivityInfo(this.productItem, this.MealDate, this.MealType, this.amount,
             this.userId, calorie);
         this.dataService.AddFoodActivity(activityInfo).
             subscribe(data => {
@@ -83,8 +87,6 @@ export class FoodListPage {
     }
 
     presentToast(message: string) {
-
-        console.log(message);
         let toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
