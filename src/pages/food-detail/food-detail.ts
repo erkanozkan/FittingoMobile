@@ -18,7 +18,6 @@ export class FoodDetailPage {
     amount: number;
     MealDate: string;
     MealType: number;
-    MealType1: number;
     success: boolean;
     type2Gram: number;
     type3Gram: number;
@@ -27,14 +26,21 @@ export class FoodDetailPage {
     type1Name: string;
     type2Name: string;
     type3Name: string;
-    gram:number;
-    type1Amount:number;
-    type2Amount:number;
-
-    ServingTypesArray:any[];
-   servingType: number = 0;
-    
-
+    gram: number;
+    type1Amount: number;
+    type2Amount: number;
+    calorie: number;
+    ServingTypesArray: any[];
+    servingType: number = 0;
+    calorie100gramStr: string;
+    carbonhydratStr: string;
+    proteinStr: string;
+    fatStr: string;
+    calorie100gram: number;
+    carbonhydrat: number;
+    protein: number;
+    fat: number;
+    errorMessages: any[];
     constructor(private navCtrl: NavController,
         private dataService: FoodService,
         private loadingController: LoadingController,
@@ -47,37 +53,36 @@ export class FoodDetailPage {
             Value: "0",
             Text: "Gram"
         }]
+
+        console.log(this.productItem)
+        this.fatStr = this.productItem.Fat.toString();
+        this.calorie100gram = Math.floor(this.productItem.Kalori100Gram);
+        this.calorie100gramStr = this.calorie100gram.toString();
+        this.proteinStr = this.productItem.Protein.toString();
+        this.carbonhydratStr = this.productItem.Carbonhydrate.toString();
+
         this.GetServiceTypeList(0);
-       console.log(this.ServingTypesArray);
+        console.log(this.ServingTypesArray);
     }
 
     GetServiceTypeNames() {
-        
+
         if (this.productItem.Type1 != null) {
             this.type1Name = this.FilterServingTypes(this.productItem.Type1)
             this.ServingTypesArray.push({
-                Value :this.productItem.Type1.toString(),
-                Text:this.type1Name
+                Value: this.productItem.Type1.toString(),
+                Text: this.type1Name
             })
         }
-       
+
         if (this.productItem.Type2 != null) {
             this.type2Name = this.FilterServingTypes(this.productItem.Type2)
-             this.ServingTypesArray.push({
-                Value :this.productItem.Type2.toString(),
-                Text:this.type2Name
+            this.ServingTypesArray.push({
+                Value: this.productItem.Type2.toString(),
+                Text: this.type2Name
             })
         }
-
-        // if (this.productItem.Type3 != null) {
-        //     this.type3Name = this.FilterServingTypes(this.productItem.Type3)
-        //      this.ServingTypesArray.push({
-        //         Value :this.productItem.Type3,
-        //         Text:this.type3Name
-        //     })
-        // }
     }
-
 
     FilterServingTypes(filterValue: number): string {
         var servingTypeName: string = "";
@@ -90,9 +95,34 @@ export class FoodDetailPage {
     }
 
 
-CheckServingType(typeId:number){
-    return typeId == this.servingType;
-}
+    CalculateCalorie() {
+
+        if (this.servingType == 0) { //gram
+            this.calorie = (this.calorie100gram * this.gram) / 100;
+            this.carbonhydrat = (this.productItem.Carbonhydrate * this.gram) / 100;
+            this.fat = (this.productItem.Fat * this.gram) / 100;
+            this.protein = (this.productItem.Protein * this.gram) / 100;
+        } else if (this.servingType == this.productItem.Type1) {
+            this.calorie = (this.calorie100gram * this.productItem.Type1Gram * this.type1Gram) / 100;
+            this.carbonhydrat = (this.productItem.Type1Gram * this.productItem.Carbonhydrate * this.type1Gram) / 100;
+            this.fat = (this.productItem.Type1Gram * this.productItem.Fat * this.type1Gram) / 100;
+            this.protein = (this.productItem.Type1Gram * this.productItem.Protein * this.type1Gram) / 100;
+        }
+        else if (this.servingType == this.productItem.Type2) {
+            this.calorie = (this.productItem.Type2Gram * this.type2Gram) / 100;
+            this.carbonhydrat = (this.productItem.Type2Gram * this.productItem.Carbonhydrate * this.type2Gram) / 100;
+            this.fat = (this.productItem.Type2Gram * this.productItem.Fat * this.type2Gram) / 100;
+            this.protein = (this.productItem.Type2Gram * this.productItem.Protein * this.type2Gram) / 100;
+        }
+        this.carbonhydratStr = this.carbonhydrat.toFixed(2).toString();
+        this.calorie100gramStr = Math.floor(this.calorie).toString();
+        this.proteinStr = this.protein.toFixed(2).toString();
+        this.fatStr = this.fat.toFixed(2).toString();
+    }
+
+    CheckServingType(typeId: number) {
+        return typeId == this.servingType;
+    }
 
     GetServiceTypeList(serviceTypeId: number) {
         this.dataService.GetServiceTypeList(serviceTypeId)
@@ -102,11 +132,35 @@ CheckServingType(typeId:number){
             });
     }
 
+    CheckItemValues(): boolean {
+        this.errorMessages = [];
+        if (this.MealDate == null) {
+            this.errorMessages.push({
+                message: "Bir tarih seçiniz."
+            });
+        }
+        if (this.MealType == null || this.MealType == 0) {
+            this.errorMessages.push({
+                message: "Bir öğün seçiniz."
+            });
+        }
+        if (this.servingType == 0 && (this.gram == null || this.gram == 0)) {
+            this.errorMessages.push({
+                message: "Bir miktar giriniz."
+            });
+        }
+        console.log(this.errorMessages);
+
+        return this.errorMessages.length == 0 ? true : false;
+    }
     AddFood() {
-        var calorie = (this.amount * this.productItem.Kalori100Gram * this.productItem.Type1Gram) / 100;
+        var value = this.CheckItemValues();
+        if (value == false) { 
+            return;
+        } 
         var activityInfo = new ActivityInfo(this.productItem, this.MealDate,
             this.MealType, this.amount,
-            this.userId, calorie);
+            this.userId, this.calorie);
 
         this.dataService.AddFoodActivity(activityInfo).
             subscribe(data => {
@@ -122,7 +176,7 @@ CheckServingType(typeId:number){
             cssClass: "toast"
         });
         toast.present();
-           this.navCtrl.pop();
+        this.navCtrl.pop();
     }
 
 }

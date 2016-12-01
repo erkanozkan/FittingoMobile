@@ -55,14 +55,14 @@ export class FoodService {
                     return false;
                 }
             })
-            .do(data => console.log('All: ' + JSON.stringify(data)))
+            //.do(data => console.log('All: ' + JSON.stringify(data)))
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
        }
 
     GetServiceTypeList(servingTypeId: number): Observable<ServingTypeInfo[]> {
         return this.http.get(this.baseUrl + '/activities/servingTypes?servingTypeId=' + servingTypeId)
             .map((res: Response) => res.json().ServingTypes as ServingTypeInfo[])
-            .do(data => console.log('All: ' + JSON.stringify(data)))
+            //.do(data => console.log('All: ' + JSON.stringify(data)))
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 

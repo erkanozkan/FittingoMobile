@@ -25,7 +25,7 @@ export class FoodListPage {
     success: boolean;
     productItem: FoodInfo;
     items: any[];
-
+    canDoRequest: boolean = false;
 
     constructor(private navCtrl: NavController,
         private dataService: FoodService,
@@ -83,9 +83,11 @@ export class FoodListPage {
     setFilteredItems() {
         if (this.tempFoodList != null && this.searchTerm.length > 2) {
             this.foodList = this.tempFoodList.filter((item) => {
+                this.canDoRequest = true;
                 return item.ProductName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
             });
         } else {
+            this.canDoRequest = false;
             this.foodList = null;
         }
     }
