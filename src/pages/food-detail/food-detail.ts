@@ -122,6 +122,7 @@ CheckServingType(typeId:number){
             cssClass: "toast"
         });
         toast.present();
+           this.navCtrl.pop();
     }
 
 }
