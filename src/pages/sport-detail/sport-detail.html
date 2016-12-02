@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Yemek Detayları</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+<ion-list>
+    <ion-item>
+        <ion-label>Tarih</ion-label>
+        <ion-datetime [(ngModel)]="SportDate" displayFormat="DD MMM,YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm">
+        </ion-datetime>
+    </ion-item>
+
+  <ion-item>
+        <ion-select style="padding:0px;max-width: 100%;" [(ngModel)]="servingType" okText="Tamam"
+            cancelText="İptal" placeholder="Seçiniz" (ionChange)="CalculateCalorie()">
+            <ion-option *ngFor="let item of ServingTypesArray" selected="item.Selected" value="{{item.Value}}" >{{item.Text}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-input placeholder="Süre giriniz." [(ngModel)]="totalTime" (input)="CalculateCalorie()"></ion-input>
+  </ion-item>
+  <ion-label > Dakika + {{calorie}} Kalori</ion-label>
+
+ 
+        <ion-item>
+            <p *ngFor="let item of errorMessages" style="color:red">{{item.message}}</p>
+        </ion-item>
+    </ion-list>
+
+    <button ion-button (click)="AddSport()">Kaydet</button>
+
+</ion-content>

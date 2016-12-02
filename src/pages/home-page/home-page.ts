@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodListPage } from '../food-list/food-list';
-import {FoodInfo} from '../food-list/foodInfo';
+import { FoodInfo } from '../food-list/foodInfo';
+import { SportListPage } from '../sport-list/sport-list';
 
 
 @Component({
@@ -12,15 +13,19 @@ import {FoodInfo} from '../food-list/foodInfo';
 export class HomePage {
     userInfo: IUserInfo;
     foodInfo: FoodInfo
-    constructor(private navCtrl: NavController, 
-            private navParams: NavParams ) {
+    constructor(private navCtrl: NavController,
+        private navParams: NavParams) {
         this.userInfo = navParams.data;
     }
 
     OpenFoodListPage() {
         this.navCtrl.push(FoodListPage, this.userInfo.userId);
     }
-    /*onFoodAdded(foodInfo: IFoodInfo){
-        console.log(foodInfo.foodId);
-    }*/
+    OpenSportsListPage() {
+        var sportListInfo = {
+            userId: this.userInfo.userId,
+            Weight: this.userInfo.Weight
+        }
+        this.navCtrl.push(SportListPage, sportListInfo);
+    }
 }

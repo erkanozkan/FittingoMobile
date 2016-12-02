@@ -39,6 +39,7 @@ export class FittingoServiceApi {
                         userId: res.UserInfo.UserId,
                         email: res.UserInfo.Email,
                         name: res.UserInfo.Name,
+                        Weight: res.UserInfo.CurrentWeight,
                         success: true
                     }
                 } else {
@@ -47,7 +48,7 @@ export class FittingoServiceApi {
                     }
                 }
             })
-            .do(data => console.log('All: ' + JSON.stringify(data)))
+            //.do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 

@@ -4,4 +4,5 @@ export interface IUserInfo{
     name: string;
     success: boolean;
     password: string;
+    Weight:number;
 } 

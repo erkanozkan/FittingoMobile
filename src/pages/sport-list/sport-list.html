@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+
+    <ion-title>Spor Listesi</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+   <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 3 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
+  </ion-searchbar>
+  
+  <ion-list [virtualScroll]="sportList" *ngIf="canDoRequest">
+    <ion-item *virtualItem="let item" cursor="hand" 
+        detail-push (click)="OpenItemDetailsPage(item)">
+        {{item.ExerciseName}}
+    </ion-item>
+  </ion-list>
+</ion-content>
