@@ -1,6 +1,5 @@
 import { SportInfo } from '../sport-list/sportInfo';
-import { ActivityInfo } from '../food-list/activityInfo';
-import { ServingTypeInfo } from '../food-detail/serve-type-info';
+import { ExerciseInfo } from '../sport-list/exerciseInfo';
 
 import { Injectable } from '@angular/core'
 import { Http, Response, RequestOptions, Headers } from '@angular/http'
@@ -26,7 +25,7 @@ export class SportService {
 
     }
 
-    AddFoodActivity(activityInfo: ActivityInfo): Observable<boolean> {
+    AddSportActivity(activityInfo: ExerciseInfo): Observable<boolean> {
         let headers = new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
@@ -36,15 +35,14 @@ export class SportService {
 
         let body = 'ActivityDateTime=' + activityInfo.activiyDate
             + '&Amount=' + Math.floor(activityInfo.amount)
-            + '&Calories=' + Math.floor(activityInfo.calorie)
-            + '&ServingTypeId=' + activityInfo.mealType
-            + '&ActivityTypeId=1'
-            + '&UserActivityId=' + activityInfo.product.ProductsId
+            + '&Calorie=' + Math.floor(activityInfo.calorie)
+            + '&ActivityName=' + activityInfo.product.ExerciseName
+            + '&ActivityDescription=' + activityInfo.description
+            + '&ExerciseId=' + activityInfo.product.ExerciseId
             + '&UserId=' + activityInfo.userId
-            + '&ActivityName=' + activityInfo.product.ProductName;
         console.log(body);
 
-        return this.http.post(this.baseUrl + '/activities/add', body, options)
+        return this.http.post(this.baseUrl + '/activities/exercises/save', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
                 console.log(res);
@@ -56,13 +54,5 @@ export class SportService {
             })
             //.do(data => console.log('All: ' + JSON.stringify(data)))
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-       }
-
-    GetServiceTypeList(servingTypeId: number): Observable<ServingTypeInfo[]> {
-        return this.http.get(this.baseUrl + '/activities/servingTypes?servingTypeId=' + servingTypeId)
-            .map((res: Response) => res.json().ServingTypes as ServingTypeInfo[])
-            //.do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
-
 }

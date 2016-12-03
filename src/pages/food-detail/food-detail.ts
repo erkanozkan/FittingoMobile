@@ -155,17 +155,21 @@ export class FoodDetailPage {
     }
     AddFood() {
         var value = this.CheckItemValues();
-        if (value == false) { 
+        if (value == false) {
             return;
-        } 
+        }
         var activityInfo = new ActivityInfo(this.productItem, this.MealDate,
             this.MealType, this.amount,
             this.userId, this.calorie);
 
         this.dataService.AddFoodActivity(activityInfo).
             subscribe(data => {
-                this.success == data;
-                this.presentToast("Yemek eklendi.");
+                this.success = data;
+                if (this.success == true) {
+                    this.presentToast("Yemek eklendi.");
+                } else {
+                    this.presentToast("Yemek eklenirken hata oluştu.");
+                }
             });
     }
 
@@ -176,7 +180,9 @@ export class FoodDetailPage {
             cssClass: "toast"
         });
         toast.present();
-        this.navCtrl.pop();
+        if (this.success == true) {
+            this.navCtrl.pop();
+        }
     }
 
 }

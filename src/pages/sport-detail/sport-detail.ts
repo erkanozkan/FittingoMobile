@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SportService } from '../shared/shared';
 import { FormControl } from '@angular/forms';
 import { SportInfo } from '../sport-list/sportInfo';
-import { ActivityInfo } from '../food-list/activityInfo';
+import { ExerciseInfo } from '../sport-list/exerciseInfo';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController, ToastController } from 'ionic-angular';
 import { ServingTypeInfo } from '../food-detail/serve-type-info';
@@ -12,18 +12,17 @@ import { ServingTypeInfo } from '../food-detail/serve-type-info';
 })
 
 export class SportDetailPage {
-    activityInfo: ActivityInfo;
     productItem: SportInfo;
     userId: number;
     totalTime: number = 0;
     SportDate: string;
-    success: boolean;
+    success: boolean = false;
     Weight: number;
 
     calorie: number;
     ServingTypesArray: any[];
     servingType: number = 0;
-
+    isCalorieSet: boolean = false;
     errorMessages: any[];
 
     constructor(private navCtrl: NavController,
@@ -38,6 +37,7 @@ export class SportDetailPage {
         this.SportDate = new Date().toISOString();
         this.ServingTypesArray = new Array();
         this.GetServiceTypeNames();
+        this.servingType = 0;
     }
 
     GetServiceTypeNames() {
@@ -68,12 +68,8 @@ export class SportDetailPage {
     }
 
     CalculateCalorie() {
-        this.calorie = Math.round((this.totalTime / 60) * this.Weight * this.servingType);
-        console.log(this.calorie);
-        }
-
-    CheckServingType(typeId: number) {
-        return typeId == this.servingType;
+        this.calorie = Math.floor((this.totalTime / 60) * this.Weight * this.servingType);
+        this.isCalorieSet = true;
     }
 
     CheckItemValues(): boolean {
@@ -84,23 +80,41 @@ export class SportDetailPage {
             });
         }
 
+        if (this.servingType == null) {
+            this.errorMessages.push({
+                message: "Bir seviye seçiniz."
+            });
+        }
+
+        if (this.calorie == null || this.calorie <= 0) {
+            this.errorMessages.push({
+                message: "Geçerli bir süre giriniz."
+            });
+        }
+
         return this.errorMessages.length == 0 ? true : false;
     }
-    // AddFood() {
-    //     var value = this.CheckItemValues();
-    //     if (value == false) { 
-    //         return;
-    //     } 
-    //     var activityInfo = new ActivityInfo(this.productItem, this.MealDate,
-    //         this.MealType, this.amount,
-    //         this.userId, this.calorie);
+    AddSport() {
+        var value = this.CheckItemValues();
+        if (value == false) {
+            return;
+        }
+        var description = this.totalTime.toString() + " Dakika " + this.productItem.ExerciseName;
 
-    //     this.dataService.AddFoodActivity(activityInfo).
-    //         subscribe(data => {
-    //             this.success == data;
-    //             this.presentToast("Yemek eklendi.");
-    //         });
-    // }
+        var activityInfo = new ExerciseInfo(this.productItem, this.SportDate,
+            description, this.totalTime,
+            this.userId, this.calorie);
+
+        this.dataService.AddSportActivity(activityInfo).
+            subscribe(data => {
+                this.success = data;
+                if (this.success == true) {
+                    this.presentToast("Spor eklendi.");
+                } else {
+                    this.presentToast("Bir hata oluştu.");
+                }
+            });
+    }
 
     presentToast(message: string) {
         let toast = this.toastCtrl.create({
@@ -109,7 +123,9 @@ export class SportDetailPage {
             cssClass: "toast"
         });
         toast.present();
-        this.navCtrl.pop();
+        if (this.success == true) {
+            this.navCtrl.pop();
+        }
     }
 
 }
