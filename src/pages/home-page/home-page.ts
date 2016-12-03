@@ -34,6 +34,14 @@ export class HomePage {
     }
 
     AddWater() {
+
+        var count = this.userInfo.DailyWater + 1;
+
+        if (count > this.userInfo.GoalWater) {
+            this.presentToast("Max su limitine ulaşıldı.");
+            return;
+        }
+
         this.api.SaveWater(1).subscribe(data => {
             if (data == true) {
                 this.userInfo = this.api.userInfo;
@@ -45,6 +53,11 @@ export class HomePage {
     }
 
     RemoveWater() {
+        var count = this.userInfo.DailyWater - 1;
+        if (count < 0) {
+            this.presentToast("Günde en az bir bardak su içmelisiniz.");
+            return;
+        }
         this.api.SaveWater(-1).subscribe(data => {
             if (data == true) {
                 this.userInfo = this.api.userInfo;
