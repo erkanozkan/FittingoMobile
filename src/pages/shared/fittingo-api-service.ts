@@ -11,6 +11,7 @@ import { FoodInfo } from '../food-list/foodInfo';
 
 @Injectable()
 export class FittingoServiceApi {
+    userInfo: IUserInfo;
 
     private baseUrl = 'http://api.fittingo.com'
 
@@ -35,27 +36,56 @@ export class FittingoServiceApi {
             .map((response: Response) => {
                 let res = <any>response.json();
                 if (res != null && res.UserInfo != null && res.IsSuccess == true) {
-                    return <IUserInfo>{
+                    this.userInfo = <IUserInfo>{
                         userId: res.UserInfo.UserId,
                         email: res.UserInfo.Email,
                         name: res.UserInfo.Name,
                         Weight: res.UserInfo.CurrentWeight,
+                        RemainingCalorie: res.UserInfo.RemainingCalorie,
+                        BadgeLevel: res.UserInfo.BadgeLevel,
+                        DailyCalories: res.UserInfo.DailyCalories,
+                        GoalWater: res.UserInfo.GoalWater,
+                        DailyWater: res.UserInfo.DailyWater,
                         success: true
                     }
+                    return this.userInfo;
                 } else {
-                    return <IUserInfo>{
+                    this.userInfo = <IUserInfo>{
                         success: false
                     }
+                    return this.userInfo;
                 }
             })
-            //.do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 
+    SaveWater(count: number): Observable<boolean> {
+        let headers = new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        let options = new RequestOptions({
+            headers: headers
+        });
 
+        var today = new Date();
+        var requestDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
 
-    AddFood(): string {
-        return "başarılı";
+        let body = 'RequestDate=' + requestDate
+            + '&Number=' + (this.userInfo.DailyWater + count)
+            + '&UserId=' + this.userInfo.userId;
+        console.log(body);
+
+        return this.http.post(this.baseUrl + '/products/water/save', body, options)
+            .map((response: Response) => {
+                let res = <any>response.json();
+                if (res != null && res.IsSuccess == true) {
+                    this.userInfo.DailyWater += count;
+                    return res.IsSuccess;
+                } else {
+                    return false;
+                }
+            })
+            .catch(this.handleError);
     }
 
     private handleError(error: Response) {

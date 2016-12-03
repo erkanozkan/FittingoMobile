@@ -24,27 +24,13 @@ export class FoodListPage {
     userId: number;
     success: boolean;
     productItem: FoodInfo;
-    items: any[];
     canDoRequest: boolean = false;
 
     constructor(private navCtrl: NavController,
         private dataService: FoodService,
         private loadingController: LoadingController,
         private navParams: NavParams, private toastCtrl: ToastController) {
-
-
-        this.items = [
-            {
-                ProductName: "Test1",
-            },
-            {
-                ProductName: "Test2",
-            },
-            {
-                ProductName: "Test3",
-            }
-
-        ]
+ 
         this.userId = this.navParams.data;
 
         this.searchControl = new FormControl();

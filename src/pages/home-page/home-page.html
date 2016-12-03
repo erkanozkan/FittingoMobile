@@ -4,8 +4,16 @@
       <img src="assets/images/Fittingo_Logo.png" />
     </ion-col>
   </ion-row>
-
+ 
   <button ion-button (click)="OpenFoodListPage()">Yemek Ekle</button>
-    <button ion-button (click)="OpenSportsListPage()">Spor Ekle</button>
+  <button ion-button (click)="OpenSportsListPage()">Spor Ekle</button>
+  <button ion-button (click)="AddWater()">Su Ekle</button>
+  <button ion-button (click)="RemoveWater()">Su Çıkar</button>
+<ion-item>
+  <ion-label>Günlük Su Miktarı : {{userInfo.DailyWater}}</ion-label>
+</ion-item>
+<ion-item>
+  <ion-label>Hedeflenen Su Miktarı : {{userInfo.GoalWater}}</ion-label>
+</ion-item>
 
 </ion-content>
