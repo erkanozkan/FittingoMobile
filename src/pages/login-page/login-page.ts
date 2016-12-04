@@ -54,7 +54,6 @@ export class LoginPage implements OnInit {
     this.navCtrl.push(SignUpPage);
   }
   presentToast(message: string) {
-    console.log(message);
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
@@ -62,14 +61,7 @@ export class LoginPage implements OnInit {
     });
     toast.present();
   }
-
-  phoneValidator(control: FormControl): { [s: string]: boolean } {
-    if (control.value !== '') {
-      if (!control.value.match('\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}')) {
-        return { invalidPhone: true };
-      }
-    }
-  }
+ 
 
   emailValidator(control: FormControl): { [s: string]: boolean } {
     if (!(control.value.toLowerCase().match('^[a-zA-Z0-9+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$'))) {

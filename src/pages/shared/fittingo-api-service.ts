@@ -8,11 +8,12 @@ import 'rxjs/add/operator/map';
 
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodInfo } from '../food-list/foodInfo';
+import { ResponseBase } from './shared';
 
 @Injectable()
 export class FittingoServiceApi {
     userInfo: IUserInfo;
-
+    responseBase: ResponseBase;
     private baseUrl = 'http://api.fittingo.com'
 
     constructor(private http: Http) {
@@ -83,6 +84,30 @@ export class FittingoServiceApi {
                 } else {
                     return false;
                 }
+            })
+            .catch(this.handleError);
+    }
+
+    CreateAccount(email: string, name: string, surname: string, password: string): Observable<ResponseBase> {
+        let headers = new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        let options = new RequestOptions({
+            headers: headers
+        });
+
+        let body = 'Email=' + email
+            + '&Name=' + name
+            + '&SurName=' + surname
+            + '&Password=' + password;
+        console.log(body);
+        return this.http.post(this.baseUrl + '/accounts/create', body, options)
+            .map((response: Response) => {
+                let res = <any>response.json();
+                 return <ResponseBase>{
+                        success: res.IsSuccess,
+                        message: res.Message
+                    }
             })
             .catch(this.handleError);
     }

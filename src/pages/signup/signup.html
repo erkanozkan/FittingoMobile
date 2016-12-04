@@ -7,26 +7,33 @@
   <ion-list>
     <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
       <ion-item>
-        <ion-label floating primary>Name</ion-label>
+        <ion-label floating primary>İsim</ion-label>
         <ion-input [(ngModel)]="userInfo.name" formControlName="name" type="text"
                    id="name" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
-      <p *ngIf="!isValid('name')" color="danger" padding-left>Invalid Name</p>
+      <p *ngIf="!isValid('name')" color="danger" padding-left>Geçersiz İsim</p>
+      <ion-item>
+        <ion-label floating primary>Soyisim</ion-label>
+        <ion-input [(ngModel)]="userInfo.surname" formControlName="surname" type="text"
+                   id="surname" spellcheck="false" autocapitalize="off">
+        </ion-input>
+      </ion-item>
+      <p *ngIf="!isValid('surname')" color="danger" padding-left>Geçersiz Soyisim</p>
       <ion-item>
         <ion-label floating primary>Email</ion-label>
         <ion-input [(ngModel)]="userInfo.email" formControlName="email"
                    type="text" id="email" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
-      <p *ngIf="!isValid('email')" color="danger" padding-left>Invalid Email</p>
+      <p *ngIf="!isValid('email')" color="danger" padding-left>Geçersiz Email</p>
       <ion-item>
-        <ion-label floating primary>Phone</ion-label>
-        <ion-input [(ngModel)]="userInfo.phone" formControlName="phone" type="text" id="phone">
+        <ion-label floating primary>Şifre</ion-label>
+        <ion-input [(ngModel)]="userInfo.password" formControlName="password" type="password" id="password">
         </ion-input>
       </ion-item>
-      <p *ngIf="!isValid('phone')" color="danger" padding-left>Invalid Phone</p>
-      <button ion-button type="submit" block primary [disabled]="!myForm.valid">Submit</button>
+      <p *ngIf="!isValid('password')" color="danger" padding-left>Geçersiz Şifre</p>
+      <button ion-button type="submit" block primary [disabled]="!myForm.valid">Kaydol</button>
     </form>
   </ion-list>
 </ion-content>

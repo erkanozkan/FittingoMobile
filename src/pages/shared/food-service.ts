@@ -66,12 +66,4 @@ export class FoodService {
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
-    AddWater() {
-
-    }
-
-    RemoveWater() {
-        
-    }
-
 }
