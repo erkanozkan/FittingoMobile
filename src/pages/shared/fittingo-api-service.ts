@@ -7,6 +7,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { IUserInfo } from '../login-page/userinfo';
+import { ActivityListInfo } from '../activity-list/activityListInfo';
+
 import { FoodInfo } from '../food-list/foodInfo';
 import { ResponseBase } from './shared';
 
@@ -14,6 +16,8 @@ import { ResponseBase } from './shared';
 export class FittingoServiceApi {
     userInfo: IUserInfo;
     responseBase: ResponseBase;
+    activityListInfo: ActivityListInfo;
+
     private baseUrl = 'http://api.fittingo.com'
 
     constructor(private http: Http) {
@@ -47,6 +51,8 @@ export class FittingoServiceApi {
                         DailyCalories: res.UserInfo.DailyCalories,
                         GoalWater: res.UserInfo.GoalWater,
                         DailyWater: res.UserInfo.DailyWater,
+                        TakenCalorie: res.UserInfo.TakenCalorie,
+                        CalorieExpenditure: res.UserInfo.CalorieExpenditure,
                         success: true
                     }
                     return this.userInfo;
@@ -57,6 +63,24 @@ export class FittingoServiceApi {
                     return this.userInfo;
                 }
             })
+            .catch(this.handleError);
+    }
+
+    GetActivities(): Observable<ActivityListInfo[]> {
+
+        let headers = new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        let options = new RequestOptions({
+            headers: headers
+        });
+        var today = new Date();
+        var requestDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
+
+        let body = 'ActivityDatetime=' + requestDate + '&UserId=' + this.userInfo.userId;
+        console.log(body);
+        return this.http.post(this.baseUrl + '/activities/daily', body, options)
+            .map((res: Response) => res.json().Activities as ActivityListInfo[])
             .catch(this.handleError);
     }
 
@@ -104,10 +128,10 @@ export class FittingoServiceApi {
         return this.http.post(this.baseUrl + '/accounts/create', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
-                 return <ResponseBase>{
-                        success: res.IsSuccess,
-                        message: res.Message
-                    }
+                return <ResponseBase>{
+                    success: res.IsSuccess,
+                    message: res.Message
+                }
             })
             .catch(this.handleError);
     }

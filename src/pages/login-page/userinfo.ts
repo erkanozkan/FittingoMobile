@@ -6,6 +6,8 @@ export class IUserInfo {
     password: string;
     Weight: number;
     RemainingCalorie: number;
+    TakenCalorie: number;
+    CalorieExpenditure: number;
     BadgeLevel: number;
     GoalWater:number;
     DailyWater:number;

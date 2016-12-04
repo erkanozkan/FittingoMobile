@@ -14,6 +14,7 @@ import { FoodDetailPage } from '../pages/food-detail/food-detail';
 import { SportListPage } from '../pages/sport-list/sport-list';
 import { SportDetailPage } from '../pages/sport-detail/sport-detail';
 import { SignUpPage } from '../pages/signup/signup';
+import { ActivityListPage } from '../pages/activity-list/activity-list';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { SignUpPage } from '../pages/signup/signup';
     FoodDetailPage,
     SportListPage,
     SportDetailPage,
-    SignUpPage
+    SignUpPage,
+    ActivityListPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, { tabsPlacement: 'bottom' }),

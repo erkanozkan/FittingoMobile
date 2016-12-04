@@ -11,7 +11,7 @@ import { SignUpPage } from '../signup/signup';
 export class LoginPage implements OnInit {
   myForm: FormGroup;
   loading = false;
-  userInfo: { password: string, email: string } = { password: '', email: '' };
+  userInfo: { password: string, email: string } = { password: 'Erkan23?', email: 'ozkn.erkan@gmail.com' };
 
   constructor(public formBuilder: FormBuilder, public navCtrl: NavController,
     private service: FittingoServiceApi,

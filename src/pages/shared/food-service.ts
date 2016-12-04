@@ -36,13 +36,13 @@ export class FoodService {
         });
 
         let body = 'ActivityDateTime=' + activityInfo.activiyDate
-            + '&Amount=' + Math.floor(activityInfo.amount)
+            + '&Amount=' + activityInfo.amount
             + '&Calories=' + Math.floor(activityInfo.calorie)
             + '&ServingTypeId=' + activityInfo.mealType
             + '&ActivityTypeId=1'
             + '&UserActivityId=' + activityInfo.product.ProductsId
             + '&UserId=' + activityInfo.userId
-            + '&ActivityName=' + activityInfo.product.ProductName;
+            + '&MealId=' + activityInfo.mealType;
         console.log(body);
 
         return this.http.post(this.baseUrl + '/activities/add', body, options)

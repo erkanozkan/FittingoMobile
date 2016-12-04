@@ -96,24 +96,27 @@ export class FoodDetailPage {
 
 
     CalculateCalorie() {
-
         if (this.servingType == 0) { //gram
             this.calorie = (this.calorie100gram * this.gram) / 100;
             this.carbonhydrat = (this.productItem.Carbonhydrate * this.gram) / 100;
             this.fat = (this.productItem.Fat * this.gram) / 100;
             this.protein = (this.productItem.Protein * this.gram) / 100;
+            this.amount = this.gram;
         } else if (this.servingType == this.productItem.Type1) {
             this.calorie = (this.calorie100gram * this.productItem.Type1Gram * this.type1Gram) / 100;
             this.carbonhydrat = (this.productItem.Type1Gram * this.productItem.Carbonhydrate * this.type1Gram) / 100;
             this.fat = (this.productItem.Type1Gram * this.productItem.Fat * this.type1Gram) / 100;
             this.protein = (this.productItem.Type1Gram * this.productItem.Protein * this.type1Gram) / 100;
+            this.amount = this.type1Gram;
         }
         else if (this.servingType == this.productItem.Type2) {
             this.calorie = (this.productItem.Type2Gram * this.type2Gram) / 100;
             this.carbonhydrat = (this.productItem.Type2Gram * this.productItem.Carbonhydrate * this.type2Gram) / 100;
             this.fat = (this.productItem.Type2Gram * this.productItem.Fat * this.type2Gram) / 100;
             this.protein = (this.productItem.Type2Gram * this.productItem.Protein * this.type2Gram) / 100;
+            this.amount = this.type2Gram;
         }
+      
         this.carbonhydratStr = this.carbonhydrat.toFixed(2).toString();
         this.calorie100gramStr = Math.floor(this.calorie).toString();
         this.proteinStr = this.protein.toFixed(2).toString();
@@ -158,6 +161,7 @@ export class FoodDetailPage {
         if (value == false) {
             return;
         }
+  console.log(this.amount);
         var activityInfo = new ActivityInfo(this.productItem, this.MealDate,
             this.MealType, this.amount,
             this.userId, this.calorie);

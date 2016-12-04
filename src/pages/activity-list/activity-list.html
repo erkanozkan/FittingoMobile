@@ -1,0 +1,10 @@
+  <ion-content>
+
+  <div id='envelope' ion-fixed>
+ 
+  <ion-list [virtualScroll]="activityList">
+    <ion-item *virtualItem="let item">
+        {{item.ActivityDescription}}  
+    </ion-item>
+  </ion-list>
+  </div></ion-content>
