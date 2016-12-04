@@ -1,24 +1,30 @@
-<ion-content>
-  <div padding>
-    <ion-row>
-      <ion-col>
-        <img src="assets/images/Fittingo_Logo.png" />
-      </ion-col>
-    </ion-row>
-  <form #form="ngForm" (ngSubmit)="login(form)">
+<ion-content padding>
+
+  <ion-row>
+    <ion-col>
+      <img src="assets/images/Fittingo_Logo.png" />
+    </ion-col>
+  </ion-row>
+
+  <ion-list>
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
       <ion-item>
-        <ion-label floating for="email">Email</ion-label>
-        <ion-input type="email" required #email="ngModel"
-        [ngModel]="username" name="email" ></ion-input>
+        <ion-label floating primary>Email</ion-label>
+        <ion-input [(ngModel)]="userInfo.email" formControlName="email" type="text" id="email" spellcheck="false" autocapitalize="off">
+        </ion-input>
       </ion-item>
+      <p *ngIf="!isValid('email')" color="danger" padding-left>Geçersiz Email</p>
       <ion-item>
-        <ion-label floating for="password">Şifre</ion-label>
-        <ion-input [ngModel]="userPassword" name="password" 
-        required #password="ngModel" 
-        type="password" > </ion-input>
-      </ion-item>    
-       <button ion-button [disabled]="!form.form.valid" type="submit" block>Login</button>
-  </form>
- 
-  </div>
+        <ion-label floating primary>Şifre</ion-label>
+        <ion-input  [(ngModel)]="userInfo.password" formControlName="password" type="password" id="password" spellcheck="false" autocapitalize="off">
+        </ion-input>
+      </ion-item>
+      <p *ngIf="!isValid('password')" color="danger" padding-left>Geçersiz Şifre</p>
+
+      <button ion-button type="submit" block primary [disabled]="!myForm.valid">Giriş</button>
+    </form>
+  </ion-list>
+
+<button ion-button type="button" (click)="OpenSignupPage()" block>Kaydol</button>
+
 </ion-content>

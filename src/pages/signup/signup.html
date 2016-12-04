@@ -12,21 +12,21 @@
                    id="name" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
-      <p *ngIf="!isValid('name')" danger padding-left>Invalid Name</p>
+      <p *ngIf="!isValid('name')" color="danger" padding-left>Invalid Name</p>
       <ion-item>
         <ion-label floating primary>Email</ion-label>
         <ion-input [(ngModel)]="userInfo.email" formControlName="email"
                    type="text" id="email" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
-      <p *ngIf="!isValid('email')" danger padding-left>Invalid Email</p>
+      <p *ngIf="!isValid('email')" color="danger" padding-left>Invalid Email</p>
       <ion-item>
         <ion-label floating primary>Phone</ion-label>
         <ion-input [(ngModel)]="userInfo.phone" formControlName="phone" type="text" id="phone">
         </ion-input>
       </ion-item>
-      <p *ngIf="!isValid('phone')" danger padding-left>Invalid Phone</p>
-      <button type="submit" block primary [disabled]="!myForm.valid">Submit</button>
+      <p *ngIf="!isValid('phone')" color="danger" padding-left>Invalid Phone</p>
+      <button ion-button type="submit" block primary [disabled]="!myForm.valid">Submit</button>
     </form>
   </ion-list>
 </ion-content>

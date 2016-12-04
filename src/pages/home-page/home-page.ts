@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodListPage } from '../food-list/food-list';
-import { FoodInfo } from '../food-list/foodInfo';
 import { SportListPage } from '../sport-list/sport-list';
 import { FittingoServiceApi } from '../shared/shared';
 
@@ -13,7 +12,6 @@ import { FittingoServiceApi } from '../shared/shared';
 
 export class HomePage {
     userInfo: IUserInfo;
-    foodInfo: FoodInfo
     constructor(private navCtrl: NavController,
         private navParams: NavParams,
         private api: FittingoServiceApi,
@@ -34,9 +32,7 @@ export class HomePage {
     }
 
     AddWater() {
-
         var count = this.userInfo.DailyWater + 1;
-
         if (count > this.userInfo.GoalWater) {
             this.presentToast("Max su limitine ulaşıldı.");
             return;

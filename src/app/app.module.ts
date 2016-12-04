@@ -8,12 +8,12 @@ import { HomePage } from '../pages/home-page/home-page';
 import { LoginPage } from '../pages/login-page/login-page';
 import { FittingoServiceApi, FoodService, SportService } from '../pages/shared/shared';
 
-import { FormPage } from '../pages/form/form';
 import { FoodListPage } from '../pages/food-list/food-list';
 import { TabsPage } from '../pages/tabs/tabs';
 import { FoodDetailPage } from '../pages/food-detail/food-detail';
 import { SportListPage } from '../pages/sport-list/sport-list';
 import { SportDetailPage } from '../pages/sport-detail/sport-detail';
+import { SignUpPage } from '../pages/signup/signup';
 
 
 @NgModule({
@@ -21,12 +21,12 @@ import { SportDetailPage } from '../pages/sport-detail/sport-detail';
     MyApp,
     HomePage,
     LoginPage,
-    FormPage,
     FoodListPage,
     TabsPage,
     FoodDetailPage,
     SportListPage,
-    SportDetailPage
+    SportDetailPage,
+    SignUpPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, { tabsPlacement: 'bottom' }),
@@ -38,12 +38,12 @@ import { SportDetailPage } from '../pages/sport-detail/sport-detail';
     MyApp,
     HomePage,
     LoginPage,
-    FormPage,
     FoodListPage,
     TabsPage,
     FoodDetailPage,
     SportListPage,
-    SportDetailPage
+    SportDetailPage,
+    SignUpPage
   ],
   providers: [
     FoodService,

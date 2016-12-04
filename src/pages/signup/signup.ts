@@ -2,9 +2,9 @@ import {OnInit, Component} from "@angular/core";
 import {FormGroup, FormBuilder, FormControl, Validators} from "@angular/forms";
 
 @Component({
-  templateUrl: 'form.html'
+  templateUrl: 'signup.html'
 })
-export class FormPage implements OnInit {
+export class SignUpPage implements OnInit {
   myForm: FormGroup;
   userInfo: {name: string, email: string, phone: string} = {name: '', email: '', phone: ''};
 
@@ -43,7 +43,7 @@ export class FormPage implements OnInit {
   }
 
   emailValidator(control: FormControl): {[s: string]: boolean} {
-    if (!(control.value.toLowerCase().match('^[a-zA-Z]\\w*@gmail\\.com$') || control.value.toLowerCase().match('^[a-zA-Z]\\w*@yahoo\\.com$'))) {
+    if (!(control.value.toLowerCase().match('^[a-zA-Z0-9+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$'))) {
       return {invalidEmail: true};
     }
   }

@@ -73,7 +73,6 @@ export class FittingoServiceApi {
         let body = 'RequestDate=' + requestDate
             + '&Number=' + (this.userInfo.DailyWater + count)
             + '&UserId=' + this.userInfo.userId;
-        console.log(body);
 
         return this.http.post(this.baseUrl + '/products/water/save', body, options)
             .map((response: Response) => {
