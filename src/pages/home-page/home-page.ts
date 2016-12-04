@@ -3,6 +3,7 @@ import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodListPage } from '../food-list/food-list';
 import { SportListPage } from '../sport-list/sport-list';
+import { LoginPage } from '../login-page/login-page';
 import { FittingoServiceApi } from '../shared/shared';
 
 
@@ -46,6 +47,11 @@ export class HomePage {
                 this.presentToast("İşlem tamamlanamadı.");
             }
         });
+    }
+
+    LogOut(){
+        this.api.userInfo = null;
+        this.navCtrl.setRoot(LoginPage);
     }
 
     RemoveWater() {
