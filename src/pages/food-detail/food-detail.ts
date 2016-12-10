@@ -152,7 +152,6 @@ export class FoodDetailPage {
                 message: "Bir miktar giriniz."
             });
         }
-        console.log(this.errorMessages);
 
         return this.errorMessages.length == 0 ? true : false;
     }
@@ -161,7 +160,6 @@ export class FoodDetailPage {
         if (value == false) {
             return;
         }
-  console.log(this.amount);
         var activityInfo = new ActivityInfo(this.productItem, this.MealDate,
             this.MealType, this.amount,
             this.userId, this.calorie);
