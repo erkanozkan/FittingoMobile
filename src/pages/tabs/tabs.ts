@@ -12,9 +12,12 @@ export class TabsPage {
     // should be each tab's root Page
     tab1Root: any = HomePage;
     userInfo: IUserInfo;
+    HideTab: boolean = true;
 
     constructor(private navCtrl: NavController,
         private navParams: NavParams) {
+        
         this.userInfo = navParams.data;
+
     }
 }

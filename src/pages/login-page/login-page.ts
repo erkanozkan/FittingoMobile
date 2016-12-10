@@ -6,6 +6,8 @@ import { FittingoServiceApi, SqlStorageService, DataService } from '../shared/sh
 import { SignUpPage } from '../signup/signup';
 import { IUserInfo } from '../login-page/userinfo';
 import { Observable } from 'rxjs/Observable';
+import { Network } from 'ionic-native';
+declare var Connection: any;
 
 @Component({
   templateUrl: 'login-page.html'
@@ -45,7 +47,6 @@ export class LoginPage implements OnInit {
     loader.present().then(() => {
       this.sqlService.getUser(this.myForm.value.email, this.myForm.value.password)
         .then(data => {
-          console.log(data);
           if (data != undefined && data != null) {
             this.userInfo = <IUserInfo>{
               userId: data.userId,
@@ -66,31 +67,30 @@ export class LoginPage implements OnInit {
             this.navCtrl.setRoot(TabsPage, this.userInfo);
             loader.dismiss();
           } else {
-            console.log(this.userInfo);
-            this.service.Login(this.myForm.value.email, this.myForm.value.password)
-              .subscribe(data => {
-                this.userInfo = data;
-                if (this.userInfo == null || this.userInfo.success == false) {
-                  this.presentToast("Hatalı email veya şifre girdiniz.");
-                } else {
-                  this.sqlService.InsertUser(this.userInfo);
-                  this.navCtrl.setRoot(TabsPage, this.userInfo);
-                }
-              });
-            loader.dismiss();
+
+            if (Network.connection != 'none') {
+              this.service.Login(this.myForm.value.email, this.myForm.value.password)
+                .subscribe(data => {
+                  this.userInfo = data;
+                  if (this.userInfo == null || this.userInfo.success == false) {
+                    this.presentToast("Hatalı email veya şifre girdiniz.");
+                  } else {
+                    this.sqlService.InsertUser(this.userInfo);
+                    this.service.userInfo = this.userInfo;
+                    this.navCtrl.setRoot(TabsPage, this.userInfo);
+                  }
+                  loader.dismiss();
+                });
+            } else {
+              this.presentToast("İnternet bağlantınızı kontrol edin.");
+              loader.dismiss();
+            }
+
           }
 
         });
 
     });
-  }
-
-  GetUserFromApi(): Promise<boolean> {
-    //eğer user bulunamadıysa api'den çek
-    console.log("api get user");
-
-
-    return Promise.resolve(true);
   }
 
   isValid(field: string) {

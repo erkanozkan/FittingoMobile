@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController,Nav } from 'ionic-angular';
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodListPage } from '../food-list/food-list';
 import { SportListPage } from '../sport-list/sport-list';
@@ -18,7 +18,8 @@ export class HomePage {
     constructor(private navCtrl: NavController,
         private navParams: NavParams,
         private api: FittingoServiceApi,
-        private toastCtrl: ToastController) {
+        private toastCtrl: ToastController,
+        private nav:Nav) {
  
         this.userInfo = navParams.data;
     }
@@ -53,7 +54,7 @@ export class HomePage {
 
     LogOut(){
         this.api.userInfo = null;
-        this.navCtrl.setRoot(LoginPage);
+        this.nav.setRoot(LoginPage);
     }
 
     RemoveWater() {
