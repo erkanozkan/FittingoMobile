@@ -23,12 +23,10 @@ export class FittingoServiceApi {
     constructor(private http: Http) {
 
     }
+    
 
     Login(userName, password): Observable<IUserInfo> {
-        //  if (this.data) {
-        // already loaded data
-        //  return Promise.resolve(this.data);
-        // }
+       
         let headers = new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
@@ -53,7 +51,8 @@ export class FittingoServiceApi {
                         DailyWater: res.UserInfo.DailyWater,
                         TakenCalorie: res.UserInfo.TakenCalorie,
                         CalorieExpenditure: res.UserInfo.CalorieExpenditure,
-                        success: true
+                        success: true,
+                        password: password
                     }
                     return this.userInfo;
                 } else {

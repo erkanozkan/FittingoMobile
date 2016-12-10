@@ -19,7 +19,7 @@ export class HomePage {
         private navParams: NavParams,
         private api: FittingoServiceApi,
         private toastCtrl: ToastController) {
-
+ 
         this.userInfo = navParams.data;
     }
 

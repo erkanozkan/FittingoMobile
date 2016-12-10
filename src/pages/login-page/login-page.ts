@@ -1,9 +1,11 @@
 import { OnInit, Component } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { TabsPage } from '../tabs/tabs';
-import { LoadingController, NavController, ToastController } from 'ionic-angular';
-import { FittingoServiceApi } from '../shared/shared';
+import { LoadingController, NavController, ToastController, Platform } from 'ionic-angular';
+import { FittingoServiceApi, SqlStorageService, DataService } from '../shared/shared';
 import { SignUpPage } from '../signup/signup';
+import { IUserInfo } from '../login-page/userinfo';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   templateUrl: 'login-page.html'
@@ -11,11 +13,19 @@ import { SignUpPage } from '../signup/signup';
 export class LoginPage implements OnInit {
   myForm: FormGroup;
   loading = false;
-  userInfo: { password: string, email: string } = { password: 'Erkan23?', email: 'ozkn.erkan@gmail.com' };
+  userInfo: IUserInfo;
 
   constructor(public formBuilder: FormBuilder, public navCtrl: NavController,
     private service: FittingoServiceApi,
-    private loadingController: LoadingController, private toastCtrl: ToastController) {
+    private loadingController: LoadingController, private toastCtrl: ToastController
+    , private platform: Platform, private sqlService: SqlStorageService,
+    private dataService: DataService) {
+
+    this.userInfo = <IUserInfo>{
+      email: "ozkn.erkan@gmail.com",
+      password: "Erkan23?",
+      success: false
+    };
   }
 
   ngOnInit(): any {
@@ -33,16 +43,54 @@ export class LoginPage implements OnInit {
     });
 
     loader.present().then(() => {
-      this.service.Login(this.myForm.value.email, this.myForm.value.password).subscribe(data => {
-        if (data.success == false) {
-          this.presentToast("Hatalı email veya şifre girdiniz.")
-        } else {
-          this.userInfo = data
-          this.navCtrl.setRoot(TabsPage, this.userInfo);
-        }
-        loader.dismiss();
-      });
+      this.sqlService.getUser(this.myForm.value.email, this.myForm.value.password)
+        .then(data => {
+          console.log(data);
+          if (data != undefined && data != null) {
+            this.userInfo = <IUserInfo>{
+              userId: data.userId,
+              email: data.email,
+              name: data.name,
+              Weight: data.Weight,
+              RemainingCalorie: data.RemainingCalorie,
+              BadgeLevel: data.BadgeLevel,
+              DailyCalories: data.DailyCalories,
+              GoalWater: data.GoalWater,
+              DailyWater: data.DailyWater,
+              TakenCalorie: data.TakenCalorie,
+              CalorieExpenditure: data.CalorieExpenditure,
+              success: true
+            };
+            this.service.userInfo = this.userInfo;
+
+            this.navCtrl.setRoot(TabsPage, this.userInfo);
+            loader.dismiss();
+          } else {
+            console.log(this.userInfo);
+            this.service.Login(this.myForm.value.email, this.myForm.value.password)
+              .subscribe(data => {
+                this.userInfo = data;
+                if (this.userInfo == null || this.userInfo.success == false) {
+                  this.presentToast("Hatalı email veya şifre girdiniz.");
+                } else {
+                  this.sqlService.InsertUser(this.userInfo);
+                  this.navCtrl.setRoot(TabsPage, this.userInfo);
+                }
+              });
+            loader.dismiss();
+          }
+
+        });
+
     });
+  }
+
+  GetUserFromApi(): Promise<boolean> {
+    //eğer user bulunamadıysa api'den çek
+    console.log("api get user");
+
+
+    return Promise.resolve(true);
   }
 
   isValid(field: string) {
@@ -61,7 +109,7 @@ export class LoginPage implements OnInit {
     });
     toast.present();
   }
- 
+
 
   emailValidator(control: FormControl): { [s: string]: boolean } {
     if (!(control.value.toLowerCase().match('^[a-zA-Z0-9+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$'))) {

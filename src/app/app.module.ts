@@ -15,7 +15,9 @@ import { SportListPage } from '../pages/sport-list/sport-list';
 import { SportDetailPage } from '../pages/sport-detail/sport-detail';
 import { SignUpPage } from '../pages/signup/signup';
 import { ActivityListPage } from '../pages/activity-list/activity-list';
+import { SqlStorageService, DataService } from '../pages/shared/shared';
 
+import { Home } from '../pages/test/test';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { ActivityListPage } from '../pages/activity-list/activity-list';
     SportListPage,
     SportDetailPage,
     SignUpPage,
-    ActivityListPage
+    ActivityListPage,
+    Home
   ],
   imports: [
     IonicModule.forRoot(MyApp, { tabsPlacement: 'bottom' }),
@@ -45,12 +48,15 @@ import { ActivityListPage } from '../pages/activity-list/activity-list';
     FoodDetailPage,
     SportListPage,
     SportDetailPage,
-    SignUpPage
+    SignUpPage,
+    Home
   ],
   providers: [
     FoodService,
     FittingoServiceApi,
-    SportService
+    SportService,
+    SqlStorageService,
+    DataService
   ]
 })
 export class AppModule { }

@@ -1,10 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
 
 import { LoginPage } from '../pages/login-page/login-page';
 import { HomePage } from '../pages/home-page/home-page';
 import { FoodListPage } from '../pages/food-list/food-list';
+import { SqlStorageService } from '../pages/shared/shared';
+import { Home } from '../pages/test/test';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,25 +16,22 @@ export class MyApp {
 
   rootPage: any = LoginPage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform) {
-    this.initializeApp();
+  constructor(public platform: Platform, public sqlStorage: SqlStorageService) {
 
+    platform.ready().then(() => {
+      StatusBar.styleDefault();
+      if (platform.is('cordova')) {
+        sqlStorage.initializeDatabase();
+      }
+    });
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Ana Sayfa', component: HomePage }
-    ];  
+    ];
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
-    });
-  }
 
   openPage(page) {
     // Reset the content nav to have just this page
