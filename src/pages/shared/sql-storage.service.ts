@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { SQLite } from 'ionic-native';
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodInfo } from '../food-list/foodInfo';
+import { ServingTypeInfo } from '../food-detail/serve-type-info';
+import { SportInfo } from '../sport-list/sportInfo';
 
 const win: any = window;
 
@@ -19,6 +21,26 @@ export class SqlStorageService {
             let results = new Array<FoodInfo>();
             for (let i = 0; i < data.rows.length; i++) {
                 results.push(data.rows.item(i) as FoodInfo);
+            }
+            return results;
+        });
+    }
+
+     getAllExerciseList() {
+        return this.db.executeSql('SELECT * FROM Exercise', []).then(data => {
+            let results = new Array<SportInfo>();
+            for (let i = 0; i < data.rows.length; i++) {
+                results.push(data.rows.item(i) as SportInfo);
+            }
+            return results;
+        });
+    }
+
+    getAllServingTypeList() {
+        return this.db.executeSql('SELECT * FROM ServingType', []).then(data => {
+            let results = new Array<ServingTypeInfo>();
+            for (let i = 0; i < data.rows.length; i++) {
+                results.push(data.rows.item(i) as ServingTypeInfo);
             }
             return results;
         });
@@ -69,10 +91,7 @@ export class SqlStorageService {
                 ,CompanyId, BrandId, ProductTypeId) VALUES (?, ?, ?,?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)`;
 
             var sqlStatemants = [];
-            var i = 0;
-
             for (var row of rows) {
-
                 sqlStatemants.push([q, [row.ProductsId, row.ProductName, row.Kalori100Gram,
                 row.Protein, row.Fat, row.Carbonhydrate,
                 row.CategoryId, row.Type1, row.Type1Gram,
@@ -81,26 +100,41 @@ export class SqlStorageService {
                 row.Senkron, row.CompanyId, row.BrandId,
                 row.ProductTypeId
                 ]]);
-
-
-                // this.db.executeSql(q, [row.ProductsId, row.ProductName, row.Kalori100Gram,
-                // row.Protein, row.Fat, row.Carbonhydrate,
-                // row.CategoryId, row.Type1, row.Type1Gram,
-                // row.Type2, row.Type2Gram, row.Type3,
-                // row.Type3Gram, row.UserId,
-                // row.Senkron, row.CompanyId, row.BrandId,
-                // row.ProductTypeId
-                // ]).then(data => {
-                //     console.log("Food Inserted: " + JSON.stringify(data));
-                // }, (error) => {
-                //     console.log("ERROR: " + JSON.stringify(error.err));
-                // }); 
             }
-            //console.log(sqlStatemants);
             this.db.sqlBatch(sqlStatemants);
         }
     }
 
+
+    BulkInsertServingTypes(rows: Array<ServingTypeInfo>) {
+        if (this.db) {
+            var q = `INSERT OR REPLACE INTO ServingType 
+                (ServingTypeId, ServingTypeName) VALUES (?, ?)`;
+
+            var sqlStatemants = [];
+            for (var row of rows) {
+                sqlStatemants.push([q, [row.ServingTypeId, row.ServingTypeName]]);
+            }
+            this.db.sqlBatch(sqlStatemants);
+        }
+    }
+
+    BulkInsertExercises(rows: Array<SportInfo>) {
+        if (this.db) {
+            // console.log(rows.length);
+            var q = `INSERT OR REPLACE INTO Exercise 
+                (ExerciseId, ExerciseName,Level1,Level2,Level3) 
+                VALUES (?, ?, ?,?, ?)`;
+
+            var sqlStatemants = [];
+
+            for (var row of rows) {
+                sqlStatemants.push([q, [row.ExerciseId, row.ExerciseName, row.Level1,
+                row.Level2, row.Level3]]);
+            }
+            this.db.sqlBatch(sqlStatemants);
+        }
+    }
 
     //   getFood(foodName: string) {
     //     if (this.db) {
@@ -117,9 +151,11 @@ export class SqlStorageService {
         this.db = new SQLite();
         if (this.db) {
             this.db.openDatabase({ name: 'fittingo.db', location: 'default' }).then(() => {
-                this.resetDatabase();
+                //this.resetDatabase();
                 this.CreateUserTable();
                 this.CreateFoodTable();
+                this.CreateServingTypeTable();
+                this.CreateExerciseTable();
             });
         }
     }
@@ -149,4 +185,20 @@ export class SqlStorageService {
                 console.log('Food CREATE TABLE SUCCESS');
             });
     }
+
+    private CreateServingTypeTable() {
+        this.db.executeSql(`CREATE TABLE IF NOT EXISTS ServingType 
+            (ServingTypeId Integer primary key, ServingTypeName text)`, {}).then(() => {
+                console.log('ServingType CREATE TABLE SUCCESS');
+            });
+    }
+
+    private CreateExerciseTable() {
+        this.db.executeSql(`CREATE TABLE IF NOT EXISTS Exercise 
+            (ExerciseId Integer primary key, ExerciseName text
+            , Level1 number, Level2 number, Level3 number)`, {}).then(() => {
+                console.log('Exercise CREATE TABLE SUCCESS');
+            });
+    }
+
 }

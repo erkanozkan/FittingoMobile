@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FoodService } from '../shared/shared';
+import { FoodService, SqlStorageService } from '../shared/shared';
 import { FormControl } from '@angular/forms';
 import { FoodInfo } from '../food-list/foodInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
@@ -44,7 +44,8 @@ export class FoodDetailPage {
     constructor(private navCtrl: NavController,
         private dataService: FoodService,
         private loadingController: LoadingController,
-        private navParams: NavParams, private toastCtrl: ToastController) {
+        private navParams: NavParams, private toastCtrl: ToastController,
+        private sqlService: SqlStorageService) {
 
         this.productItem = this.navParams.data.product;
         this.userId = this.navParams.data.userId;
@@ -116,7 +117,7 @@ export class FoodDetailPage {
             this.protein = (this.productItem.Type2Gram * this.productItem.Protein * this.type2Gram) / 100;
             this.amount = this.type2Gram;
         }
-      
+
         this.carbonhydratStr = this.carbonhydrat.toFixed(2).toString();
         this.calorie100gramStr = Math.floor(this.calorie).toString();
         this.proteinStr = this.protein.toFixed(2).toString();
@@ -128,11 +129,19 @@ export class FoodDetailPage {
     }
 
     GetServiceTypeList(serviceTypeId: number) {
-        this.dataService.GetServiceTypeList(serviceTypeId)
-            .subscribe(data => {
-                this.servingTypes = data
+        this.sqlService.getAllServingTypeList().then(data => {
+            if (data == null || data.length == 0) {
+                this.dataService.GetServiceTypeList(serviceTypeId)
+                    .subscribe(data => {
+                        this.servingTypes = data;
+                        this.sqlService.BulkInsertServingTypes(this.servingTypes);
+                        this.GetServiceTypeNames();
+                    });
+            } else {
+                this.servingTypes = data;
                 this.GetServiceTypeNames();
-            });
+            }
+        });
     }
 
     CheckItemValues(): boolean {

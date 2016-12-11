@@ -56,7 +56,7 @@ export class FoodListPage {
                     this.isLoaded = true;
                     this.loader.dismiss();
                 }
-            })
+            });
         });
     }
 

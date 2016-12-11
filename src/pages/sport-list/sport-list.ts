@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SportService } from '../shared/shared';
+import { SportService, SqlStorageService } from '../shared/shared';
 import { FormControl } from '@angular/forms';
 import { SportInfo } from '../sport-list/sportInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
@@ -29,7 +29,8 @@ export class SportListPage {
     constructor(private navCtrl: NavController,
         private dataService: SportService,
         private loadingController: LoadingController,
-        private navParams: NavParams, private toastCtrl: ToastController) {
+        private navParams: NavParams, private toastCtrl: ToastController,
+        private sqlService: SqlStorageService) {
 
         this.userId = this.navParams.data.userId;
         this.Weight = this.navParams.data.Weight;
@@ -41,9 +42,21 @@ export class SportListPage {
             content: 'Spor kategorileri getiriliyor...',
         });
         loader.present().then(() => {
-            dataService.GetAllSportList().subscribe(data => this.tempSportList = data);
-            this.isLoaded = true;
-            loader.dismiss();
+            sqlService.getAllExerciseList().then(data => {
+                if (data == null || data.length == 0) {
+                    dataService.GetAllSportList().subscribe(data => {
+                        this.tempSportList = data;
+                        loader.setContent("Spor kategorileri kaydediliyor...")
+                        this.sqlService.BulkInsertExercises(this.tempSportList);
+                        this.isLoaded = true;
+                        loader.dismiss();
+                    });
+                } else {
+                    this.tempSportList = data;
+                    this.isLoaded = true;
+                    loader.dismiss();
+                }
+            })
         });
     }
     ionViewDidLoad() {
@@ -78,5 +91,4 @@ export class SportListPage {
             this.sportList = null;
         }
     }
-
 }
