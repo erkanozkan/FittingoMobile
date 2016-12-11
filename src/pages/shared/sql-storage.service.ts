@@ -4,6 +4,11 @@ import { IUserInfo } from '../login-page/userinfo';
 import { FoodInfo } from '../food-list/foodInfo';
 import { ServingTypeInfo } from '../food-detail/serve-type-info';
 import { SportInfo } from '../sport-list/sportInfo';
+import { ActivityInfo } from '../food-list/activityInfo';
+import { Network } from 'ionic-native';
+
+import { FoodService } from '../shared/shared';
+//import { Http, Response, RequestOptions, Headers } from '@angular/http'
 
 const win: any = window;
 
@@ -11,8 +16,8 @@ const win: any = window;
 export class SqlStorageService {
     public db: SQLite;
     public isFoodListInserting: boolean = false;
-    constructor() {
-
+    constructor(private foodService: FoodService) {
+        //  foodService = new FoodService();
     }
 
 
@@ -26,11 +31,24 @@ export class SqlStorageService {
         });
     }
 
-     getAllExerciseList() {
+    getAllExerciseList() {
         return this.db.executeSql('SELECT * FROM Exercise', []).then(data => {
             let results = new Array<SportInfo>();
             for (let i = 0; i < data.rows.length; i++) {
                 results.push(data.rows.item(i) as SportInfo);
+            }
+            return results;
+        });
+    }
+
+    getAllActivityListToday() {
+        var date = new Date();
+        console.log("getAllActivityListToday");
+        return this.db.executeSql('SELECT * FROM Activity where ActivityDateTime=?', [date]).then(data => {
+            let results = new Array<ActivityInfo>();
+            for (let i = 0; i < data.rows.length; i++) {
+                console.log(data.rows.item(i));
+                results.push(data.rows.item(i) as ActivityInfo);
             }
             return results;
         });
@@ -79,6 +97,50 @@ export class SqlStorageService {
                 });
         }
     }
+
+    UpdateActivityAsSynced(activityId: number) {
+       
+        if (this.db) {
+            return this.db.executeSql(`UPDATE Activity SET IsSynced=1 where ActivityId=?`, [activityId]).then((data) => {
+                    console.log("Activity Updated: " + JSON.stringify(data));
+                }, (error) => {
+                    console.log(error);
+                    console.log("ERROR: " + JSON.stringify(error.err));
+                });
+        }
+    };
+
+    InsertActivity(activityInfo: ActivityInfo) {
+        if (this.db) {
+            return this.db.executeSql(`INSERT OR REPLACE into Activity(
+                 ActivityDateTime, Amount,Calorie,ActivityName, ActivityDescription,
+                 ExerciseId,UserId, ServingTypeId,
+                 ActivityTypeId, UserActivityId, MealId,IsSynced,ProductType) 
+                 values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                [activityInfo.activiyDate, activityInfo.amount,
+                activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
+                activityInfo.ExerciseId, activityInfo.userId, activityInfo.mealType,
+                activityInfo.ActivityTypeId, activityInfo.UserActivityId
+                    , activityInfo.mealType, activityInfo.IsSynced, activityInfo.ProductType]).then((data) => {
+                        console.log("Activity Inserted: " + JSON.stringify(data));
+
+                        var insertId = data.insertId;
+
+                        if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
+                            this.foodService.AddFoodActivity(activityInfo).
+                                subscribe(data => {
+                                    if (data == true) {
+                                        activityInfo.IsSynced = 1;
+                                        this.UpdateActivityAsSynced(insertId);
+                                    }
+                                });
+                        }
+                    }, (error) => {
+                        console.log("ERROR: " + JSON.stringify(error.err));
+                    });
+        }
+    }
+
     //, callback: (n: boolean) => any
     BulkInsertFoods(rows: Array<FoodInfo>) {
         if (this.db) {
@@ -151,17 +213,18 @@ export class SqlStorageService {
         this.db = new SQLite();
         if (this.db) {
             this.db.openDatabase({ name: 'fittingo.db', location: 'default' }).then(() => {
-                //this.resetDatabase();
+                this.resetDatabase();
                 this.CreateUserTable();
                 this.CreateFoodTable();
                 this.CreateServingTypeTable();
                 this.CreateExerciseTable();
+                this.CreateActivityTable();
             });
         }
     }
 
     resetDatabase() {
-        this.db.executeSql(`DROP TABLE IF EXISTS Food`, {}).then(() => {
+        this.db.executeSql(`DROP TABLE IF EXISTS User`, {}).then(() => {
             console.log('Food DROP TABLE SUCCESS');
         });
     }
@@ -201,4 +264,14 @@ export class SqlStorageService {
             });
     }
 
+    private CreateActivityTable() {
+        this.db.executeSql(`CREATE TABLE IF NOT EXISTS Activity 
+            (ActivityId Integer primary key AUTOINCREMENT, ActivityDateTime DATETIME
+            , Amount number, Calorie number, ActivityName text
+            , ActivityDescription text, ExerciseId number, UserId number
+            , ServingTypeId number, ActivityTypeId number, UserActivityId number
+             , MealId number,IsSynced boolean,ProductType  number)`, {}).then(() => {
+                console.log('Exercise Activity TABLE SUCCESS');
+            });
+    }
 }

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { FoodService, SqlStorageService } from '../shared/shared';
+import { FoodService, SqlStorageService, ProductType } from '../shared/shared';
 import { FormControl } from '@angular/forms';
 import { FoodInfo } from '../food-list/foodInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController, ToastController } from 'ionic-angular';
 import { ServingTypeInfo } from '../food-detail/serve-type-info';
+import { Network } from 'ionic-native';
 
 @Component({
     templateUrl: "food-detail.html"
@@ -41,8 +42,11 @@ export class FoodDetailPage {
     protein: number;
     fat: number;
     errorMessages: any[];
+    servingTypeName: string;
+    servingTypeNumber: number;
+
     constructor(private navCtrl: NavController,
-        private dataService: FoodService,
+        public dataService: FoodService,
         private loadingController: LoadingController,
         private navParams: NavParams, private toastCtrl: ToastController,
         private sqlService: SqlStorageService) {
@@ -53,9 +57,9 @@ export class FoodDetailPage {
         this.ServingTypesArray = [{
             Value: "0",
             Text: "Gram"
-        }]
-
-        console.log(this.productItem)
+        }];
+        this.servingTypeName = "Gram";
+        this.servingTypeNumber = 100;
         this.fatStr = this.productItem.Fat.toString();
         this.calorie100gram = Math.floor(this.productItem.Kalori100Gram);
         this.calorie100gramStr = this.calorie100gram.toString();
@@ -63,7 +67,7 @@ export class FoodDetailPage {
         this.carbonhydratStr = this.productItem.Carbonhydrate.toString();
 
         this.GetServiceTypeList(0);
-        console.log(this.ServingTypesArray);
+
     }
 
     GetServiceTypeNames() {
@@ -86,7 +90,7 @@ export class FoodDetailPage {
     }
 
     FilterServingTypes(filterValue: number): string {
-        var servingTypeName: string = "";
+        var servingTypeName = "";
         this.servingTypes.filter(function (x) {
             if (x.ServingTypeId == filterValue) {
                 servingTypeName = x.ServingTypeName;
@@ -102,7 +106,7 @@ export class FoodDetailPage {
             this.carbonhydrat = (this.productItem.Carbonhydrate * this.gram) / 100;
             this.fat = (this.productItem.Fat * this.gram) / 100;
             this.protein = (this.productItem.Protein * this.gram) / 100;
-            this.amount = this.gram;
+            this.amount = this.gram; 
         } else if (this.servingType == this.productItem.Type1) {
             this.calorie = (this.calorie100gram * this.productItem.Type1Gram * this.type1Gram) / 100;
             this.carbonhydrat = (this.productItem.Type1Gram * this.productItem.Carbonhydrate * this.type1Gram) / 100;
@@ -126,6 +130,15 @@ export class FoodDetailPage {
 
     CheckServingType(typeId: number) {
         return typeId == this.servingType;
+    }
+
+    ChangeText() {
+        this.servingTypeName = this.FilterServingTypes(this.servingType)
+        if(this.servingType == 0){
+            this.servingTypeNumber = 100;
+        }else{
+            this.servingTypeNumber = 1;
+        }
     }
 
     GetServiceTypeList(serviceTypeId: number) {
@@ -169,22 +182,22 @@ export class FoodDetailPage {
         if (value == false) {
             return;
         }
-        var activityInfo = new ActivityInfo(this.productItem, this.MealDate,
-            this.MealType, this.amount,
-            this.userId, this.calorie);
 
-        this.dataService.AddFoodActivity(activityInfo).
-            subscribe(data => {
-                this.success = data;
-                if (this.success == true) {
-                    this.presentToast("Yemek eklendi.");
-                } else {
-                    this.presentToast("Yemek eklenirken hata oluştu.");
-                }
-            });
+        var activityName = this.amount.toString() + " " + this.servingTypeName;
+        var activtyDescription = activityName + " " + this.productItem.ProductName;
+
+        this.activityInfo = new ActivityInfo(this.MealDate,
+            this.MealType, this.amount,
+            this.userId, this.calorie, 0, activityName,
+            activtyDescription, 1, this.productItem.ProductsId, 0,ProductType.Food);
+
+        this.sqlService.InsertActivity(this.activityInfo).then(value => {
+            this.success = true;
+            this.presentToast("Yemek eklendi.");
+        });
     }
 
-    presentToast(message: string) {
+    public presentToast(message: string) {
         let toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
@@ -195,5 +208,4 @@ export class FoodDetailPage {
             this.navCtrl.pop();
         }
     }
-
 }

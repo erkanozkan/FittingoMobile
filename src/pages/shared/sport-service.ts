@@ -40,12 +40,10 @@ export class SportService {
             + '&ActivityDescription=' + activityInfo.description
             + '&ExerciseId=' + activityInfo.product.ExerciseId
             + '&UserId=' + activityInfo.userId
-        console.log(body);
 
         return this.http.post(this.baseUrl + '/activities/exercises/save', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
-                console.log(res);
                 if (res != null && res.IsSuccess == true) {
                     return true;
                 } else {

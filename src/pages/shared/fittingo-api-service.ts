@@ -10,6 +10,7 @@ import { IUserInfo } from '../login-page/userinfo';
 import { ActivityListInfo } from '../activity-list/activityListInfo';
 
 import { FoodInfo } from '../food-list/foodInfo';
+import { ActivityInfo } from '../food-list/activityInfo';
 import { ResponseBase } from './shared';
 
 @Injectable()
@@ -23,10 +24,10 @@ export class FittingoServiceApi {
     constructor(private http: Http) {
 
     }
-    
+
 
     Login(userName, password): Observable<IUserInfo> {
-       
+
         let headers = new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
@@ -65,7 +66,7 @@ export class FittingoServiceApi {
             .catch(this.handleError);
     }
 
-    GetActivities(): Observable<ActivityListInfo[]> {
+    GetActivities(): Observable<ActivityInfo[]> {
 
         let headers = new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -79,7 +80,7 @@ export class FittingoServiceApi {
         let body = 'ActivityDatetime=' + requestDate + '&UserId=' + this.userInfo.userId;
         console.log(body);
         return this.http.post(this.baseUrl + '/activities/daily', body, options)
-            .map((res: Response) => res.json().Activities as ActivityListInfo[])
+            .map((res: Response) => res.json().Activities as ActivityInfo[])
             .catch(this.handleError);
     }
 

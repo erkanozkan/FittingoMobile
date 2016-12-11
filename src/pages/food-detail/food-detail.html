@@ -26,7 +26,7 @@
         <ion-row>
             <ion-col width-50>
                 <ion-item>
-                    <ion-select style="padding:0px;" okText="Tamam" [(ngModel)]="servingType" cancelText="İptal" placeholder="Seçiniz">
+                    <ion-select style="padding:0px;" okText="Tamam" [(ngModel)]="servingType" (ionChange)="ChangeText()"  cancelText="İptal" placeholder="Seçiniz">
                         <ion-option *ngFor="let item of ServingTypesArray" value="{{item.Value}}">{{item.Text}}</ion-option>
                     </ion-select>
                 </ion-item>
@@ -59,14 +59,13 @@
                         <ion-option value="5">5 {{type2Name}}</ion-option>
                     </ion-select>
                 </ion-item>
-
             </ion-col>
         </ion-row>
     </ion-grid>
    
     <ion-card>
         <ion-card-header>
-            1 porsiyon {{productItem.ProductName}}
+            {{servingTypeNumber}} {{servingTypeName}} {{productItem.ProductName}}
         </ion-card-header>
         <ion-card-content>
             <ion-grid>

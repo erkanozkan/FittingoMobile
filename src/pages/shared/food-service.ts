@@ -34,21 +34,18 @@ export class FoodService {
         let options = new RequestOptions({
             headers: headers
         });
-
         let body = 'ActivityDateTime=' + activityInfo.activiyDate
             + '&Amount=' + activityInfo.amount
             + '&Calories=' + Math.floor(activityInfo.calorie)
             + '&ServingTypeId=' + activityInfo.mealType
             + '&ActivityTypeId=1'
-            + '&UserActivityId=' + activityInfo.product.ProductsId
+            + '&UserActivityId=' + activityInfo.UserActivityId
             + '&UserId=' + activityInfo.userId
             + '&MealId=' + activityInfo.mealType;
-        console.log(body);
 
         return this.http.post(this.baseUrl + '/activities/add', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
-                console.log(res);
                 if (res != null && res.IsSuccess == true) {
                     return true;
                 } else {
@@ -57,7 +54,7 @@ export class FoodService {
             })
             //.do(data => console.log('All: ' + JSON.stringify(data)))
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-       }
+    }
 
     GetServiceTypeList(servingTypeId: number): Observable<ServingTypeInfo[]> {
         return this.http.get(this.baseUrl + '/activities/servingTypes?servingTypeId=' + servingTypeId)
