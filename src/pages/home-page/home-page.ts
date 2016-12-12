@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController,Nav } from 'ionic-angular';
+import { NavController, NavParams, ToastController, Nav } from 'ionic-angular';
 import { IUserInfo } from '../login-page/userinfo';
 import { FoodListPage } from '../food-list/food-list';
 import { SportListPage } from '../sport-list/sport-list';
 import { LoginPage } from '../login-page/login-page';
 
-import { FittingoServiceApi } from '../shared/shared';
+import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
+import { ActivityInfo } from '../food-list/activityInfo';
 
 
 @Component({
@@ -15,12 +16,14 @@ import { FittingoServiceApi } from '../shared/shared';
 
 export class HomePage {
     userInfo: IUserInfo;
+    activityList: Array<ActivityInfo>;
+
     constructor(private navCtrl: NavController,
         private navParams: NavParams,
         private api: FittingoServiceApi,
         private toastCtrl: ToastController,
-        private nav:Nav) {
- 
+        private nav: Nav, private sqlService: SqlStorageService) {
+
         this.userInfo = navParams.data;
     }
 
@@ -52,7 +55,7 @@ export class HomePage {
         });
     }
 
-    LogOut(){
+    LogOut() {
         this.api.userInfo = null;
         this.nav.setRoot(LoginPage);
     }
@@ -71,6 +74,32 @@ export class HomePage {
                 this.presentToast("İşlem tamamlanamadı.");
             }
         });
+    }
+    ionViewWillEnter() {
+        console.log("ionViewWillEnter")
+    }
+
+    ionViewDidEnter() {
+        this.GetActivityList();
+    }
+    onPageDidEnter() {
+        console.log("onPageDidEnter")
+    }
+    onPageWillEnter() {
+        console.log("onPageWillEnter")
+    }
+
+    GetActivityList() {
+        this.sqlService.getAllActivityListToday().then(
+            data => {
+                if (data != undefined || data != null || data.length != 0) {
+                    this.activityList = data;
+                } else {
+                    this.api.GetActivities().subscribe(data => {
+                        this.activityList = data;
+                    });
+                }
+            });
     }
 
     presentToast(message: string) {

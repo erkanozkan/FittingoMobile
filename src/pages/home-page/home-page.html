@@ -21,9 +21,9 @@
       <ion-col width-50> <button ion-button (click)="OpenSportsListPage()">Spor Ekle</button>
       </ion-col>
     </ion-row>
-    <ion-row >
-      <ion-col  width-50>{{userInfo.TakenCalorie}}</ion-col>
-      <ion-col  width-50>{{userInfo.CalorieExpenditure}}</ion-col>
+    <ion-row>
+      <ion-col width-50>{{userInfo.TakenCalorie}}</ion-col>
+      <ion-col width-50>{{userInfo.CalorieExpenditure}}</ion-col>
     </ion-row>
     <ion-row>
       <ion-col width-50>
@@ -49,9 +49,15 @@
       <ion-col width-90> </ion-col>
       <ion-col width-10> </ion-col>
     </ion-row>
-  
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let item of activityList">
+            <ion-icon name="add"></ion-icon> {{item.ActivityDescription}}
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
   </ion-grid>
-<ion-activity-list></ion-activity-list>
 
 </ion-content>
-

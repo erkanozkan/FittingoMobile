@@ -91,8 +91,8 @@ export class LoginPage implements OnInit {
         });
 
     });
-  }
-
+  } 
+   
   isValid(field: string) {
     let formField = this.myForm.get(field);
     return formField.valid || formField.pristine;

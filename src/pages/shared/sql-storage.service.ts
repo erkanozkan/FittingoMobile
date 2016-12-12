@@ -42,9 +42,10 @@ export class SqlStorageService {
     }
 
     getAllActivityListToday() {
-        var date = new Date();
+        var date = new Date().toISOString().substring(0,10);
+   
         console.log("getAllActivityListToday");
-        return this.db.executeSql('SELECT * FROM Activity where ActivityDateTime=?', [date]).then(data => {
+        return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=? ', [date]).then(data => {
             let results = new Array<ActivityInfo>();
             for (let i = 0; i < data.rows.length; i++) {
                 console.log(data.rows.item(i));
@@ -80,6 +81,7 @@ export class SqlStorageService {
     // }
 
     InsertUser(userInfo: IUserInfo) {
+        console.log(userInfo.TakenCalorie);
         if (this.db) {
             return this.db.executeSql(`INSERT OR REPLACE into User(
                  userId, email,name,password, Weight,

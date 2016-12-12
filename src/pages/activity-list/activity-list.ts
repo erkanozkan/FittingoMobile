@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , OnInit} from '@angular/core';
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { ActivityListInfo } from '../activity-list/ActivityListInfo';
 
@@ -10,7 +10,7 @@ import { LoadingController } from 'ionic-angular';
     templateUrl: "activity-list.html"
 })
 
-export class ActivityListPage {
+export class ActivityListPage extends OnInit {
     activityList: Array<ActivityInfo>;
     isLoaded: boolean = false;
     loading = false;
@@ -18,19 +18,44 @@ export class ActivityListPage {
     constructor(private dataService: FittingoServiceApi,
         private loadingController: LoadingController,
         private sqlService: SqlStorageService) {
+         super();
+    }
 
-        sqlService.getAllActivityListToday().then(
+    ngOnInit() {
+        console.log("ngOnInit");
+          this.sqlService.getAllActivityListToday().then(
             data => {
                 if (data != undefined || data != null || data.length != 0) {
                     this.activityList = data;
                     this.isLoaded = true;
 
                 } else {
-                    dataService.GetActivities().subscribe(data => {
+                    this.dataService.GetActivities().subscribe(data => {
                         this.activityList = data;
                     });
                     this.isLoaded = true;
                 }
             });
     }
+
+ ionViewWillEnter() {
+     console.log("ionViewWillEnter 1")
+  }
+
+   ionViewDidEnter() {
+     console.log("ionViewDidEnter 1")
+  }
+   onPageDidEnter() {
+     console.log("onPageDidEnter 1")
+  }
+   onPageWillEnter() {
+     console.log("onPageWillEnter 1")
+  }
+
+     
+
+    ionViewDidLoad() {
+        console.log("ionViewDidLoad 1");
+
+    } 
 }
