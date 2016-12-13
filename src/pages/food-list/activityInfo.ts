@@ -1,6 +1,7 @@
 import { ProductType } from '../shared/productType';
 
 export class ActivityInfo {
+    activiyId: string;
     activiyDate: string;
     mealType: number;
     amount: number;
@@ -11,15 +12,16 @@ export class ActivityInfo {
     ActivityDescription: string;
     ActivityTypeId: number;
     UserActivityId: number;
-    IsSynced:number;
+    IsSynced: number;
     ProductType: ProductType;
-    constructor(activiyDate: string, mealType: number,
+    constructor(activiyId: string, activiyDate: string, mealType: number,
         amount: number, userId: number, calorie: number, ExerciseId: number,
         ActivityName: string,
         ActivityDescription: string,
         ActivityTypeId: number,
         UserActivityId: number,
-        IsSynced : number, ProductType:ProductType) {
+        IsSynced: number, ProductType: ProductType) {
+        this.activiyId = activiyId;
         this.activiyDate = activiyDate;
         this.mealType = mealType;
         this.amount = amount;

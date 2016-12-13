@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FoodService, SqlStorageService, ProductType } from '../shared/shared';
+import { FoodService, SqlStorageService, ProductType, Guid } from '../shared/shared';
 import { FormControl } from '@angular/forms';
 import { FoodInfo } from '../food-list/foodInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
@@ -106,7 +106,7 @@ export class FoodDetailPage {
             this.carbonhydrat = (this.productItem.Carbonhydrate * this.gram) / 100;
             this.fat = (this.productItem.Fat * this.gram) / 100;
             this.protein = (this.productItem.Protein * this.gram) / 100;
-            this.amount = this.gram; 
+            this.amount = this.gram;
         } else if (this.servingType == this.productItem.Type1) {
             this.calorie = (this.calorie100gram * this.productItem.Type1Gram * this.type1Gram) / 100;
             this.carbonhydrat = (this.productItem.Type1Gram * this.productItem.Carbonhydrate * this.type1Gram) / 100;
@@ -134,9 +134,9 @@ export class FoodDetailPage {
 
     ChangeText() {
         this.servingTypeName = this.FilterServingTypes(this.servingType)
-        if(this.servingType == 0){
+        if (this.servingType == 0) {
             this.servingTypeNumber = 100;
-        }else{
+        } else {
             this.servingTypeNumber = 1;
         }
     }
@@ -185,11 +185,11 @@ export class FoodDetailPage {
 
         var activityName = this.amount.toString() + " " + this.servingTypeName;
         var activtyDescription = activityName + " " + this.productItem.ProductName;
-
-        this.activityInfo = new ActivityInfo(this.MealDate,
+        var activityId = Guid.newGuid();
+        this.activityInfo = new ActivityInfo(activityId,this.MealDate,
             this.MealType, this.amount,
             this.userId, this.calorie, 0, activityName,
-            activtyDescription, 1, this.productItem.ProductsId, 0,ProductType.Food);
+            activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food);
 
         this.sqlService.InsertActivity(this.activityInfo).then(value => {
             this.success = true;

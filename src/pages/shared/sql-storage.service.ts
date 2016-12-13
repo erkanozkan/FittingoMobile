@@ -42,8 +42,8 @@ export class SqlStorageService {
     }
 
     getAllActivityListToday() {
-        var date = new Date().toISOString().substring(0,10);
-   
+        var date = new Date().toISOString().substring(0, 10);
+
         console.log("getAllActivityListToday");
         return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=? ', [date]).then(data => {
             let results = new Array<ActivityInfo>();
@@ -101,25 +101,25 @@ export class SqlStorageService {
     }
 
     UpdateActivityAsSynced(activityId: number) {
-       
+
         if (this.db) {
             return this.db.executeSql(`UPDATE Activity SET IsSynced=1 where ActivityId=?`, [activityId]).then((data) => {
-                    console.log("Activity Updated: " + JSON.stringify(data));
-                }, (error) => {
-                    console.log(error);
-                    console.log("ERROR: " + JSON.stringify(error.err));
-                });
+                console.log("Activity Updated: " + JSON.stringify(data));
+            }, (error) => {
+                console.log(error);
+                console.log("ERROR: " + JSON.stringify(error.err));
+            });
         }
     };
 
     InsertActivity(activityInfo: ActivityInfo) {
         if (this.db) {
-            return this.db.executeSql(`INSERT OR REPLACE into Activity(
+            return this.db.executeSql(`INSERT into Activity(ActivityId,
                  ActivityDateTime, Amount,Calorie,ActivityName, ActivityDescription,
                  ExerciseId,UserId, ServingTypeId,
                  ActivityTypeId, UserActivityId, MealId,IsSynced,ProductType) 
-                 values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-                [activityInfo.activiyDate, activityInfo.amount,
+                 values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                [activityInfo.activiyId, activityInfo.activiyDate, activityInfo.amount,
                 activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
                 activityInfo.ExerciseId, activityInfo.userId, activityInfo.mealType,
                 activityInfo.ActivityTypeId, activityInfo.UserActivityId
@@ -169,6 +169,28 @@ export class SqlStorageService {
         }
     }
 
+    //web üzerinden yapılan değişikliklerin çekilmesi için
+    InsertoReplaceActivities(rows: Array<ActivityInfo>) {
+        if (this.db) {
+            var q = `INSERT into Activity(ActivityId,
+                 ActivityDateTime, Amount,Calorie,ActivityName, ActivityDescription,
+                 ExerciseId,UserId, ServingTypeId,
+                 ActivityTypeId, UserActivityId, MealId,IsSynced,ProductType) 
+                 values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+            var sqlStatemants = [];
+            for (var activityInfo of rows) {
+                console.log(activityInfo);
+                
+                sqlStatemants.push([q, [activityInfo.activiyId, activityInfo.activiyDate, activityInfo.amount,
+                activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
+                activityInfo.ExerciseId, activityInfo.userId, activityInfo.mealType,
+                activityInfo.ActivityTypeId, activityInfo.UserActivityId
+                    , activityInfo.mealType, 1, activityInfo.ProductType]]);
+            }
+            this.db.sqlBatch(sqlStatemants);
+        }
+    }
 
     BulkInsertServingTypes(rows: Array<ServingTypeInfo>) {
         if (this.db) {
@@ -226,8 +248,8 @@ export class SqlStorageService {
     }
 
     resetDatabase() {
-        this.db.executeSql(`DROP TABLE IF EXISTS User`, {}).then(() => {
-            console.log('Food DROP TABLE SUCCESS');
+        this.db.executeSql(`DROP TABLE IF EXISTS Activity`, {}).then(() => {
+            console.log('Activity DROP TABLE SUCCESS');
         });
     }
 
@@ -268,7 +290,7 @@ export class SqlStorageService {
 
     private CreateActivityTable() {
         this.db.executeSql(`CREATE TABLE IF NOT EXISTS Activity 
-            (ActivityId Integer primary key AUTOINCREMENT, ActivityDateTime DATETIME
+            (ActivityId text primary key, ActivityDateTime DATETIME
             , Amount number, Calorie number, ActivityName text
             , ActivityDescription text, ExerciseId number, UserId number
             , ServingTypeId number, ActivityTypeId number, UserActivityId number

@@ -90,15 +90,22 @@ export class HomePage {
     }
 
     GetActivityList() {
+
         this.sqlService.getAllActivityListToday().then(
             data => {
-                if (data != undefined || data != null || data.length != 0) {
+                console.log("1");
+                console.log(data);
+                // if (data != undefined || data != null || data.length != 0) {
+                //     this.activityList = data;
+                // } 
+                // else {
+                this.api.GetActivities().subscribe(data => {
+                    console.log("2");
+                    console.log(data);
                     this.activityList = data;
-                } else {
-                    this.api.GetActivities().subscribe(data => {
-                        this.activityList = data;
-                    });
-                }
+                    this.sqlService.InsertoReplaceActivities(this.activityList);
+                });
+                // }
             });
     }
 
