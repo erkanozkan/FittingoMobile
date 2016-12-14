@@ -41,8 +41,11 @@ export class FoodService {
             + '&ActivityTypeId=1'
             + '&UserActivityId=' + activityInfo.UserActivityId
             + '&UserId=' + activityInfo.userId
-            + '&MealId=' + activityInfo.mealType;
+            + '&MealId=' + activityInfo.mealType
+            + '&IsPhoneSynchronised=1';
+        console.log("yeni kayıt");
 
+        console.log(body);
         return this.http.post(this.baseUrl + '/activities/add', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();

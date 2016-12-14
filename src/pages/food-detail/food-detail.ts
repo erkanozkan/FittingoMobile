@@ -55,7 +55,7 @@ export class FoodDetailPage {
         this.userId = this.navParams.data.userId;
         this.MealDate = new Date().toISOString();
         this.ServingTypesArray = [{
-            Value: "0",
+            Value: "20",
             Text: "Gram"
         }];
         this.servingTypeName = "Gram";
@@ -101,7 +101,7 @@ export class FoodDetailPage {
 
 
     CalculateCalorie() {
-        if (this.servingType == 0) { //gram
+        if (this.servingType == 20) { //gram
             this.calorie = (this.calorie100gram * this.gram) / 100;
             this.carbonhydrat = (this.productItem.Carbonhydrate * this.gram) / 100;
             this.fat = (this.productItem.Fat * this.gram) / 100;
@@ -134,7 +134,7 @@ export class FoodDetailPage {
 
     ChangeText() {
         this.servingTypeName = this.FilterServingTypes(this.servingType)
-        if (this.servingType == 0) {
+        if (this.servingType == 20) {
             this.servingTypeNumber = 100;
         } else {
             this.servingTypeNumber = 1;
@@ -169,7 +169,7 @@ export class FoodDetailPage {
                 message: "Bir öğün seçiniz."
             });
         }
-        if (this.servingType == 0 && (this.gram == null || this.gram == 0)) {
+        if (this.servingType == 20 && (this.gram == null || this.gram == 20)) {
             this.errorMessages.push({
                 message: "Bir miktar giriniz."
             });
@@ -189,7 +189,7 @@ export class FoodDetailPage {
         this.activityInfo = new ActivityInfo(activityId,this.MealDate,
             this.MealType, this.amount,
             this.userId, this.calorie, 0, activityName,
-            activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food);
+            activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food,this.servingType);
 
         this.sqlService.InsertActivity(this.activityInfo).then(value => {
             this.success = true;

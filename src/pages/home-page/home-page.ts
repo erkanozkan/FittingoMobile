@@ -7,11 +7,12 @@ import { LoginPage } from '../login-page/login-page';
 
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { ActivityInfo } from '../food-list/activityInfo';
+import { Network } from 'ionic-native';
 
 
 @Component({
+    selector: "home-page",
     templateUrl: 'home-page.html'
-
 })
 
 export class HomePage {
@@ -75,37 +76,46 @@ export class HomePage {
             }
         });
     }
-    ionViewWillEnter() {
-        console.log("ionViewWillEnter")
-    }
+    // ionViewWillEnter() {
+    //     console.log("ionViewWillEnter")
+    // }
 
     ionViewDidEnter() {
         this.GetActivityList();
+        this.RefreshUserList();
     }
-    onPageDidEnter() {
-        console.log("onPageDidEnter")
-    }
-    onPageWillEnter() {
-        console.log("onPageWillEnter")
+    // onPageDidEnter() {
+    //     console.log("onPageDidEnter")
+    // }
+    // onPageWillEnter() {
+    //     console.log("onPageWillEnter")
+    // }
+
+    RefreshUserList() {
+        this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
+            this.userInfo = user;
+        });
     }
 
     GetActivityList() {
+        if (Network.connection != "none") {
+            this.api.GetActivities().subscribe(data => {
+                this.activityList = data;
+                this.sqlService.InsertoReplaceActivities(this.activityList);
+                setTimeout(() => { }, 1000);
+                this.GetActivitiesFromLocal();
+
+            });
+        } else {
+            this.GetActivitiesFromLocal();
+        }
+    }
+
+    GetActivitiesFromLocal() {
 
         this.sqlService.getAllActivityListToday().then(
             data => {
-                console.log("1");
-                console.log(data);
-                // if (data != undefined || data != null || data.length != 0) {
-                //     this.activityList = data;
-                // } 
-                // else {
-                this.api.GetActivities().subscribe(data => {
-                    console.log("2");
-                    console.log(data);
-                    this.activityList = data;
-                    this.sqlService.InsertoReplaceActivities(this.activityList);
-                });
-                // }
+                this.activityList = data;
             });
     }
 

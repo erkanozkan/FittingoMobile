@@ -65,6 +65,7 @@ export class SqlStorageService {
         });
     }
 
+
     getUser(userName: string, password: string) {
         if (this.db) {
             return this.db.executeSql('select * from User where email = ? and password = ? limit 1', [userName, password]).then((data) => {
@@ -101,7 +102,6 @@ export class SqlStorageService {
     }
 
     UpdateActivityAsSynced(activityId: number) {
-
         if (this.db) {
             return this.db.executeSql(`UPDATE Activity SET IsSynced=1 where ActivityId=?`, [activityId]).then((data) => {
                 console.log("Activity Updated: " + JSON.stringify(data));
@@ -119,14 +119,22 @@ export class SqlStorageService {
                  ExerciseId,UserId, ServingTypeId,
                  ActivityTypeId, UserActivityId, MealId,IsSynced,ProductType) 
                  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-                [activityInfo.activiyId, activityInfo.activiyDate, activityInfo.amount,
+                [activityInfo.ActivityId, activityInfo.activiyDate, activityInfo.amount,
                 activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
-                activityInfo.ExerciseId, activityInfo.userId, activityInfo.mealType,
+                activityInfo.ExerciseId, activityInfo.userId, activityInfo.servingTypeId,
                 activityInfo.ActivityTypeId, activityInfo.UserActivityId
                     , activityInfo.mealType, activityInfo.IsSynced, activityInfo.ProductType]).then((data) => {
                         console.log("Activity Inserted: " + JSON.stringify(data));
 
                         var insertId = data.insertId;
+
+                        this.db.executeSql(`update User set 
+                        TakenCalorie = (TakenCalorie + ?),RemainingCalorie=(RemainingCalorie - ?) where userId = ?`,
+                            [activityInfo.calorie, activityInfo.calorie, activityInfo.userId]).then((data) => {
+                                console.log("user calorie update edildi.");
+                            }, (error) => {
+                                console.log("update User ERROR: " + JSON.stringify(error.err));
+                            });
 
                         if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
                             this.foodService.AddFoodActivity(activityInfo).
@@ -172,7 +180,7 @@ export class SqlStorageService {
     //web üzerinden yapılan değişikliklerin çekilmesi için
     InsertoReplaceActivities(rows: Array<ActivityInfo>) {
         if (this.db) {
-            var q = `INSERT into Activity(ActivityId,
+            var q = `INSERT OR REPLACE into Activity(ActivityId,
                  ActivityDateTime, Amount,Calorie,ActivityName, ActivityDescription,
                  ExerciseId,UserId, ServingTypeId,
                  ActivityTypeId, UserActivityId, MealId,IsSynced,ProductType) 
@@ -180,11 +188,12 @@ export class SqlStorageService {
 
             var sqlStatemants = [];
             for (var activityInfo of rows) {
+                console.log("test");
                 console.log(activityInfo);
-                
-                sqlStatemants.push([q, [activityInfo.activiyId, activityInfo.activiyDate, activityInfo.amount,
+
+                sqlStatemants.push([q, [activityInfo.ActivityId, new Date().toISOString(), activityInfo.amount,
                 activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
-                activityInfo.ExerciseId, activityInfo.userId, activityInfo.mealType,
+                activityInfo.ExerciseId, activityInfo.userId, activityInfo.servingTypeId,
                 activityInfo.ActivityTypeId, activityInfo.UserActivityId
                     , activityInfo.mealType, 1, activityInfo.ProductType]]);
             }
@@ -199,6 +208,7 @@ export class SqlStorageService {
 
             var sqlStatemants = [];
             for (var row of rows) {
+                console.log(row);
                 sqlStatemants.push([q, [row.ServingTypeId, row.ServingTypeName]]);
             }
             this.db.sqlBatch(sqlStatemants);
@@ -248,9 +258,25 @@ export class SqlStorageService {
     }
 
     resetDatabase() {
+        this.db.executeSql(`DROP TABLE IF EXISTS User`, {}).then(() => {
+            console.log('User DROP TABLE SUCCESS');
+        });
+
         this.db.executeSql(`DROP TABLE IF EXISTS Activity`, {}).then(() => {
             console.log('Activity DROP TABLE SUCCESS');
         });
+
+        this.db.executeSql(`DROP TABLE IF EXISTS Food`, {}).then(() => {
+            console.log('Food DROP TABLE SUCCESS');
+        });
+
+        this.db.executeSql(`DROP TABLE IF EXISTS ServingType`, {}).then(() => {
+            console.log('ServingType DROP TABLE SUCCESS');
+        });
+        this.db.executeSql(`DROP TABLE IF EXISTS Exercise`, {}).then(() => {
+            console.log('Exercise DROP TABLE SUCCESS');
+        });
+
     }
 
     private CreateUserTable() {

@@ -1,7 +1,7 @@
 import { ProductType } from '../shared/productType';
 
 export class ActivityInfo {
-    activiyId: string;
+    ActivityId: string;
     activiyDate: string;
     mealType: number;
     amount: number;
@@ -14,14 +14,16 @@ export class ActivityInfo {
     UserActivityId: number;
     IsSynced: number;
     ProductType: ProductType;
+    servingTypeId:number;
     constructor(activiyId: string, activiyDate: string, mealType: number,
         amount: number, userId: number, calorie: number, ExerciseId: number,
         ActivityName: string,
         ActivityDescription: string,
         ActivityTypeId: number,
         UserActivityId: number,
-        IsSynced: number, ProductType: ProductType) {
-        this.activiyId = activiyId;
+        IsSynced: number, ProductType: ProductType,
+        servingTypeId:number) {
+        this.ActivityId = activiyId;
         this.activiyDate = activiyDate;
         this.mealType = mealType;
         this.amount = amount;
@@ -34,5 +36,6 @@ export class ActivityInfo {
         this.UserActivityId = UserActivityId;
         this.IsSynced = IsSynced;
         this.ProductType = ProductType;
+        this.servingTypeId = servingTypeId;
     }
 }
