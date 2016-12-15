@@ -34,7 +34,7 @@
             <ion-col width-50>
 
                 <ion-item>
-                    <ion-input  *ngIf="CheckServingType(0)" placeholder="Miktar giriniz." [(ngModel)]="gram"
+                    <ion-input  *ngIf="CheckServingType(20)" placeholder="Miktar giriniz." [(ngModel)]="gram"
                     (input)="CalculateCalorie()"></ion-input>
 
                     <ion-select style="padding:0px;max-width: 100%;" *ngIf="CheckServingType(productItem.Type1)" [(ngModel)]="type1Gram" okText="Tamam"

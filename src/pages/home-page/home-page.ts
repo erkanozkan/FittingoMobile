@@ -27,7 +27,7 @@ export class HomePage {
 
         this.userInfo = navParams.data;
     }
-
+  
     OpenFoodListPage() {
         this.navCtrl.push(FoodListPage, this.userInfo.userId);
     }
@@ -58,6 +58,7 @@ export class HomePage {
 
     LogOut() {
         this.api.userInfo = null;
+         // this.navCtrl.push(LoginPage);
         this.nav.setRoot(LoginPage);
     }
 
@@ -93,6 +94,7 @@ export class HomePage {
 
     RefreshUserList() {
         this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
+
             this.userInfo = user;
         });
     }

@@ -44,11 +44,9 @@ export class SqlStorageService {
     getAllActivityListToday() {
         var date = new Date().toISOString().substring(0, 10);
 
-        console.log("getAllActivityListToday");
         return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=? ', [date]).then(data => {
             let results = new Array<ActivityInfo>();
             for (let i = 0; i < data.rows.length; i++) {
-                console.log(data.rows.item(i));
                 results.push(data.rows.item(i) as ActivityInfo);
             }
             return results;
@@ -101,10 +99,11 @@ export class SqlStorageService {
         }
     }
 
-    UpdateActivityAsSynced(activityId: number) {
+    UpdateActivityAsSynced(activityId: string, newActivityId: number) {
         if (this.db) {
-            return this.db.executeSql(`UPDATE Activity SET IsSynced=1 where ActivityId=?`, [activityId]).then((data) => {
+            return this.db.executeSql(`UPDATE Activity SET IsSynced=1,ActivityId=?  where ActivityId=?`, [newActivityId, activityId]).then((data) => {
                 console.log("Activity Updated: " + JSON.stringify(data));
+            
             }, (error) => {
                 console.log(error);
                 console.log("ERROR: " + JSON.stringify(error.err));
@@ -126,7 +125,7 @@ export class SqlStorageService {
                     , activityInfo.mealType, activityInfo.IsSynced, activityInfo.ProductType]).then((data) => {
                         console.log("Activity Inserted: " + JSON.stringify(data));
 
-                        var insertId = data.insertId;
+                        var insertId = activityInfo.ActivityId;
 
                         this.db.executeSql(`update User set 
                         TakenCalorie = (TakenCalorie + ?),RemainingCalorie=(RemainingCalorie - ?) where userId = ?`,
@@ -138,10 +137,14 @@ export class SqlStorageService {
 
                         if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
                             this.foodService.AddFoodActivity(activityInfo).
-                                subscribe(data => {
-                                    if (data == true) {
+                                subscribe(activityId => {
+                                    console.log(activityId);
+                                    console.log(insertId);
+
+                                    if (activityId != 0) {
                                         activityInfo.IsSynced = 1;
-                                        this.UpdateActivityAsSynced(insertId);
+
+                                        this.UpdateActivityAsSynced(insertId, activityId);
                                     }
                                 });
                         }
@@ -188,9 +191,6 @@ export class SqlStorageService {
 
             var sqlStatemants = [];
             for (var activityInfo of rows) {
-                console.log("test");
-                console.log(activityInfo);
-
                 sqlStatemants.push([q, [activityInfo.ActivityId, new Date().toISOString(), activityInfo.amount,
                 activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
                 activityInfo.ExerciseId, activityInfo.userId, activityInfo.servingTypeId,
@@ -208,7 +208,6 @@ export class SqlStorageService {
 
             var sqlStatemants = [];
             for (var row of rows) {
-                console.log(row);
                 sqlStatemants.push([q, [row.ServingTypeId, row.ServingTypeName]]);
             }
             this.db.sqlBatch(sqlStatemants);
@@ -217,7 +216,6 @@ export class SqlStorageService {
 
     BulkInsertExercises(rows: Array<SportInfo>) {
         if (this.db) {
-            // console.log(rows.length);
             var q = `INSERT OR REPLACE INTO Exercise 
                 (ExerciseId, ExerciseName,Level1,Level2,Level3) 
                 VALUES (?, ?, ?,?, ?)`;

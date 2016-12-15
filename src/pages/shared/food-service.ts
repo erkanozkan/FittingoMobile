@@ -27,7 +27,7 @@ export class FoodService {
 
     }
 
-    AddFoodActivity(activityInfo: ActivityInfo): Observable<boolean> {
+    AddFoodActivity(activityInfo: ActivityInfo): Observable<number> {
         let headers = new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
@@ -37,12 +37,11 @@ export class FoodService {
         let body = 'ActivityDateTime=' + activityInfo.activiyDate
             + '&Amount=' + activityInfo.amount
             + '&Calories=' + Math.floor(activityInfo.calorie)
-            + '&ServingTypeId=' + activityInfo.mealType
+            + '&ServingTypeId=' + activityInfo.servingTypeId
             + '&ActivityTypeId=1'
             + '&UserActivityId=' + activityInfo.UserActivityId
             + '&UserId=' + activityInfo.userId
-            + '&MealId=' + activityInfo.mealType
-            + '&IsPhoneSynchronised=1';
+            + '&MealId=' + activityInfo.mealType;
         console.log("yeni kayıt");
 
         console.log(body);
@@ -50,9 +49,9 @@ export class FoodService {
             .map((response: Response) => {
                 let res = <any>response.json();
                 if (res != null && res.IsSuccess == true) {
-                    return true;
+                    return res.ActivityId;
                 } else {
-                    return false;
+                    return 0;
                 }
             })
             //.do(data => console.log('All: ' + JSON.stringify(data)))

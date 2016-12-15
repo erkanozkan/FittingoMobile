@@ -60,10 +60,12 @@ export class LoginPage implements OnInit {
               DailyWater: data.DailyWater,
               TakenCalorie: data.TakenCalorie,
               CalorieExpenditure: data.CalorieExpenditure,
+              password:data.password,
               success: true
             };
             this.service.userInfo = this.userInfo;
-
+                    
+            console.log("sql user: " +this.userInfo.name);
             this.navCtrl.setRoot(TabsPage, this.userInfo);
             loader.dismiss();
           } else {
@@ -72,6 +74,8 @@ export class LoginPage implements OnInit {
               this.service.Login(this.myForm.value.email, this.myForm.value.password)
                 .subscribe(data => {
                   this.userInfo = data;
+                console.log("service user: " +this.userInfo);
+
                   if (this.userInfo == null || this.userInfo.success == false) {
                     this.presentToast("Hatalı email veya şifre girdiniz.");
                   } else {
@@ -91,8 +95,8 @@ export class LoginPage implements OnInit {
         });
 
     });
-  } 
-   
+  }
+
   isValid(field: string) {
     let formField = this.myForm.get(field);
     return formField.valid || formField.pristine;

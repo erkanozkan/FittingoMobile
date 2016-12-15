@@ -54,12 +54,9 @@ export class FoodDetailPage {
         this.productItem = this.navParams.data.product;
         this.userId = this.navParams.data.userId;
         this.MealDate = new Date().toISOString();
-        this.ServingTypesArray = [{
-            Value: "20",
-            Text: "Gram"
-        }];
-        this.servingTypeName = "Gram";
-        this.servingTypeNumber = 100;
+        console.log(this.MealDate);
+        this.ServingTypesArray = [];
+
         this.fatStr = this.productItem.Fat.toString();
         this.calorie100gram = Math.floor(this.productItem.Kalori100Gram);
         this.calorie100gramStr = this.calorie100gram.toString();
@@ -77,7 +74,9 @@ export class FoodDetailPage {
             this.ServingTypesArray.push({
                 Value: this.productItem.Type1.toString(),
                 Text: this.type1Name
-            })
+            });
+            this.servingTypeName = this.type1Name;
+            this.servingTypeNumber = 1;
         }
 
         if (this.productItem.Type2 != null) {
@@ -101,6 +100,7 @@ export class FoodDetailPage {
 
 
     CalculateCalorie() {
+        console.log("serving type " + this.servingType);
         if (this.servingType == 20) { //gram
             this.calorie = (this.calorie100gram * this.gram) / 100;
             this.carbonhydrat = (this.productItem.Carbonhydrate * this.gram) / 100;
@@ -186,10 +186,10 @@ export class FoodDetailPage {
         var activityName = this.amount.toString() + " " + this.servingTypeName;
         var activtyDescription = activityName + " " + this.productItem.ProductName;
         var activityId = Guid.newGuid();
-        this.activityInfo = new ActivityInfo(activityId,this.MealDate,
+        this.activityInfo = new ActivityInfo(activityId, this.MealDate,
             this.MealType, this.amount,
             this.userId, this.calorie, 0, activityName,
-            activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food,this.servingType);
+            activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food, this.servingType);
 
         this.sqlService.InsertActivity(this.activityInfo).then(value => {
             this.success = true;
