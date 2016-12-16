@@ -7,7 +7,7 @@ import { SportInfo } from '../sport-list/sportInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
 import { Network } from 'ionic-native';
 
-import { FoodService } from '../shared/shared';
+import { FoodService, SportService, ProductType } from '../shared/shared';
 //import { Http, Response, RequestOptions, Headers } from '@angular/http'
 
 const win: any = window;
@@ -16,7 +16,8 @@ const win: any = window;
 export class SqlStorageService {
     public db: SQLite;
     public isFoodListInserting: boolean = false;
-    constructor(private foodService: FoodService) {
+    constructor(private foodService: FoodService,
+        private sportService: SportService) {
         //  foodService = new FoodService();
     }
 
@@ -41,12 +42,13 @@ export class SqlStorageService {
         });
     }
 
-    getAllActivityListToday() {
+    getAllActivityListToday(userId: number) {
         var date = new Date().toISOString().substring(0, 10);
 
-        return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=? ', [date]).then(data => {
+        return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=?  and UserId=?', [date, userId]).then(data => {
             let results = new Array<ActivityInfo>();
             for (let i = 0; i < data.rows.length; i++) {
+                console.log(data.rows.item(i));
                 results.push(data.rows.item(i) as ActivityInfo);
             }
             return results;
@@ -103,7 +105,7 @@ export class SqlStorageService {
         if (this.db) {
             return this.db.executeSql(`UPDATE Activity SET IsSynced=1,ActivityId=?  where ActivityId=?`, [newActivityId, activityId]).then((data) => {
                 console.log("Activity Updated: " + JSON.stringify(data));
-            
+
             }, (error) => {
                 console.log(error);
                 console.log("ERROR: " + JSON.stringify(error.err));
@@ -120,38 +122,66 @@ export class SqlStorageService {
                  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                 [activityInfo.ActivityId, activityInfo.activiyDate, activityInfo.amount,
                 activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
-                activityInfo.ExerciseId, activityInfo.userId, activityInfo.servingTypeId,
+                activityInfo.ExerciseId, activityInfo.UserId, activityInfo.servingTypeId,
                 activityInfo.ActivityTypeId, activityInfo.UserActivityId
                     , activityInfo.mealType, activityInfo.IsSynced, activityInfo.ProductType]).then((data) => {
                         console.log("Activity Inserted: " + JSON.stringify(data));
 
-                        var insertId = activityInfo.ActivityId;
+                        this.UpdateUser(activityInfo.calorie, activityInfo.UserId, activityInfo.ProductType);
 
-                        this.db.executeSql(`update User set 
-                        TakenCalorie = (TakenCalorie + ?),RemainingCalorie=(RemainingCalorie - ?) where userId = ?`,
-                            [activityInfo.calorie, activityInfo.calorie, activityInfo.userId]).then((data) => {
-                                console.log("user calorie update edildi.");
-                            }, (error) => {
-                                console.log("update User ERROR: " + JSON.stringify(error.err));
-                            });
+                        console.log(activityInfo.ActivityId);
 
                         if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
-                            this.foodService.AddFoodActivity(activityInfo).
-                                subscribe(activityId => {
-                                    console.log(activityId);
-                                    console.log(insertId);
-
-                                    if (activityId != 0) {
-                                        activityInfo.IsSynced = 1;
-
-                                        this.UpdateActivityAsSynced(insertId, activityId);
-                                    }
-                                });
+                            if (activityInfo.ProductType == ProductType.Food) {
+                                this.SyncFoodApiCall(activityInfo);
+                            } else if (activityInfo.ProductType == ProductType.Exercise) {
+                                this.SyncExerciseApiCall(activityInfo);
+                            }
                         }
                     }, (error) => {
                         console.log("ERROR: " + JSON.stringify(error.err));
                     });
         }
+    }
+
+    SyncExerciseApiCall(activityInfo: ActivityInfo) {
+        console.log("exerise api call");
+        this.sportService.AddSportActivity(activityInfo).
+            subscribe(activityId => {
+                console.log(activityId);
+                if (activityId != 0) {
+                    this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                }
+            });
+    }
+
+    SyncFoodApiCall(activityInfo: ActivityInfo) {
+        this.foodService.AddFoodActivity(activityInfo).
+            subscribe(activityId => {
+                console.log(activityId);
+                console.log(activityInfo.ActivityId);
+
+                if (activityId != 0) {
+                    this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                }
+            });
+    }
+
+    UpdateUser(calorie: number, userId: number, producType: ProductType) {
+
+        if (producType == ProductType.Food) {
+            var q = `update User set 
+                        TakenCalorie = (TakenCalorie + ?),RemainingCalorie=(RemainingCalorie - ?) where userId = ?`;
+        } else {
+            var q = `update User set CalorieExpenditure=(CalorieExpenditure + ?), RemainingCalorie=(RemainingCalorie + ?) where userId = ?`;
+        }
+
+        this.db.executeSql(q,
+            [calorie, calorie, userId]).then((data) => {
+                console.log("user calorie update edildi.");
+            }, (error) => {
+                console.log("update User ERROR: " + JSON.stringify(error.err));
+            });
     }
 
     //, callback: (n: boolean) => any
@@ -190,10 +220,14 @@ export class SqlStorageService {
                  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
             var sqlStatemants = [];
+            console.log("InsertoReplaceActivities");
+
             for (var activityInfo of rows) {
+                console.log(activityInfo.ActivityId);
+                console.log(activityInfo.UserId);
                 sqlStatemants.push([q, [activityInfo.ActivityId, new Date().toISOString(), activityInfo.amount,
                 activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
-                activityInfo.ExerciseId, activityInfo.userId, activityInfo.servingTypeId,
+                activityInfo.ExerciseId, activityInfo.UserId, activityInfo.servingTypeId,
                 activityInfo.ActivityTypeId, activityInfo.UserActivityId
                     , activityInfo.mealType, 1, activityInfo.ProductType]]);
             }
@@ -306,19 +340,19 @@ export class SqlStorageService {
 
     private CreateExerciseTable() {
         this.db.executeSql(`CREATE TABLE IF NOT EXISTS Exercise 
-            (ExerciseId Integer primary key, ExerciseName text
-            , Level1 number, Level2 number, Level3 number)`, {}).then(() => {
+            (ExerciseId Integer primary key,ExerciseName text
+            ,Level1 number,Level2 number,Level3 number)`, {}).then(() => {
                 console.log('Exercise CREATE TABLE SUCCESS');
             });
     }
 
     private CreateActivityTable() {
         this.db.executeSql(`CREATE TABLE IF NOT EXISTS Activity 
-            (ActivityId text primary key, ActivityDateTime DATETIME
-            , Amount number, Calorie number, ActivityName text
-            , ActivityDescription text, ExerciseId number, UserId number
-            , ServingTypeId number, ActivityTypeId number, UserActivityId number
-             , MealId number,IsSynced boolean,ProductType  number)`, {}).then(() => {
+            (ActivityId text primary key,ActivityDateTime DATETIME
+            ,Amount number,Calorie number,ActivityName text
+            ,ActivityDescription text,ExerciseId number,UserId number
+            ,ServingTypeId number,ActivityTypeId number,UserActivityId number
+             ,MealId number,IsSynced boolean,ProductType  number)`, {}).then(() => {
                 console.log('Exercise Activity TABLE SUCCESS');
             });
     }

@@ -1,5 +1,6 @@
 import { SportInfo } from '../sport-list/sportInfo';
 import { ExerciseInfo } from '../sport-list/exerciseInfo';
+import { ActivityInfo } from '../food-list/activityInfo';
 
 import { Injectable } from '@angular/core'
 import { Http, Response, RequestOptions, Headers } from '@angular/http'
@@ -25,7 +26,7 @@ export class SportService {
 
     }
 
-    AddSportActivity(activityInfo: ExerciseInfo): Observable<boolean> {
+    AddSportActivity(activityInfo: ActivityInfo): Observable<number> {
         let headers = new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
@@ -36,18 +37,20 @@ export class SportService {
         let body = 'ActivityDateTime=' + activityInfo.activiyDate
             + '&Amount=' + Math.floor(activityInfo.amount)
             + '&Calorie=' + Math.floor(activityInfo.calorie)
-            + '&ActivityName=' + activityInfo.product.ExerciseName
-            + '&ActivityDescription=' + activityInfo.description
-            + '&ExerciseId=' + activityInfo.product.ExerciseId
-            + '&UserId=' + activityInfo.userId
+            + '&ActivityName=' + activityInfo.ActivityName
+            + '&ActivityDescription=' + activityInfo.ActivityDescription
+            + '&ExerciseId=' + activityInfo.ExerciseId
+            + '&UserId=' + activityInfo.UserId
+        console.log("spor api kayıt");
 
+        console.log(body);
         return this.http.post(this.baseUrl + '/activities/exercises/save', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
                 if (res != null && res.IsSuccess == true) {
-                    return true;
+                    return res.ActivityId;
                 } else {
-                    return false;
+                    return 0;
                 }
             })
             //.do(data => console.log('All: ' + JSON.stringify(data)))

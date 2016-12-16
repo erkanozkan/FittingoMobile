@@ -1,4 +1,4 @@
-import { Component , OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { ActivityListInfo } from '../activity-list/ActivityListInfo';
 
@@ -18,12 +18,12 @@ export class ActivityListPage extends OnInit {
     constructor(private dataService: FittingoServiceApi,
         private loadingController: LoadingController,
         private sqlService: SqlStorageService) {
-         super();
+        super();
     }
 
     ngOnInit() {
         console.log("ngOnInit");
-          this.sqlService.getAllActivityListToday().then(
+        this.sqlService.getAllActivityListToday(this.dataService.userInfo.userId).then(
             data => {
                 if (data != undefined || data != null || data.length != 0) {
                     this.activityList = data;
@@ -38,24 +38,24 @@ export class ActivityListPage extends OnInit {
             });
     }
 
- ionViewWillEnter() {
-     console.log("ionViewWillEnter 1")
-  }
+    ionViewWillEnter() {
+        console.log("ionViewWillEnter 1")
+    }
 
-   ionViewDidEnter() {
-     console.log("ionViewDidEnter 1")
-  }
-   onPageDidEnter() {
-     console.log("onPageDidEnter 1")
-  }
-   onPageWillEnter() {
-     console.log("onPageWillEnter 1")
-  }
+    ionViewDidEnter() {
+        console.log("ionViewDidEnter 1")
+    }
+    onPageDidEnter() {
+        console.log("onPageDidEnter 1")
+    }
+    onPageWillEnter() {
+        console.log("onPageWillEnter 1")
+    }
 
-     
+
 
     ionViewDidLoad() {
         console.log("ionViewDidLoad 1");
 
-    } 
+    }
 }

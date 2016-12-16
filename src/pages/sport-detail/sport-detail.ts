@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { SportService } from '../shared/shared';
+import { SportService, Guid, SqlStorageService, ProductType } from '../shared/shared';
 import { FormControl } from '@angular/forms';
 import { SportInfo } from '../sport-list/sportInfo';
 import { ExerciseInfo } from '../sport-list/exerciseInfo';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController, ToastController } from 'ionic-angular';
 import { ServingTypeInfo } from '../food-detail/serve-type-info';
+import { ActivityInfo } from '../food-list/activityInfo';
 
 @Component({
     templateUrl: "sport-detail.html"
@@ -28,7 +29,8 @@ export class SportDetailPage {
     constructor(private navCtrl: NavController,
         private dataService: SportService,
         private loadingController: LoadingController,
-        private navParams: NavParams, private toastCtrl: ToastController) {
+        private navParams: NavParams, private toastCtrl: ToastController,
+        private sqlService: SqlStorageService) {
 
         this.productItem = this.navParams.data.product;
         this.userId = this.navParams.data.userId;
@@ -101,19 +103,31 @@ export class SportDetailPage {
         }
         var description = this.totalTime.toString() + " Dakika " + this.productItem.ExerciseName;
 
-        var activityInfo = new ExerciseInfo(this.productItem, this.SportDate,
+        var activityInfo1 = new ExerciseInfo(this.productItem, this.SportDate,
             description, this.totalTime,
             this.userId, this.calorie);
 
-        this.dataService.AddSportActivity(activityInfo).
-            subscribe(data => {
-                this.success = data;
-                if (this.success == true) {
-                    this.presentToast("Spor eklendi.");
-                } else {
-                    this.presentToast("Bir hata oluştu.");
-                }
-            });
+
+        var activityId = Guid.newGuid();
+
+        var activityInfo = new ActivityInfo(activityId, this.SportDate,
+            0, this.totalTime, this.userId, this.calorie, this.productItem.ExerciseId, this.productItem.ExerciseName,
+            description, 1, 0,0, ProductType.Exercise, 0);
+
+        this.sqlService.InsertActivity(activityInfo).then(value => {
+            this.success = true;
+            this.presentToast("Spor eklendi.");
+        });
+
+        // this.dataService.AddSportActivity(activityInfo).
+        //     subscribe(data => {
+        //         this.success = data;
+        //         if (this.success == true) {
+        //             this.presentToast("Spor eklendi.");
+        //         } else {
+        //             this.presentToast("Bir hata oluştu.");
+        //         }
+        //     });
     }
 
     presentToast(message: string) {

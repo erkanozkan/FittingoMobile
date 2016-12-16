@@ -5,7 +5,7 @@ export class ActivityInfo {
     activiyDate: string;
     mealType: number;
     amount: number;
-    userId: number;
+    UserId: number;
     calorie: number;
     ExerciseId: number;
     ActivityName: string;
@@ -27,7 +27,7 @@ export class ActivityInfo {
         this.activiyDate = activiyDate;
         this.mealType = mealType;
         this.amount = amount;
-        this.userId = userId;
+        this.UserId = userId;
         this.calorie = calorie;
         this.ExerciseId = ExerciseId;
         this.ActivityName = ActivityName;

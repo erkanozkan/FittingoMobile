@@ -8,6 +8,7 @@ import { LoginPage } from '../login-page/login-page';
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { ActivityInfo } from '../food-list/activityInfo';
 import { Network } from 'ionic-native';
+import { Observable } from 'rxjs/Rx';
 
 
 @Component({
@@ -24,10 +25,9 @@ export class HomePage {
         private api: FittingoServiceApi,
         private toastCtrl: ToastController,
         private nav: Nav, private sqlService: SqlStorageService) {
-
         this.userInfo = navParams.data;
     }
-  
+
     OpenFoodListPage() {
         this.navCtrl.push(FoodListPage, this.userInfo.userId);
     }
@@ -58,7 +58,6 @@ export class HomePage {
 
     LogOut() {
         this.api.userInfo = null;
-         // this.navCtrl.push(LoginPage);
         this.nav.setRoot(LoginPage);
     }
 
@@ -77,24 +76,21 @@ export class HomePage {
             }
         });
     }
-    // ionViewWillEnter() {
-    //     console.log("ionViewWillEnter")
-    // }
+
+    GetActivitiesFromLocal() {
+        this.sqlService.getAllActivityListToday(this.userInfo.userId).then(
+            data => {
+                this.activityList = data;
+            });
+    }
 
     ionViewDidEnter() {
         this.GetActivityList();
         this.RefreshUserList();
     }
-    // onPageDidEnter() {
-    //     console.log("onPageDidEnter")
-    // }
-    // onPageWillEnter() {
-    //     console.log("onPageWillEnter")
-    // }
 
     RefreshUserList() {
         this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
-
             this.userInfo = user;
         });
     }
@@ -102,23 +98,10 @@ export class HomePage {
     GetActivityList() {
         if (Network.connection != "none") {
             this.api.GetActivities().subscribe(data => {
-                this.activityList = data;
-                this.sqlService.InsertoReplaceActivities(this.activityList);
-                setTimeout(() => { }, 1000);
+                this.sqlService.InsertoReplaceActivities(data);
                 this.GetActivitiesFromLocal();
-
             });
-        } else {
-            this.GetActivitiesFromLocal();
         }
-    }
-
-    GetActivitiesFromLocal() {
-
-        this.sqlService.getAllActivityListToday().then(
-            data => {
-                this.activityList = data;
-            });
     }
 
     presentToast(message: string) {
