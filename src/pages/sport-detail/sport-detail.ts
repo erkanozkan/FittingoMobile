@@ -105,29 +105,19 @@ export class SportDetailPage {
 
         var activityInfo1 = new ExerciseInfo(this.productItem, this.SportDate,
             description, this.totalTime,
-            this.userId, this.calorie);
-
+            this.userId, Math.floor(this.calorie));
 
         var activityId = Guid.newGuid();
 
         var activityInfo = new ActivityInfo(activityId, this.SportDate,
             0, this.totalTime, this.userId, this.calorie, this.productItem.ExerciseId, this.productItem.ExerciseName,
-            description, 1, 0,0, ProductType.Exercise, 0);
+            description, 1, 0, 0, ProductType.Exercise, 0);
 
         this.sqlService.InsertActivity(activityInfo).then(value => {
             this.success = true;
             this.presentToast("Spor eklendi.");
         });
 
-        // this.dataService.AddSportActivity(activityInfo).
-        //     subscribe(data => {
-        //         this.success = data;
-        //         if (this.success == true) {
-        //             this.presentToast("Spor eklendi.");
-        //         } else {
-        //             this.presentToast("Bir hata oluştu.");
-        //         }
-        //     });
     }
 
     presentToast(message: string) {

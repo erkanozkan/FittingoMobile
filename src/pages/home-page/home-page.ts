@@ -45,15 +45,9 @@ export class HomePage {
             this.presentToast("Max su limitine ulaşıldı.");
             return;
         }
+        this.userInfo.DailyWater = this.userInfo.DailyWater + 1;
 
-        this.api.SaveWater(1).subscribe(data => {
-            if (data == true) {
-                this.userInfo = this.api.userInfo;
-                this.presentToast("İşlem başarılı");
-            } else {
-                this.presentToast("İşlem tamamlanamadı.");
-            }
-        });
+        this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
     }
 
     LogOut() {
@@ -67,14 +61,17 @@ export class HomePage {
             this.presentToast("Günde en az bir bardak su içmelisiniz.");
             return;
         }
-        this.api.SaveWater(-1).subscribe(data => {
-            if (data == true) {
-                this.userInfo = this.api.userInfo;
-                this.presentToast("İşlem başarılı");
-            } else {
-                this.presentToast("İşlem tamamlanamadı.");
-            }
-        });
+        this.userInfo.DailyWater = this.userInfo.DailyWater - 1;
+        this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
+
+        // this.api.SaveWater(-1).subscribe(data => {
+        //     if (data == true) {
+        //         this.userInfo = this.api.userInfo;
+        //         this.presentToast("İşlem başarılı");
+        //     } else {
+        //         this.presentToast("İşlem tamamlanamadı.");
+        //     }
+        // });
     }
 
     GetActivitiesFromLocal() {
@@ -86,13 +83,35 @@ export class HomePage {
 
     ionViewDidEnter() {
         this.GetActivityList();
-        this.RefreshUserList();
+        this.RefreshUser();
+        this.SendActivityListToApi();
+        //this.SendWaterCountToApi();
     }
 
-    RefreshUserList() {
+    RefreshUser() {
+        //kullanıcıyı lokal den getir.
         this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
             this.userInfo = user;
         });
+
+        console.log(this.userInfo);
+        if (Network.connection != "none") {
+            //api den kullanıyı çek
+            console.log("api.Login");
+
+            this.api.Login(this.userInfo.email, this.userInfo.password)
+                .subscribe(data => {
+
+                    if (this.userInfo.DailyWater > data.DailyWater) { //Send water to api
+                        this.api.SaveWater(this.userInfo.DailyWater).subscribe(data => {
+                        });
+                    } else if (this.userInfo.DailyWater < data.DailyWater) {
+                        this.sqlService.UpdateUserWaterCount(data.DailyWater, this.userInfo.userId);
+                        this.userInfo.DailyWater = data.DailyWater;
+                    }
+                });
+        }
+
     }
 
     GetActivityList() {
@@ -101,6 +120,20 @@ export class HomePage {
                 this.sqlService.InsertoReplaceActivities(data);
                 this.GetActivitiesFromLocal();
             });
+        }
+    }
+
+    SendWaterCountToApi() {
+        if (Network.connection != "none") {
+            this.api.SaveWater(this.userInfo.DailyWater).subscribe(data => {
+                console.log(data);
+            });
+        }
+    }
+
+    SendActivityListToApi() {
+        if (Network.connection != "none") {
+            this.sqlService.SyncedActivitiesWithApi();
         }
     }
 

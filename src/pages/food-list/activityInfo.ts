@@ -2,11 +2,11 @@ import { ProductType } from '../shared/productType';
 
 export class ActivityInfo {
     ActivityId: string;
-    activiyDate: string;
-    mealType: number;
-    amount: number;
+    ActivityDateTime: string;
+    MealId: number;
+    Amount: number;
     UserId: number;
-    calorie: number;
+    Calorie: number;
     ExerciseId: number;
     ActivityName: string;
     ActivityDescription: string;
@@ -14,7 +14,7 @@ export class ActivityInfo {
     UserActivityId: number;
     IsSynced: number;
     ProductType: ProductType;
-    servingTypeId:number;
+    ServingTypeId:number;
     constructor(activiyId: string, activiyDate: string, mealType: number,
         amount: number, userId: number, calorie: number, ExerciseId: number,
         ActivityName: string,
@@ -24,11 +24,11 @@ export class ActivityInfo {
         IsSynced: number, ProductType: ProductType,
         servingTypeId:number) {
         this.ActivityId = activiyId;
-        this.activiyDate = activiyDate;
-        this.mealType = mealType;
-        this.amount = amount;
+        this.ActivityDateTime = activiyDate;
+        this.MealId = mealType;
+        this.Amount = amount;
         this.UserId = userId;
-        this.calorie = calorie;
+        this.Calorie = calorie;
         this.ExerciseId = ExerciseId;
         this.ActivityName = ActivityName;
         this.ActivityDescription = ActivityDescription;
@@ -36,6 +36,6 @@ export class ActivityInfo {
         this.UserActivityId = UserActivityId;
         this.IsSynced = IsSynced;
         this.ProductType = ProductType;
-        this.servingTypeId = servingTypeId;
+        this.ServingTypeId = servingTypeId;
     }
 }

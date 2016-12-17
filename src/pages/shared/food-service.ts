@@ -34,15 +34,14 @@ export class FoodService {
         let options = new RequestOptions({
             headers: headers
         });
-        let body = 'ActivityDateTime=' + activityInfo.activiyDate
-            + '&Amount=' + activityInfo.amount
-            + '&Calories=' + Math.floor(activityInfo.calorie)
-            + '&ServingTypeId=' + activityInfo.servingTypeId
+        let body = 'ActivityDateTime=' + activityInfo.ActivityDateTime
+            + '&Amount=' + activityInfo.Amount
+            + '&Calories=' + activityInfo.Calorie
+            + '&ServingTypeId=' + activityInfo.ServingTypeId
             + '&ActivityTypeId=1'
             + '&UserActivityId=' + activityInfo.UserActivityId
             + '&UserId=' + activityInfo.UserId
-            + '&MealId=' + activityInfo.mealType;
-      
+            + '&MealId=' + activityInfo.MealId;
         return this.http.post(this.baseUrl + '/activities/add', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();

@@ -23,47 +23,86 @@ export class SqlStorageService {
 
 
     getAllFoodList() {
-        return this.db.executeSql('SELECT * FROM Food', []).then(data => {
-            let results = new Array<FoodInfo>();
-            for (let i = 0; i < data.rows.length; i++) {
-                results.push(data.rows.item(i) as FoodInfo);
-            }
-            return results;
-        });
+        if (this.db) {
+            return this.db.executeSql('SELECT * FROM Food', []).then(data => {
+                let results = new Array<FoodInfo>();
+                for (let i = 0; i < data.rows.length; i++) {
+                    results.push(data.rows.item(i) as FoodInfo);
+                }
+                return results;
+            });
+        }
     }
 
     getAllExerciseList() {
-        return this.db.executeSql('SELECT * FROM Exercise', []).then(data => {
-            let results = new Array<SportInfo>();
-            for (let i = 0; i < data.rows.length; i++) {
-                results.push(data.rows.item(i) as SportInfo);
-            }
-            return results;
-        });
+        if (this.db) {
+            return this.db.executeSql('SELECT * FROM Exercise', []).then(data => {
+                let results = new Array<SportInfo>();
+                for (let i = 0; i < data.rows.length; i++) {
+                    results.push(data.rows.item(i) as SportInfo);
+                }
+                return results;
+            });
+        }
     }
 
     getAllActivityListToday(userId: number) {
-        var date = new Date().toISOString().substring(0, 10);
+        if (this.db) {
+            var date = new Date().toISOString().substring(0, 10);
 
-        return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=?  and UserId=?', [date, userId]).then(data => {
-            let results = new Array<ActivityInfo>();
-            for (let i = 0; i < data.rows.length; i++) {
-                console.log(data.rows.item(i));
-                results.push(data.rows.item(i) as ActivityInfo);
-            }
-            return results;
-        });
+            return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=?  and UserId=?', [date, userId]).then(data => {
+                let results = new Array<ActivityInfo>();
+                for (let i = 0; i < data.rows.length; i++) {
+                    results.push(data.rows.item(i) as ActivityInfo);
+                }
+                return results;
+            });
+        }
+    }
+
+
+    SyncedActivitiesWithApi() {
+        if (this.db) {
+            return this.db.executeSql('SELECT * FROM Activity where IsSynced=0', []).then(data => {
+                for (let i = 0; i < data.rows.length; i++) {
+                    var activityInfo = data.rows.item(i) as ActivityInfo;
+                    if (activityInfo.ProductType == ProductType.Food) {
+                        this.foodService.AddFoodActivity(activityInfo).subscribe(activityId => {
+                            if (activityId != 0) {
+                                this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                            }
+                        });
+                    } else if (activityInfo.ProductType == ProductType.Exercise) {
+                        this.sportService.AddSportActivity(activityInfo).subscribe(activityId => {
+                            if (activityId != 0) {
+                                this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     getAllServingTypeList() {
-        return this.db.executeSql('SELECT * FROM ServingType', []).then(data => {
-            let results = new Array<ServingTypeInfo>();
-            for (let i = 0; i < data.rows.length; i++) {
-                results.push(data.rows.item(i) as ServingTypeInfo);
-            }
-            return results;
-        });
+        if (this.db) {
+            return this.db.executeSql('SELECT * FROM ServingType', []).then(data => {
+                let results = new Array<ServingTypeInfo>();
+                for (let i = 0; i < data.rows.length; i++) {
+                    results.push(data.rows.item(i) as ServingTypeInfo);
+                }
+                return results;
+            });
+        }
     }
+
+    InsertServiceTypeList(serviceTypeId: number) {
+        this.foodService.GetServiceTypeList(serviceTypeId)
+            .subscribe(data => {
+                this.BulkInsertServingTypes(data);
+            });
+    }
+
 
 
     getUser(userName: string, password: string) {
@@ -82,7 +121,6 @@ export class SqlStorageService {
     // }
 
     InsertUser(userInfo: IUserInfo) {
-        console.log(userInfo.TakenCalorie);
         if (this.db) {
             return this.db.executeSql(`INSERT OR REPLACE into User(
                  userId, email,name,password, Weight,
@@ -105,9 +143,7 @@ export class SqlStorageService {
         if (this.db) {
             return this.db.executeSql(`UPDATE Activity SET IsSynced=1,ActivityId=?  where ActivityId=?`, [newActivityId, activityId]).then((data) => {
                 console.log("Activity Updated: " + JSON.stringify(data));
-
             }, (error) => {
-                console.log(error);
                 console.log("ERROR: " + JSON.stringify(error.err));
             });
         }
@@ -120,24 +156,24 @@ export class SqlStorageService {
                  ExerciseId,UserId, ServingTypeId,
                  ActivityTypeId, UserActivityId, MealId,IsSynced,ProductType) 
                  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-                [activityInfo.ActivityId, activityInfo.activiyDate, activityInfo.amount,
-                activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
-                activityInfo.ExerciseId, activityInfo.UserId, activityInfo.servingTypeId,
+                [activityInfo.ActivityId, activityInfo.ActivityDateTime, activityInfo.Amount,
+                activityInfo.Calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
+                activityInfo.ExerciseId, activityInfo.UserId, activityInfo.ServingTypeId,
                 activityInfo.ActivityTypeId, activityInfo.UserActivityId
-                    , activityInfo.mealType, activityInfo.IsSynced, activityInfo.ProductType]).then((data) => {
+                    , activityInfo.MealId, activityInfo.IsSynced, activityInfo.ProductType]).then((data) => {
                         console.log("Activity Inserted: " + JSON.stringify(data));
 
-                        this.UpdateUser(activityInfo.calorie, activityInfo.UserId, activityInfo.ProductType);
+                        this.UpdateUser(activityInfo.Calorie, activityInfo.UserId, activityInfo.ProductType);
 
-                        console.log(activityInfo.ActivityId);
-
-                        if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
-                            if (activityInfo.ProductType == ProductType.Food) {
-                                this.SyncFoodApiCall(activityInfo);
-                            } else if (activityInfo.ProductType == ProductType.Exercise) {
-                                this.SyncExerciseApiCall(activityInfo);
-                            }
-                        }
+                        //bu kısım bir kere olsun ve ana sayfaya geldiğinde olsun,
+                        //aksi halde hataya sebep olabilir
+                        // if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
+                        //     if (activityInfo.ProductType == ProductType.Food) {
+                        //         this.SyncFoodApiCall(activityInfo);
+                        //     } else if (activityInfo.ProductType == ProductType.Exercise) {
+                        //         this.SyncExerciseApiCall(activityInfo);
+                        //     }
+                        // }
                     }, (error) => {
                         console.log("ERROR: " + JSON.stringify(error.err));
                     });
@@ -145,49 +181,60 @@ export class SqlStorageService {
     }
 
     SyncExerciseApiCall(activityInfo: ActivityInfo) {
-        console.log("exerise api call");
-        this.sportService.AddSportActivity(activityInfo).
-            subscribe(activityId => {
-                console.log(activityId);
-                if (activityId != 0) {
-                    this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
-                }
-            });
+        if (this.db) {
+            this.sportService.AddSportActivity(activityInfo).
+                subscribe(activityId => {
+                    if (activityId != 0) {
+                        this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                    }
+                });
+        }
     }
 
     SyncFoodApiCall(activityInfo: ActivityInfo) {
-        this.foodService.AddFoodActivity(activityInfo).
-            subscribe(activityId => {
-                console.log(activityId);
-                console.log(activityInfo.ActivityId);
+        if (this.db) {
+            this.foodService.AddFoodActivity(activityInfo).
+                subscribe(activityId => {
+                    if (activityId != 0) {
+                        this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                    }
+                });
+        }
+    }
 
-                if (activityId != 0) {
-                    this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
-                }
-            });
+    UpdateUserWaterCount(count: number, userId: number) {
+        if (this.db) {
+            var q = `update User set DailyWater = ? where userId = ?`;
+            this.db.executeSql(q,
+                [count, userId]).then((data) => {
+                    console.log("user water update edildi.");
+                }, (error) => {
+                    console.log("update User ERROR: " + JSON.stringify(error.err));
+                });
+        }
     }
 
     UpdateUser(calorie: number, userId: number, producType: ProductType) {
-
-        if (producType == ProductType.Food) {
-            var q = `update User set 
+        if (this.db) {
+            if (producType == ProductType.Food) {
+                var q = `update User set 
                         TakenCalorie = (TakenCalorie + ?),RemainingCalorie=(RemainingCalorie - ?) where userId = ?`;
-        } else {
-            var q = `update User set CalorieExpenditure=(CalorieExpenditure + ?), RemainingCalorie=(RemainingCalorie + ?) where userId = ?`;
-        }
+            } else {
+                var q = `update User set CalorieExpenditure=(CalorieExpenditure + ?), RemainingCalorie=(RemainingCalorie + ?) where userId = ?`;
+            }
 
-        this.db.executeSql(q,
-            [calorie, calorie, userId]).then((data) => {
-                console.log("user calorie update edildi.");
-            }, (error) => {
-                console.log("update User ERROR: " + JSON.stringify(error.err));
-            });
+            this.db.executeSql(q,
+                [calorie, calorie, userId]).then((data) => {
+                    console.log("user calorie update edildi.");
+                }, (error) => {
+                    console.log("update User ERROR: " + JSON.stringify(error.err));
+                });
+        }
     }
 
     //, callback: (n: boolean) => any
     BulkInsertFoods(rows: Array<FoodInfo>) {
         if (this.db) {
-            // console.log(rows.length);
             var q = `INSERT OR REPLACE INTO Food 
                 (ProductsId, ProductName,Kalori100Gram,Protein,Fat,
                 Carbonhydrate,CategoryId, Type1,
@@ -220,16 +267,12 @@ export class SqlStorageService {
                  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
             var sqlStatemants = [];
-            console.log("InsertoReplaceActivities");
-
             for (var activityInfo of rows) {
-                console.log(activityInfo.ActivityId);
-                console.log(activityInfo.UserId);
-                sqlStatemants.push([q, [activityInfo.ActivityId, new Date().toISOString(), activityInfo.amount,
-                activityInfo.calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
-                activityInfo.ExerciseId, activityInfo.UserId, activityInfo.servingTypeId,
+                sqlStatemants.push([q, [activityInfo.ActivityId, new Date().toISOString(), activityInfo.Amount,
+                activityInfo.Calorie, activityInfo.ActivityName, activityInfo.ActivityDescription,
+                activityInfo.ExerciseId, activityInfo.UserId, activityInfo.ServingTypeId,
                 activityInfo.ActivityTypeId, activityInfo.UserActivityId
-                    , activityInfo.mealType, 1, activityInfo.ProductType]]);
+                    , activityInfo.MealId, 1, activityInfo.ProductType]]);
             }
             this.db.sqlBatch(sqlStatemants);
         }
@@ -279,7 +322,7 @@ export class SqlStorageService {
         this.db = new SQLite();
         if (this.db) {
             this.db.openDatabase({ name: 'fittingo.db', location: 'default' }).then(() => {
-                this.resetDatabase();
+                //this.resetDatabase();
                 this.CreateUserTable();
                 this.CreateFoodTable();
                 this.CreateServingTypeTable();
@@ -335,6 +378,7 @@ export class SqlStorageService {
         this.db.executeSql(`CREATE TABLE IF NOT EXISTS ServingType 
             (ServingTypeId Integer primary key, ServingTypeName text)`, {}).then(() => {
                 console.log('ServingType CREATE TABLE SUCCESS');
+                this.InsertServiceTypeList(0);
             });
     }
 

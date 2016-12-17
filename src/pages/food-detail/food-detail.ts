@@ -54,8 +54,18 @@ export class FoodDetailPage {
         this.productItem = this.navParams.data.product;
         this.userId = this.navParams.data.userId;
         this.MealDate = new Date().toISOString();
-        console.log(this.MealDate);
-        this.ServingTypesArray = [];
+
+        if (this.productItem.ProductTypeId == 0) {
+            this.servingType = 20;
+            this.ServingTypesArray = [{
+                Text: "Gram",
+                Value: 20
+            }];
+            this.servingTypeNumber = 100;
+            this.servingTypeName = "gram";
+        } else {
+            this.ServingTypesArray = [];
+        }
 
         this.fatStr = this.productItem.Fat.toString();
         this.calorie100gram = Math.floor(this.productItem.Kalori100Gram);
@@ -64,19 +74,24 @@ export class FoodDetailPage {
         this.carbonhydratStr = this.productItem.Carbonhydrate.toString();
 
         this.GetServiceTypeList(0);
-
     }
 
     GetServiceTypeNames() {
-
         if (this.productItem.Type1 != null) {
             this.type1Name = this.FilterServingTypes(this.productItem.Type1)
             this.ServingTypesArray.push({
                 Value: this.productItem.Type1.toString(),
                 Text: this.type1Name
             });
-            this.servingTypeName = this.type1Name;
-            this.servingTypeNumber = 1;
+
+            if (this.servingType == 0) {
+                this.servingType = this.productItem.Type1;
+            }
+
+            if (this.servingType != 20) {
+                this.servingTypeName = this.type1Name;
+                this.servingTypeNumber = 1;
+            }
         }
 
         if (this.productItem.Type2 != null) {
@@ -84,7 +99,10 @@ export class FoodDetailPage {
             this.ServingTypesArray.push({
                 Value: this.productItem.Type2.toString(),
                 Text: this.type2Name
-            })
+            });
+            if (this.servingType == 0) {
+                this.servingType = this.productItem.Type2;
+            }
         }
     }
 
@@ -98,9 +116,7 @@ export class FoodDetailPage {
         return servingTypeName;
     }
 
-
     CalculateCalorie() {
-        console.log("serving type " + this.servingType);
         if (this.servingType == 20) { //gram
             this.calorie = (this.calorie100gram * this.gram) / 100;
             this.carbonhydrat = (this.productItem.Carbonhydrate * this.gram) / 100;
@@ -133,9 +149,10 @@ export class FoodDetailPage {
     }
 
     ChangeText() {
-        this.servingTypeName = this.FilterServingTypes(this.servingType)
+        this.servingTypeName = this.FilterServingTypes(this.servingType);
         if (this.servingType == 20) {
             this.servingTypeNumber = 100;
+            this.servingTypeName = "Gram";
         } else {
             this.servingTypeNumber = 1;
         }
@@ -143,17 +160,8 @@ export class FoodDetailPage {
 
     GetServiceTypeList(serviceTypeId: number) {
         this.sqlService.getAllServingTypeList().then(data => {
-            if (data == null || data.length == 0) {
-                this.dataService.GetServiceTypeList(serviceTypeId)
-                    .subscribe(data => {
-                        this.servingTypes = data;
-                        this.sqlService.BulkInsertServingTypes(this.servingTypes);
-                        this.GetServiceTypeNames();
-                    });
-            } else {
-                this.servingTypes = data;
-                this.GetServiceTypeNames();
-            }
+            this.servingTypes = data;
+            this.GetServiceTypeNames();
         });
     }
 
@@ -175,6 +183,12 @@ export class FoodDetailPage {
             });
         }
 
+        if (this.servingType == 0) {
+            this.errorMessages.push({
+                message: "Bir miktar seçiniz."
+            });
+        }
+
         return this.errorMessages.length == 0 ? true : false;
     }
     AddFood() {
@@ -188,7 +202,7 @@ export class FoodDetailPage {
         var activityId = Guid.newGuid();
         this.activityInfo = new ActivityInfo(activityId, this.MealDate,
             this.MealType, this.amount,
-            this.userId, this.calorie, 0, activityName,
+            this.userId, Math.floor(this.calorie), 0, activityName,
             activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food, this.servingType);
 
         this.sqlService.InsertActivity(this.activityInfo).then(value => {

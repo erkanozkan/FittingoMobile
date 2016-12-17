@@ -8,8 +8,6 @@ import { HomePage } from '../home-page/home-page';
     templateUrl: 'tabs.html'
 })
 export class TabsPage {
-    // this tells the tabs component which Pages
-    // should be each tab's root Page
     tab1Root: any = HomePage;
     userInfo: IUserInfo;
     HideTab: boolean = true;

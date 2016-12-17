@@ -34,16 +34,14 @@ export class SportService {
             headers: headers
         });
 
-        let body = 'ActivityDateTime=' + activityInfo.activiyDate
-            + '&Amount=' + Math.floor(activityInfo.amount)
-            + '&Calorie=' + Math.floor(activityInfo.calorie)
+        let body = 'ActivityDateTime=' + activityInfo.ActivityDateTime
+            + '&Amount=' + activityInfo.Amount
+            + '&Calorie=' + activityInfo.Calorie
             + '&ActivityName=' + activityInfo.ActivityName
             + '&ActivityDescription=' + activityInfo.ActivityDescription
             + '&ExerciseId=' + activityInfo.ExerciseId
             + '&UserId=' + activityInfo.UserId
-        console.log("spor api kayıt");
 
-        console.log(body);
         return this.http.post(this.baseUrl + '/activities/exercises/save', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();

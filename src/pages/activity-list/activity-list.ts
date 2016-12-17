@@ -22,7 +22,6 @@ export class ActivityListPage extends OnInit {
     }
 
     ngOnInit() {
-        console.log("ngOnInit");
         this.sqlService.getAllActivityListToday(this.dataService.userInfo.userId).then(
             data => {
                 if (data != undefined || data != null || data.length != 0) {
@@ -36,26 +35,5 @@ export class ActivityListPage extends OnInit {
                     this.isLoaded = true;
                 }
             });
-    }
-
-    ionViewWillEnter() {
-        console.log("ionViewWillEnter 1")
-    }
-
-    ionViewDidEnter() {
-        console.log("ionViewDidEnter 1")
-    }
-    onPageDidEnter() {
-        console.log("onPageDidEnter 1")
-    }
-    onPageWillEnter() {
-        console.log("onPageWillEnter 1")
-    }
-
-
-
-    ionViewDidLoad() {
-        console.log("ionViewDidLoad 1");
-
     }
 }

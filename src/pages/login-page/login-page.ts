@@ -2,7 +2,7 @@ import { OnInit, Component } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { TabsPage } from '../tabs/tabs';
 import { LoadingController, NavController, ToastController, Platform } from 'ionic-angular';
-import { FittingoServiceApi, SqlStorageService, DataService } from '../shared/shared';
+import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { SignUpPage } from '../signup/signup';
 import { IUserInfo } from '../login-page/userinfo';
 import { Observable } from 'rxjs/Observable';
@@ -20,8 +20,7 @@ export class LoginPage implements OnInit {
   constructor(public formBuilder: FormBuilder, public navCtrl: NavController,
     private service: FittingoServiceApi,
     private loadingController: LoadingController, private toastCtrl: ToastController
-    , private platform: Platform, private sqlService: SqlStorageService,
-    private dataService: DataService) {
+    , private platform: Platform, private sqlService: SqlStorageService) {
 
     this.userInfo = <IUserInfo>{
       email: "ozkn.erkan@gmail.com",
@@ -65,7 +64,6 @@ export class LoginPage implements OnInit {
             };
             this.service.userInfo = this.userInfo;
                     
-            console.log("sql user: " +this.userInfo.name);
             this.navCtrl.setRoot(TabsPage, this.userInfo);
             loader.dismiss();
           } else {
@@ -74,7 +72,6 @@ export class LoginPage implements OnInit {
               this.service.Login(this.myForm.value.email, this.myForm.value.password)
                 .subscribe(data => {
                   this.userInfo = data;
-                console.log("service user: " +this.userInfo);
 
                   if (this.userInfo == null || this.userInfo.success == false) {
                     this.presentToast("Hatalı email veya şifre girdiniz.");
@@ -91,9 +88,7 @@ export class LoginPage implements OnInit {
             }
 
           }
-
         });
-
     });
   }
 

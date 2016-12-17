@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HomePage } from '../pages/home-page/home-page';
 import { LoginPage } from '../pages/login-page/login-page';
-import { FittingoServiceApi, FoodService, SportService } from '../pages/shared/shared';
+import { FittingoServiceApi, FoodService, SportService,SqlStorageService } from '../pages/shared/shared';
 
 import { FoodListPage } from '../pages/food-list/food-list';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -15,7 +15,6 @@ import { SportListPage } from '../pages/sport-list/sport-list';
 import { SportDetailPage } from '../pages/sport-detail/sport-detail';
 import { SignUpPage } from '../pages/signup/signup';
 import { ActivityListPage } from '../pages/activity-list/activity-list';
-import { SqlStorageService, DataService } from '../pages/shared/shared';
 
 import { Home } from '../pages/test/test';
 
@@ -55,8 +54,7 @@ import { Home } from '../pages/test/test';
     FoodService,
     FittingoServiceApi,
     SportService,
-    SqlStorageService,
-    DataService
+    SqlStorageService
   ]
 })
 export class AppModule { }

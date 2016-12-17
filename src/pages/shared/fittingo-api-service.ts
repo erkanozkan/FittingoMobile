@@ -78,7 +78,6 @@ export class FittingoServiceApi {
         var requestDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
 
         let body = 'ActivityDatetime=' + requestDate + '&UserId=' + this.userInfo.userId;
-        console.log(body);
         return this.http.post(this.baseUrl + '/activities/daily', body, options)
             .map((res: Response) => res.json().Activities as ActivityInfo[])
             .catch(this.handleError);
@@ -96,14 +95,14 @@ export class FittingoServiceApi {
         var requestDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
 
         let body = 'RequestDate=' + requestDate
-            + '&Number=' + (this.userInfo.DailyWater + count)
+            + '&Number=' + count
             + '&UserId=' + this.userInfo.userId;
 
         return this.http.post(this.baseUrl + '/products/water/save', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
                 if (res != null && res.IsSuccess == true) {
-                    this.userInfo.DailyWater += count;
+                    this.userInfo.DailyWater = count;
                     return res.IsSuccess;
                 } else {
                     return false;
@@ -124,7 +123,6 @@ export class FittingoServiceApi {
             + '&Name=' + name
             + '&SurName=' + surname
             + '&Password=' + password;
-        console.log(body);
         return this.http.post(this.baseUrl + '/accounts/create', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
