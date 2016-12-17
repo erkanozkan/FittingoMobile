@@ -4,6 +4,7 @@ import { FittingoServiceApi } from '../shared/shared';
 import { LoadingController, NavController, ToastController } from 'ionic-angular';
 import { LoginPage } from '../login-page/login-page';
 import { ResponseBase } from '../shared/shared';
+import { Network } from 'ionic-native';
 
 @Component({
   templateUrl: 'signup.html'
@@ -28,22 +29,26 @@ export class SignUpPage implements OnInit {
   }
 
   onSubmit() {
-    this.api.CreateAccount(this.myForm.value.email, this.myForm.value.name,
-      this.myForm.value.surname, this.myForm.value.password).subscribe(data => {
-        this.responseBase = data;
-        if (this.responseBase != null) {
+    if (Network.connection == "none") {
+      this.presentToast("Lütfen internet bağlantınızı kontrol edin.");
+    } else {
+      this.api.CreateAccount(this.myForm.value.email, this.myForm.value.name,
+        this.myForm.value.surname, this.myForm.value.password).subscribe(data => {
+          this.responseBase = data;
+          if (this.responseBase != null) {
 
-          if (this.responseBase.success) {
-            this.presentToast("Kayıt başarılı.");
-            this.navCtrl.push(LoginPage);
+            if (this.responseBase.success) {
+              this.presentToast("Kayıt başarılı.");
+              this.navCtrl.push(LoginPage);
+            } else {
+              this.presentToast(this.responseBase.message);
+            }
+
           } else {
-            this.presentToast(this.responseBase.message);
+            this.presentToast("Kayıt başarısız.");
           }
-
-        } else {
-          this.presentToast("Kayıt başarısız.");
-        }
-      })
+        })
+    }
   }
 
   isValid(field: string) {
