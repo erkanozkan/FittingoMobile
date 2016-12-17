@@ -1,4 +1,50 @@
-<ion-header>
+<ion-header class="signup-header auth-header">
+  <ion-navbar>
+    <ion-title>Sign up</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="signup-content auth-content">
+  <h2 class="auth-title">Create an account</h2>
+  <form class="signup-form auth-form" [formGroup]="myForm" (ngSubmit)="doSignup()">
+    <ion-item>
+      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="İsim" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Soyisim" formControlName="surname"></ion-input>
+    </ion-item>
+    <div formGroupName="passwords">
+      <show-hide-container>
+        <ion-item>
+          <ion-input type="password" formControlName="password"  placeholder="Şifre"
+            show-hide-input></ion-input>
+        </ion-item>
+      </show-hide-container>
+      <show-hide-container>
+        <ion-item>
+          <ion-input type="password" placeholder="Şifre Tekrar" formControlName="confirmPassword"
+             show-hide-input></ion-input>
+        </ion-item>
+      </show-hide-container>
+    </div>
+    <button ion-button block class="auth-action-button signup-button" type="submit" [disabled]="!myForm.valid">Sign up</button>
+  </form>
+  <p class="auth-divider">
+    Or
+  </p>
+  <button ion-button block class="facebook-auth-button">Sign up with Facebook</button>
+  <button ion-button block class="google-auth-button">Sign up with Google</button>
+  <p class="legal-stuff">
+    By creating an account you agree to our <a class="legal-action">Privacy policy</a> and
+    <a class="legal-action">Terms of use</a>
+  </p>
+</ion-content>
+
+
+<!--<ion-header>
     <ion-navbar>
         <ion-title>Kullanıcı Kayıt</ion-title>
     </ion-navbar>
@@ -36,4 +82,4 @@
       <button ion-button type="submit" block primary [disabled]="!myForm.valid">Kaydol</button>
     </form>
   </ion-list>
-</ion-content>
+</ion-content>-->

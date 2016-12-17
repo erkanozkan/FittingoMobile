@@ -25,7 +25,11 @@ export class HomePage {
         private api: FittingoServiceApi,
         private toastCtrl: ToastController,
         private nav: Nav, private sqlService: SqlStorageService) {
+        console.log("constructor");
+
+        console.log(this.userInfo);
         this.userInfo = navParams.data;
+
     }
 
     OpenFoodListPage() {
@@ -63,21 +67,17 @@ export class HomePage {
         }
         this.userInfo.DailyWater = this.userInfo.DailyWater - 1;
         this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
-
-        // this.api.SaveWater(-1).subscribe(data => {
-        //     if (data == true) {
-        //         this.userInfo = this.api.userInfo;
-        //         this.presentToast("İşlem başarılı");
-        //     } else {
-        //         this.presentToast("İşlem tamamlanamadı.");
-        //     }
-        // });
     }
 
     GetActivitiesFromLocal() {
         this.sqlService.getAllActivityListToday(this.userInfo.userId).then(
             data => {
-                this.activityList = data;
+                console.log("sqlService.getAllActivityListToday");
+
+                console.log(data);
+                if (data != null || data != undefined) {
+                    this.activityList = data;
+                }
             });
     }
 
@@ -91,17 +91,18 @@ export class HomePage {
     RefreshUser() {
         //kullanıcıyı lokal den getir.
         this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
-            this.userInfo = user;
+            console.log("sqlService.getUser");
+
+            console.log(user);
+            if (user != null || user != undefined) {
+                this.userInfo = user;
+            }
         });
 
-        console.log(this.userInfo);
         if (Network.connection != "none") {
             //api den kullanıyı çek
-            console.log("api.Login");
-
             this.api.Login(this.userInfo.email, this.userInfo.password)
                 .subscribe(data => {
-
                     if (this.userInfo.DailyWater > data.DailyWater) { //Send water to api
                         this.api.SaveWater(this.userInfo.DailyWater).subscribe(data => {
                         });
@@ -111,12 +112,12 @@ export class HomePage {
                     }
                 });
         }
-
     }
 
     GetActivityList() {
         if (Network.connection != "none") {
             this.api.GetActivities().subscribe(data => {
+                this.activityList = data;
                 this.sqlService.InsertoReplaceActivities(data);
                 this.GetActivitiesFromLocal();
             });

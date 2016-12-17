@@ -1,11 +1,17 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "ion2-fullapp",
+  "author": "Ionic Themes",
+  "homepage": "https://ionicthemes.com",
   "private": true,
   "scripts": {
-    "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "build-dev": "ionic-app-scripts build --dev",
+    "build": "ionic-app-scripts build",
+    "watch": "ionic-app-scripts watch",
+    "serve:before": "watch",
+    "emulate:before": "build",
+    "deploy:before": "build",
+    "build:before": "build",
+    "run:before": "build"
   },
   "dependencies": {
     "@angular/common": "2.1.1",
@@ -18,33 +24,39 @@
     "@angular/platform-browser-dynamic": "2.1.1",
     "@angular/platform-server": "2.1.1",
     "@ionic/storage": "1.1.6",
-    "bootstrap": "^3.3.7",
-    "ionic-angular": "2.0.0-rc.2",
+    "ionic-angular": "2.0.0-rc.3",
     "ionic-native": "2.2.3",
     "ionicons": "3.0.0",
-    "ng2-bootstrap": "^1.1.16",
     "rxjs": "5.0.0-beta.12",
-    "zone.js": "0.6.21"
+    "zone.js": "0.6.26",
+    "bourbon": "^4.2.7"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "0.0.44",
-    "typescript": "2.0.6"
+    "@ionic/app-scripts": "latest",
+    "typescript": "^2.0.9"
   },
   "cordovaPlugins": [
-    "cordova-plugin-whitelist",
-    "cordova-plugin-statusbar",
-    "cordova-plugin-console",
     "cordova-plugin-device",
+    "cordova-plugin-console",
+    "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [
-    "ios",
     {
       "platform": "ios",
       "version": "",
       "locator": "ios"
+    },
+    {
+      "platform": "android",
+      "version": "",
+      "locator": "android"
     }
   ],
-  "description": "FittingoMobile: An Ionic project"
+  "description": "ion2-FullApp: An Ionic project",
+  "config": {
+    "ionic_sass": "./config/sass.config.js"
+  }
 }

@@ -31,6 +31,8 @@ export class SqlStorageService {
                 }
                 return results;
             });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -43,6 +45,8 @@ export class SqlStorageService {
                 }
                 return results;
             });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -57,6 +61,8 @@ export class SqlStorageService {
                 }
                 return results;
             });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -81,6 +87,8 @@ export class SqlStorageService {
                     }
                 }
             });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -93,6 +101,8 @@ export class SqlStorageService {
                 }
                 return results;
             });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -136,6 +146,8 @@ export class SqlStorageService {
                 }, (error) => {
                     console.log("ERROR: " + JSON.stringify(error.err));
                 });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -146,6 +158,8 @@ export class SqlStorageService {
             }, (error) => {
                 console.log("ERROR: " + JSON.stringify(error.err));
             });
+        } else {
+            return Promise.resolve(null);
         }
     };
 
@@ -177,6 +191,8 @@ export class SqlStorageService {
                     }, (error) => {
                         console.log("ERROR: " + JSON.stringify(error.err));
                     });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -188,6 +204,8 @@ export class SqlStorageService {
                         this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
                     }
                 });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -199,6 +217,8 @@ export class SqlStorageService {
                         this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
                     }
                 });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -211,6 +231,8 @@ export class SqlStorageService {
                 }, (error) => {
                     console.log("update User ERROR: " + JSON.stringify(error.err));
                 });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -229,6 +251,8 @@ export class SqlStorageService {
                 }, (error) => {
                     console.log("update User ERROR: " + JSON.stringify(error.err));
                 });
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -254,6 +278,8 @@ export class SqlStorageService {
                 ]]);
             }
             this.db.sqlBatch(sqlStatemants);
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -275,6 +301,8 @@ export class SqlStorageService {
                     , activityInfo.MealId, 1, activityInfo.ProductType]]);
             }
             this.db.sqlBatch(sqlStatemants);
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -288,6 +316,8 @@ export class SqlStorageService {
                 sqlStatemants.push([q, [row.ServingTypeId, row.ServingTypeName]]);
             }
             this.db.sqlBatch(sqlStatemants);
+        } else {
+            return Promise.resolve(null);
         }
     }
 
@@ -304,19 +334,10 @@ export class SqlStorageService {
                 row.Level2, row.Level3]]);
             }
             this.db.sqlBatch(sqlStatemants);
+        } else {
+            return Promise.resolve(null);
         }
     }
-
-    //   getFood(foodName: string) {
-    //     if (this.db) {
-    //         return this.db.executeSql('select * from Food where ProductName LIKE ? and password = ? limit 40', [foodName]).then((data) => {
-    //             if (data.rows.length > 0) {
-    //                 return data.rows.item(0);
-    //             }
-    //         });
-    //     }
-    //     return Promise.resolve(null);
-    // }
 
     initializeDatabase() {
         this.db = new SQLite();

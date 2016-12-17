@@ -114,8 +114,8 @@ export class SportDetailPage {
             description, 1, 0, 0, ProductType.Exercise, 0);
 
         this.sqlService.InsertActivity(activityInfo).then(value => {
-            this.success = true;
-            this.presentToast("Spor eklendi.");
+                this.success = true;
+                this.presentToast("Spor eklendi.");
         });
 
     }

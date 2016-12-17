@@ -7,28 +7,43 @@ import { ResponseBase } from '../shared/shared';
 import { Network } from 'ionic-native';
 
 @Component({
+  selector: "signup-page",
   templateUrl: 'signup.html'
 })
 export class SignUpPage implements OnInit {
   myForm: FormGroup;
-  userInfo: { name: string, surname: string, email: string, password: string } = { name: '', surname: '', email: '', password: '' };
   responseBase: ResponseBase;
 
   constructor(public formBuilder: FormBuilder, private api: FittingoServiceApi,
     private loadingController: LoadingController, private toastCtrl: ToastController,
     public navCtrl: NavController) {
+
   }
 
   ngOnInit(): any {
     this.myForm = this.formBuilder.group({
       'name': ['', [Validators.required, Validators.minLength(3), this.nameValidator.bind(this)]],
       'surname': ['', [Validators.required, Validators.minLength(3), this.nameValidator.bind(this)]],
-      'password': ['', [Validators.required, Validators.minLength(3)]],
+      //'password': ['', [Validators.required, Validators.minLength(3), this.matchPasswordValidator.bind(this)]],
+      //'confirm_password': ['', [Validators.required, Validators.minLength(3), this.matchConfirmPasswordValidator.bind(this)]],
+      'passwords': this.formBuilder.group({
+        password: new FormControl('', Validators.required),
+        confirmPassword: new FormControl('', Validators.required)
+      }, { validator: this.areEqual.bind(this)}),
       'email': ['', [Validators.required, this.emailValidator.bind(this)]]
     });
   }
+  areEqual(group: FormGroup) {
+    let password = group.controls["password"];
+    let confirmPassword = group.controls["confirmPassword"];
 
-  onSubmit() {
+    console.log("password " + password.value);
+    console.log("confirmPassword " + confirmPassword.value);
+    if (password.value != confirmPassword.value) {
+      return { invalidpassword: true };
+    } 
+  }
+  doSignup() {
     if (Network.connection == "none") {
       this.presentToast("Lütfen internet bağlantınızı kontrol edin.");
     } else {

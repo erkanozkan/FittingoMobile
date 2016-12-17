@@ -46,6 +46,8 @@ export class LoginPage implements OnInit {
     loader.present().then(() => {
       this.sqlService.getUser(this.myForm.value.email, this.myForm.value.password)
         .then(data => {
+          console.log("sqlService.getUser");
+          console.log(data);
           if (data != undefined && data != null) {
             this.userInfo = <IUserInfo>{
               userId: data.userId,
@@ -71,6 +73,8 @@ export class LoginPage implements OnInit {
             if (Network.connection != 'none') {
               this.service.Login(this.myForm.value.email, this.myForm.value.password)
                 .subscribe(data => {
+                  console.log("service.Login");
+                  console.log(this.userInfo);
                   this.userInfo = data;
 
                   if (this.userInfo == null || this.userInfo.success == false) {

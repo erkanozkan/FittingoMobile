@@ -159,9 +159,12 @@ export class FoodDetailPage {
     }
 
     GetServiceTypeList(serviceTypeId: number) {
+        console.log("GetServiceTypeList");
         this.sqlService.getAllServingTypeList().then(data => {
-            this.servingTypes = data;
-            this.GetServiceTypeNames();
+            if (data != null) {
+                this.servingTypes = data;
+                this.GetServiceTypeNames();
+            }
         });
     }
 
@@ -206,6 +209,8 @@ export class FoodDetailPage {
             activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food, this.servingType);
 
         this.sqlService.InsertActivity(this.activityInfo).then(value => {
+            console.log("InsertActivity");
+
             this.success = true;
             this.presentToast("Yemek eklendi.");
         });
