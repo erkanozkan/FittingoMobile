@@ -1,104 +1,104 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>Yemek Detayları</ion-title>
+        <ion-title>Yemek Ekle</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
-
-    <ion-item>
-        <ion-label>Tarih</ion-label>
-        <ion-datetime [(ngModel)]="MealDate" displayFormat="DD MM YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm">
-        </ion-datetime>
-    </ion-item>
-
-    <ion-item>
-        <ion-label>Öğün</ion-label>
-        <ion-select [(ngModel)]="MealType" okText="Tamam" cancelText="İptal" placeholder="Seçiniz">
-            <ion-option value="1">Kahvaltı</ion-option>
-            <ion-option value="2">Ara Öğün 1</ion-option>
-            <ion-option value="3">Öğle</ion-option>
-            <ion-option value="4">Ara Öğün 2</ion-option>
-            <ion-option value="5">Akşam</ion-option>
-            <ion-option value="6">Ara Öğün 3</ion-option>
-        </ion-select>
-    </ion-item>
-    <ion-grid>
-        <ion-row>
-            <ion-col width-50>
+<ion-content class="forms-examples-content">
+    <div class="event-example-view">
+        <div class="sample-form event-form">
+            <section class="form-section">
                 <ion-item>
-                    <ion-select style="padding:0px;" okText="Tamam" [(ngModel)]="servingType" (ionChange)="ChangeText()"  cancelText="İptal" placeholder="Seçiniz">
-                        <ion-option *ngFor="let item of ServingTypesArray" value="{{item.Value}}">{{item.Text}}</ion-option>
+                    <ion-label>Tarih</ion-label>
+                    <ion-datetime [(ngModel)]="MealDate" displayFormat="DD MM YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm">
+                    </ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Öğün</ion-label>
+                    <ion-select [(ngModel)]="MealType" okText="Tamam" cancelText="İptal" placeholder="Seçiniz">
+                        <ion-option value="1">Kahvaltı</ion-option>
+                        <ion-option value="2">Ara Öğün 1</ion-option>
+                        <ion-option value="3">Öğle</ion-option>
+                        <ion-option value="4">Ara Öğün 2</ion-option>
+                        <ion-option value="5">Akşam</ion-option>
+                        <ion-option value="6">Ara Öğün 3</ion-option>
                     </ion-select>
                 </ion-item>
-            </ion-col>
-            <ion-col width-50>
+                <ion-row no-padding class="multi-input-row">
+                    <ion-col no-padding width-60>
+                        <ion-item class="multi-input time-item">
+                            <ion-select style="padding:0px;" okText="Tamam" [(ngModel)]="servingType" (ionChange)="ChangeText()" cancelText="İptal" placeholder="Seçiniz">
+<ion-option *ngFor="let item of ServingTypesArray" value="{{item.Value}}">{{item.Text}}</ion-option>
+</ion-select>
+</ion-item>
+</ion-col>
+<ion-col no-padding width-40>
+    <ion-item>
+        <ion-input *ngIf="CheckServingType(20)" placeholder="Miktar giriniz." [(ngModel)]="gram" (input)="CalculateCalorie()"></ion-input>
 
-                <ion-item>
-                    <ion-input  *ngIf="CheckServingType(20)" placeholder="Miktar giriniz." [(ngModel)]="gram"
-                    (input)="CalculateCalorie()"></ion-input>
+        <ion-select style="padding:0px;max-width: 100%;" *ngIf="CheckServingType(productItem.Type1)" [(ngModel)]="type1Gram" okText="Tamam" cancelText="İptal" placeholder="Seçiniz"
+(ionChange)="CalculateCalorie()">
+<ion-option value="0.25">1/4 {{type1Name}}</ion-option>
+<ion-option value="0.5">1/2 {{type1Name}}</ion-option>
+<ion-option value="1" selected="true">1 {{type1Name}}</ion-option>
+<ion-option value="2">2 {{type1Name}}</ion-option>
+<ion-option value="3">3 {{type1Name}}</ion-option>
+<ion-option value="4">4 {{type1Name}}</ion-option>
+<ion-option value="5">5 {{type1Name}}</ion-option>
+</ion-select>
 
-                    <ion-select style="padding:0px;max-width: 100%;" *ngIf="CheckServingType(productItem.Type1)" [(ngModel)]="type1Gram" okText="Tamam"
-                        cancelText="İptal" placeholder="Seçiniz" (ionChange)="CalculateCalorie()">
-                        <ion-option value="0.25">1/4 {{type1Name}}</ion-option>
-                        <ion-option value="0.5">1/2 {{type1Name}}</ion-option>
-                        <ion-option value="1" selected="true" >1 {{type1Name}}</ion-option>
-                        <ion-option value="2">2 {{type1Name}}</ion-option>
-                        <ion-option value="3">3 {{type1Name}}</ion-option>
-                        <ion-option value="4">4 {{type1Name}}</ion-option>
-                        <ion-option value="5">5 {{type1Name}}</ion-option>
-                    </ion-select>
-
-                    <ion-select style="padding:0px;max-width: 100%;" *ngIf="CheckServingType(productItem.Type2)" [(ngModel)]="type2Gram"
-                     okText="Tamam" cancelText="İptal" placeholder="Seçiniz" (ionChange)="CalculateCalorie()">
-                        <ion-option value="0.25">1/4 {{type2Name}}</ion-option>
-                        <ion-option value="0.5">1/2 {{type2Name}}</ion-option>
-                        <ion-option value="1" selected="true">1 {{type2Name}}</ion-option>
-                        <ion-option value="2">2 {{type2Name}}</ion-option>
-                        <ion-option value="3">3 {{type2Name}}</ion-option>
-                        <ion-option value="4">4 {{type2Name}}</ion-option>
-                        <ion-option value="5">5 {{type2Name}}</ion-option>
-                    </ion-select>
-                </ion-item>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-   
-    <ion-card>
+<ion-select style="padding:0px;max-width: 100%;" *ngIf="CheckServingType(productItem.Type2)" [(ngModel)]="type2Gram" okText="Tamam" cancelText="İptal" placeholder="Seçiniz"
+(ionChange)="CalculateCalorie()">
+<ion-option value="0.25">1/4 {{type2Name}}</ion-option>
+<ion-option value="0.5">1/2 {{type2Name}}</ion-option>
+<ion-option value="1" selected="true">1 {{type2Name}}</ion-option>
+<ion-option value="2">2 {{type2Name}}</ion-option>
+<ion-option value="3">3 {{type2Name}}</ion-option>
+<ion-option value="4">4 {{type2Name}}</ion-option>
+<ion-option value="5">5 {{type2Name}}</ion-option>
+</ion-select>
+</ion-item>
+</ion-col>
+</ion-row>
+ 
         <ion-card-header>
             {{servingTypeNumber}} {{servingTypeName}} {{productItem.ProductName}}
         </ion-card-header>
         <ion-card-content>
             <ion-grid>
-                <ion-row>
+                <ion-row no-padding class="multi-input-row">
                     <ion-col width-40>Kalori</ion-col>
                     <ion-col width-10>:</ion-col>
                     <ion-col width-50>{{calorie100gramStr}} kcal</ion-col>
                 </ion-row>
-                <ion-row>
+                <ion-row no-padding class="multi-input-row">
                     <ion-col width-40>Karbonhidrat</ion-col>
                     <ion-col width-10>:</ion-col>
                     <ion-col width-50>{{carbonhydratStr}} gr</ion-col>
                 </ion-row>
-                <ion-row>
+                <ion-row no-padding class="multi-input-row">
                     <ion-col width-40>Protein</ion-col>
                     <ion-col width-10>:</ion-col>
                     <ion-col width-50>{{proteinStr}} gr</ion-col>
                 </ion-row>
-                <ion-row>
+                <ion-row no-padding class="multi-input-row">
                     <ion-col width-40>Yağ</ion-col>
                     <ion-col width-10>:</ion-col>
                     <ion-col width-50>{{fatStr}} gr</ion-col>
                 </ion-row>
             </ion-grid>
         </ion-card-content>
-    </ion-card>
  
-    <ion-list no-lines>
+</section>
+  <ion-list no-lines>
         <ion-item>
             <p *ngFor="let item of errorMessages" style="color:red">{{item.message}}</p>
         </ion-item>
     </ion-list>
-
-    <button ion-button (click)="AddFood()">Kaydet</button>
-
+<section class="form-section">
+    <button ion-button block class="form-action-button create-event-button" (click)="AddFood()" type="button">Kaydet</button>
+</section>
+</div>
+</div>
 </ion-content>
+
+ 

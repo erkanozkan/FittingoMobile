@@ -7,9 +7,9 @@
 
 <ion-content class="list-mini-content">
  
-      <div *ngIf="searching" class="spinner-container">
+      <!--<div *ngIf="searching" class="spinner-container">
     <ion-spinner></ion-spinner>
-  </div>
+  </div>-->
   <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 1 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
   </ion-searchbar>
     <ion-list [virtualScroll]="foodList">

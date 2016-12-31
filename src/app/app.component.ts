@@ -5,6 +5,8 @@ import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
 import { LoginPage } from '../pages/login-page/login-page';
 import { HomePage } from '../pages/home-page/home-page';
 import { FoodListPage } from '../pages/food-list/food-list';
+import { FoodDetailPage } from '../pages/food-detail/food-detail';
+
 import { SqlStorageService } from '../pages/shared/shared';
 import { Home } from '../pages/test/test';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
@@ -15,7 +17,7 @@ import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = WalkthroughPage;
 
 pages: Array<{title: string, icon: string, component: any}>;
   pushPages: Array<{title: string, icon: string, component: any}>;

@@ -1,0 +1,8 @@
+ion-app.ios {
+	food-detail-page {
+		.forms-examples-segment
+		{
+			@include segment-button-ios-styles();
+		}
+	} 
+}
