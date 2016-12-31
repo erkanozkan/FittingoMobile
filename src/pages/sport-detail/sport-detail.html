@@ -1,46 +1,53 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>Yemek Detayları</ion-title>
+        <ion-title>Spor Ekle</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
-    <ion-list>
-        <ion-item>
-            <ion-label>Tarih</ion-label>
-            <ion-datetime [(ngModel)]="SportDate" displayFormat="DD MMM,YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm">
-            </ion-datetime>
+<ion-content class="forms-examples-content">
+    <div class="event-example-view">
+        <div class="sample-form event-form">
+            <section class="form-section">
+                <ion-item>
+                    <ion-label>Tarih</ion-label>
+                    <ion-datetime [(ngModel)]="SportDate" displayFormat="DD MM YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm">
+                    </ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Seviye</ion-label>
+                    <ion-select style="padding:0px;max-width: 100%;" [(ngModel)]="servingType" okText="Tamam" cancelText="İptal" placeholder="Seçiniz" (ionChange)="CalculateCalorie()">
+<ion-option *ngFor="let item of ServingTypesArray" selected="item.Selected" value="{{item.Value}}">{{item.Text}}</ion-option>
+</ion-select>
+</ion-item>
+<ion-row no-padding class="multi-input-row">
+    <ion-col no-padding width-20>
+        <ion-item class="multi-input time-item">
+            <ion-input type="number" placeholder="Süre giriniz." [(ngModel)]="totalTime" (input)="CalculateCalorie()"></ion-input>
+
         </ion-item>
-
+    </ion-col>
+    <ion-col no-padding width-30>
         <ion-item>
-            <ion-label>Seviye</ion-label>
-            <ion-select style="padding:0px;max-width: 100%;" [(ngModel)]="servingType" okText="Tamam" cancelText="İptal" placeholder="Seçiniz"
-                (ionChange)="CalculateCalorie()">
-                <ion-option *ngFor="let item of ServingTypesArray" selected="item.Selected" value="{{item.Value}}">{{item.Text}}</ion-option>
-            </ion-select>
+            <ion-label>
+                <h2>Dakika</h2>
+            </ion-label>
         </ion-item>
-        <ion-grid>
-            <ion-row>
-                <ion-col>
-                    <ion-input type="number" placeholder="Süre giriniz." [(ngModel)]="totalTime" (input)="CalculateCalorie()"></ion-input>
+    </ion-col>
+    <ion-col no-padding width-50>
+        <ion-item>
+            <ion-label> + {{calorie}} Kalori</ion-label>
+        </ion-item>
+    </ion-col>
+</ion-row>
 
-                </ion-col>
-                <ion-col>
-                    <ion-label> Dakika</ion-label>
-
-                </ion-col>
-                <ion-col>
-                    <ion-label *ngIf="isCalorieSet"> + {{calorie}} Kalori</ion-label>
-
-                </ion-col>
-            </ion-row>
-            </ion-grid>
-
-
-            <ion-item>
-                <p *ngFor="let item of errorMessages" style="color:red">{{item.message}}</p>
-            </ion-item>
-    </ion-list>
-
-    <button ion-button (click)="AddSport()">Kaydet</button>
-
+</section>
+<ion-list no-lines>
+    <ion-item>
+        <p *ngFor="let item of errorMessages" style="color:red">{{item.message}}</p>
+</ion-item>
+</ion-list>
+<section class="form-section">
+    <button ion-button block class="form-action-button create-event-button" (click)="AddSport()" type="button">Kaydet</button>
+</section>
+</div>
+</div>
 </ion-content>

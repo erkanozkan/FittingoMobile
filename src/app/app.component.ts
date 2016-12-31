@@ -6,6 +6,7 @@ import { LoginPage } from '../pages/login-page/login-page';
 import { HomePage } from '../pages/home-page/home-page';
 import { FoodListPage } from '../pages/food-list/food-list';
 import { FoodDetailPage } from '../pages/food-detail/food-detail';
+import { SportDetailPage } from '../pages/sport-detail/sport-detail';
 
 import { SqlStorageService } from '../pages/shared/shared';
 import { Home } from '../pages/test/test';

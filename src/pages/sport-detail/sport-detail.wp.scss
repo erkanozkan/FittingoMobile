@@ -1,0 +1,60 @@
+ion-app.wp {
+	sport-detail-page {
+		.forms-examples-segment
+		{
+			@include justify-content(center);
+			@include segment-button-wp-styles();
+		}
+ 
+
+		.event-form
+		{
+			.time-item
+			{
+				ion-datetime {
+				  width: 100%;
+					padding-right: 0px !important;
+					padding-top: 8px !important;
+					padding-bottom: 7px !important;
+				}
+			}
+		}
+  
+		.sample-form
+		{
+			.item
+			{
+				padding: 0px;
+
+				.item-inner
+				{
+					padding: 0px;
+					position: relative;
+
+					ion-icon {
+						position: absolute;
+						right: 0px;
+						top: 0px;
+						margin: 13px 6px;
+						line-height: 3rem;
+						border: solid 2px rgba(0, 0, 0, 0);
+					}
+				}
+
+				.text-input
+				{
+					padding: 0px 0.6rem;
+				}
+
+				&[icon-right]
+				{
+					.text-input
+					{
+						padding-right: 35px;
+					}
+				}
+			}
+		}
+	}
+ 
+}

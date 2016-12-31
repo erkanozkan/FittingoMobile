@@ -9,6 +9,7 @@ import { ServingTypeInfo } from '../food-detail/serve-type-info';
 import { ActivityInfo } from '../food-list/activityInfo';
 
 @Component({
+    selector:"sport-detail-page",
     templateUrl: "sport-detail.html"
 })
 
@@ -31,7 +32,7 @@ export class SportDetailPage {
         private loadingController: LoadingController,
         private navParams: NavParams, private toastCtrl: ToastController,
         private sqlService: SqlStorageService) {
-
+ 
         this.productItem = this.navParams.data.product;
         this.userId = this.navParams.data.userId;
         this.Weight = this.navParams.data.Weight;
