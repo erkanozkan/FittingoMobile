@@ -1,4 +1,9 @@
 
+// Common list styles can be found in "./common.styles/layouts/lists"
+sport-list-page {
+
+
+
     .spinner-container {
         width: 100%;
         text-align: center;
@@ -7,5 +12,45 @@
   .toast {
    text-align:center;
   }
+	ion-header {
+		@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
+	}
+
+	.list-mini-content
+	{
+		background-color: color($colors, background, base);
+
+		 
+		@include layout-list-styles($theme-color-2, $white-d);
+
+			ion-list {
+				.list-item
+				{
+					.content-row
+					{
+						.item-title{
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+
+						&.one-line
+						{
+							@include align-items(center);
+
+							.item-description
+							{
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+							}
+						}
+					}
+				}
+			}
+		 
+	}
+}
+
 
  

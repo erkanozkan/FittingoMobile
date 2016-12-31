@@ -9,6 +9,7 @@ import { SportDetailPage } from '../sport-detail/sport-detail';
 import { LoadingController, ToastController } from 'ionic-angular';
 
 @Component({
+    selector:"sport-list-page",
     templateUrl: "sport-list.html"
 })
 
@@ -46,6 +47,7 @@ export class SportListPage {
                 if (data == null || data.length == 0) {
                     dataService.GetAllSportList().subscribe(data => {
                         this.tempSportList = data;
+                        this.sportList = data;
                         loader.setContent("Spor kategorileri kaydediliyor...")
                         this.sqlService.BulkInsertExercises(this.tempSportList);
                         this.isLoaded = true;
@@ -53,6 +55,7 @@ export class SportListPage {
                     });
                 } else {
                     this.tempSportList = data;
+                    this.sportList=data;
                     this.isLoaded = true;
                     loader.dismiss();
                 }
@@ -65,11 +68,7 @@ export class SportListPage {
             this.setFilteredItems();
         });
     }
-    onSearchInput() {
-        if (this.searchTerm.length > 2) {
-            this.searching = true;
-        }
-    }
+ 
     OpenItemDetailsPage(product: SportInfo) {
         var sportDetailInfo = {
             product: product,
@@ -81,7 +80,7 @@ export class SportListPage {
     }
 
     setFilteredItems() {
-        if (this.tempSportList != null && this.searchTerm.length > 2) {
+        if (this.tempSportList != null && this.searchTerm.length > 0) {
             this.sportList = this.tempSportList.filter((item) => {
                 this.canDoRequest = true;
                 return item.ExerciseName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;

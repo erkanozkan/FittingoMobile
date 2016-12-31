@@ -73,11 +73,7 @@ export class FoodListPage {
             this.setFilteredItems();
         });
     }
-    onSearchInput() {
-        if (this.searchTerm.length > 2) {
-            this.searching = true;
-        }
-    }
+ 
     OpenItemDetailsPage(product: FoodInfo) {
 
         var foodDetailInfo = {

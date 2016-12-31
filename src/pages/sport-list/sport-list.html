@@ -1,20 +1,27 @@
 <ion-header>
   <ion-navbar>
-
     <ion-title>Spor Listesi</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-   <div *ngIf="searching" class="spinner-container">
-    <ion-spinner></ion-spinner>
-  </div>
-  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 3 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
+
+
+<ion-content class="list-mini-content">
+ 
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 1 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
   </ion-searchbar>
-  
-  <ion-list [virtualScroll]="sportList" *ngIf="canDoRequest">
-    <ion-item *virtualItem="let item" cursor="hand" 
+    <ion-list [virtualScroll]="sportList">
+      <button class="list-item" ion-item  *virtualItem="let item" cursor="hand" 
         detail-push (click)="OpenItemDetailsPage(item)">
-        {{item.ExerciseName}}
-    </ion-item>
-  </ion-list>
+        <ion-row no-padding class="content-row one-line">
+       
+          <ion-col no-padding width-90 class="item-content">
+            <h3 class="item-title">{{item.ExerciseName}}</h3>
+          </ion-col>
+          <ion-col no-padding width-10 class="item-icon">
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </button>
+    </ion-list>
+  
 </ion-content>
