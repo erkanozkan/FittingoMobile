@@ -2,10 +2,16 @@ login-page {
     
 	.login-content
 	{
-        .login-form{
-             margin-top: 10px;
-        }
-
+        .header-logo
+		{
+			width: 50vw;
+            preload-image{
+                margin-left: 45%;
+                padding: 30%;
+                margin-bottom: 20%;
+                margin-top: 10%;
+            }
+		}
 		.alt-options
 		{
 			.button

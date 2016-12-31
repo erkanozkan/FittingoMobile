@@ -27,7 +27,18 @@ home-page {
         .logo-row{
             margin-bottom: 50px;
         }
-         
+         .logo-image{
+             max-width: 85% !important;
+         }
+				.choose-category-button
+				{ 
+					background-color: $white;
+					margin: 10px 10px;
+                     ion-icon {
+							font-size: 2.9em;
+                            color: green;
+						}
+				}
 		.image-heading
 		{
 			height: $categories-heading-image-height;

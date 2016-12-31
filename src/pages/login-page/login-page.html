@@ -10,7 +10,9 @@
   </ion-row>-->
 
 <ion-content class="login-content auth-content">
-  <img src="assets/images/Fittingo_Logo.png" />
+  <div class="header-logo">
+    <preload-image [ratio]="{w:583, h:100}" src="assets/images/Fittingo_Logo.png"></preload-image>
+  </div>
   <form class="login-form auth-form" [formGroup]="login" (ngSubmit)="doLogin()">
     <ion-item>
       <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
@@ -30,41 +32,6 @@
       <button ion-button block clear class="signup-button" (click)="OpenSignupPage()">Kaydol!</button>
     </ion-col>
   </ion-row>
-  <!--<p class="auth-divider">
-    Or
-  </p>
-  <button ion-button block class="facebook-auth-button" (click)="doFacebookLogin()">Log in with Facebook</button>
-  <button ion-button block class="google-auth-button" (click)="doGoogleLogin()">Log in with Google</button>-->
+ 
 </ion-content>
 
-
-<!--<ion-content padding>
-
-  <ion-row>
-    <ion-col>
-      <img src="assets/images/Fittingo_Logo.png" />
-    </ion-col>
-  </ion-row>
-
-  <ion-list>
-    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-      <ion-item>
-        <ion-label floating primary>Email</ion-label>
-        <ion-input [(ngModel)]="userInfo.email" formControlName="email" type="text" id="email" spellcheck="false" autocapitalize="off">
-        </ion-input>
-      </ion-item>
-      <p *ngIf="!isValid('email')" color="danger" padding-left>Geçersiz Email</p>
-      <ion-item>
-        <ion-label floating primary>Şifre</ion-label>
-        <ion-input  [(ngModel)]="userInfo.password" formControlName="password" type="password" id="password" spellcheck="false" autocapitalize="off">
-        </ion-input>
-      </ion-item>
-      <p *ngIf="!isValid('password')" color="danger" padding-left>Geçersiz Şifre</p>
-
-      <button ion-button type="submit" block primary [disabled]="!myForm.valid">Giriş</button>
-    </form>
-  </ion-list>
-
-<button ion-button type="button" (click)="OpenSignupPage()" block>Kaydol</button>
-
-</ion-content>-->

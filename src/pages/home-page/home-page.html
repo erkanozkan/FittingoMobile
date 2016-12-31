@@ -15,65 +15,34 @@
 <ion-content class="listing-content">
   <ion-grid>
     <ion-row class="logo-row">
-       <ion-col width-50>
-        <img src="assets/images/Fittingo_Logo.png" />
-      </ion-col> 
-      <ion-col width-20 offset  class="category-item">
-        <ion-label padding-left>{{userInfo.name}}</ion-label>
-
+      <ion-col width-50>
+      <img class="logo-image" src="assets/images/Fittingo_Logo.png" />
       </ion-col>
-      <ion-col width-10  class="category-item">
-        <ion-label>{{userInfo.Weight}}</ion-label>
+      <ion-col width-20 offset class="category-item">
+        <h6 padding-left>{{userInfo.name}}</h6>
       </ion-col>
-      <ion-col width-20  class="category-item">
-        <button ion-button (click)="LogOut()">Çıkış</button>
+      <ion-col width-10 class="category-item">
+        <h6>{{userInfo.Weight}}</h6>
+      </ion-col>
+      <ion-col width-20 class="category-item">
+        <button iion-button block icon-right class="choose-category-button"  (click)="LogOut()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
       </ion-col>
     </ion-row>
-  
+
     <ion-row class="grid-categories">
       <ion-col width-50 class="category-item">
-        <background-image class="category-heading" src="assets/images/addFood.png" 
-                      (click)="OpenFoodListPage()">
-          <!--<ion-row class="heading-row">
-            <ion-col no-padding width-100>
-              <h2 class="category-title">Yemek Ekle</h2>
-            </ion-col>
-          </ion-row>-->
+        <background-image class="category-heading" src="assets/images/addFood.png" (click)="OpenFoodListPage()">
+
         </background-image>
       </ion-col>
       <ion-col width-50 class="category-item">
-        <background-image class="category-heading" src="assets/images/addExercise.png" 
-                        (click)="OpenSportsListPage()">
-          <!--<ion-row class="heading-row">
-            <ion-col no-padding width-100>
-              <h2 class="category-title">Spor Ekle</h2>
-            </ion-col>
-          </ion-row>-->
+        <background-image class="category-heading" src="assets/images/addExercise.png" (click)="OpenSportsListPage()">
         </background-image>
       </ion-col>
     </ion-row>
 
-    <!--<ion-row>
-       <ion-col width-40>
-        <img src="assets/images/Fittingo_Logo.png" />
-      </ion-col> 
-      <ion-col width-20>
-        <ion-label padding-left>{{userInfo.name}}</ion-label>
-
-      </ion-col>
-      <ion-col width-20>
-        <ion-label>{{userInfo.Weight}}</ion-label>
-      </ion-col>
-      <ion-col width-20>
-        <button ion-button (click)="LogOut()">Çıkış</button>
-      </ion-col>
-
-    </ion-row>-->
-    <!--<ion-row>
-      <ion-col width-50><button ion-button (click)="OpenFoodListPage()">Yemek Ekle</button></ion-col>
-      <ion-col width-50> <button ion-button (click)="OpenSportsListPage()">Spor Ekle</button>
-      </ion-col>
-    </ion-row>-->
     <ion-row>
       <ion-col width-50>{{userInfo.TakenCalorie}}</ion-col>
       <ion-col width-50>{{userInfo.CalorieExpenditure}}</ion-col>
@@ -102,12 +71,25 @@
       <ion-col width-90> </ion-col>
       <ion-col width-10> </ion-col>
     </ion-row>
+
+
     <ion-row>
       <ion-col>
-        <ion-list>
-          <ion-item *ngFor="let item of activityList">
-            <ion-icon name="add"></ion-icon> {{item.ActivityDescription}}
-          </ion-item>
+
+        <ion-list [virtualScroll]="activityList">
+          <button class="list-item" ion-item *virtualItem="let item" cursor="hand" detail-push (click)="OpenItemDetailsPage(item)">
+        <ion-row no-padding class="content-row one-line">
+       
+          <ion-col no-padding width-90 class="item-content">
+            <h3 class="item-title">{{item.ActivityDescription}}</h3>
+          </ion-col>
+          <ion-col no-padding width-10 class="item-icon">
+            <ion-icon *ngIf="IsFoodOrExercise(item.ProductType)" name="plus"></ion-icon>
+            <ion-icon *ngIf="IsFoodOrExercise(item.ProductType)" name="arrow-forward"></ion-icon>
+
+          </ion-col>
+        </ion-row>
+      </button>
         </ion-list>
       </ion-col>
     </ion-row>

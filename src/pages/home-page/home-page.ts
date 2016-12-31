@@ -4,6 +4,7 @@ import { IUserInfo } from '../login-page/userinfo';
 import { FoodListPage } from '../food-list/food-list';
 import { SportListPage } from '../sport-list/sport-list';
 import { LoginPage } from '../login-page/login-page';
+import { ProductType } from '../shared/productType';
 
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { ActivityInfo } from '../food-list/activityInfo';
@@ -81,6 +82,10 @@ export class HomePage {
         }
         this.userInfo.DailyWater = this.userInfo.DailyWater - 1;
         this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
+    }
+
+    IsFoodOrExercise(productType: ProductType){
+        return productType == ProductType.Food;
     }
 
     GetActivitiesFromLocal() {
