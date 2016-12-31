@@ -9,7 +9,7 @@ import { FoodDetailPage } from '../food-detail/food-detail';
 import { LoadingController, ToastController, Loading } from 'ionic-angular';
 
 @Component({
-    selector: "ion-food-list",
+    selector: "food-list-page",
     templateUrl: "food-list.html"
 })
 
@@ -46,6 +46,7 @@ export class FoodListPage {
                 if (data == null || data.length == 0) {
                     dataService.GetAllFoodList().subscribe(data => {
                         this.tempFoodList = data;
+                        this.foodList = data;
                         this.loader.setContent("Yemekler kaydediliyor...")
                         this.sqlService.BulkInsertFoods(this.tempFoodList);
                         this.isLoaded = true;
@@ -53,6 +54,7 @@ export class FoodListPage {
                     });
                 } else {
                     this.tempFoodList = data;
+                    this.foodList = data;
                     this.isLoaded = true;
                     this.loader.dismiss();
                 }
@@ -87,7 +89,7 @@ export class FoodListPage {
     }
 
     setFilteredItems() {
-        if (this.tempFoodList != null && this.searchTerm.length > 2) {
+        if (this.tempFoodList != null && this.searchTerm.length > 0) {
             this.foodList = this.tempFoodList.filter((item) => {
                 this.canDoRequest = true;
                 return item.ProductName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;

@@ -1,6 +1,6 @@
 import { OnInit, Component } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
-import { TabsPage } from '../tabs/tabs';
+import { TabsPage } from '../tabs-navigation/tabs-navigation';
 import { LoadingController, NavController, ToastController, Platform } from 'ionic-angular';
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { SignUpPage } from '../signup/signup';

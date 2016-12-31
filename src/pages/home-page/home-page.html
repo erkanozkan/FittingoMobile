@@ -1,9 +1,62 @@
-<ion-content padding>
+<ion-header class="listing-header">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <div class="header-logo">
+        Fittingo
+        <!--<preload-image [ratio]="{w:583, h:100}" src="./assets/images/Fittingo_Logo.png"></preload-image>-->
+      </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="listing-content">
   <ion-grid>
-    <ion-row>
-      <ion-col width-40>
+    <ion-row class="logo-row">
+       <ion-col width-50>
         <img src="assets/images/Fittingo_Logo.png" />
+      </ion-col> 
+      <ion-col width-20 offset  class="category-item">
+        <ion-label padding-left>{{userInfo.name}}</ion-label>
+
       </ion-col>
+      <ion-col width-10  class="category-item">
+        <ion-label>{{userInfo.Weight}}</ion-label>
+      </ion-col>
+      <ion-col width-20  class="category-item">
+        <button ion-button (click)="LogOut()">Çıkış</button>
+      </ion-col>
+    </ion-row>
+  
+    <ion-row class="grid-categories">
+      <ion-col width-50 class="category-item">
+        <background-image class="category-heading" src="assets/images/addFood.png" 
+                      (click)="OpenFoodListPage()">
+          <!--<ion-row class="heading-row">
+            <ion-col no-padding width-100>
+              <h2 class="category-title">Yemek Ekle</h2>
+            </ion-col>
+          </ion-row>-->
+        </background-image>
+      </ion-col>
+      <ion-col width-50 class="category-item">
+        <background-image class="category-heading" src="assets/images/addExercise.png" 
+                        (click)="OpenSportsListPage()">
+          <!--<ion-row class="heading-row">
+            <ion-col no-padding width-100>
+              <h2 class="category-title">Spor Ekle</h2>
+            </ion-col>
+          </ion-row>-->
+        </background-image>
+      </ion-col>
+    </ion-row>
+
+    <!--<ion-row>
+       <ion-col width-40>
+        <img src="assets/images/Fittingo_Logo.png" />
+      </ion-col> 
       <ion-col width-20>
         <ion-label padding-left>{{userInfo.name}}</ion-label>
 
@@ -15,12 +68,12 @@
         <button ion-button (click)="LogOut()">Çıkış</button>
       </ion-col>
 
-    </ion-row>
-    <ion-row>
+    </ion-row>-->
+    <!--<ion-row>
       <ion-col width-50><button ion-button (click)="OpenFoodListPage()">Yemek Ekle</button></ion-col>
       <ion-col width-50> <button ion-button (click)="OpenSportsListPage()">Spor Ekle</button>
       </ion-col>
-    </ion-row>
+    </ion-row>-->
     <ion-row>
       <ion-col width-50>{{userInfo.TakenCalorie}}</ion-col>
       <ion-col width-50>{{userInfo.CalorieExpenditure}}</ion-col>

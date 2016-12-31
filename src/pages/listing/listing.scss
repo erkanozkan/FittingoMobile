@@ -9,8 +9,8 @@
 	margin: 0px;
 }
 
-home-page {
-	$categories-heading-image-height: 150px; 
+listing-page {
+	$categories-heading-image-height: 150px;
 	$categories-grid-padding: 10px;
 	$categories-horizontal-list-padding: 10px;
 
@@ -23,11 +23,7 @@ home-page {
 	}
 
 	.listing-content
-	{   
-        .logo-row{
-            margin-bottom: 50px;
-        }
-         
+	{
 		.image-heading
 		{
 			height: $categories-heading-image-height;
@@ -117,8 +113,8 @@ home-page {
 
 					.bg-overlay
 					{
-						//z-index: 1;
-						//background-color: white;
+						z-index: 1;
+						background-color: rgba($black-c, .6);
 					}
 
 					ion-spinner {

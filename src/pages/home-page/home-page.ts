@@ -25,9 +25,23 @@ export class HomePage {
         private api: FittingoServiceApi,
         private toastCtrl: ToastController,
         private nav: Nav, private sqlService: SqlStorageService) {
-        console.log("constructor");
 
-        console.log(this.userInfo);
+
+        // this.userInfo = <IUserInfo>{
+        //     userId: 1,
+        //     email: "string",
+        //     name: "Erkan",
+        //     success: true,
+        //     password: "string",
+        //     Weight: 89,
+        //     RemainingCalorie: 1678,
+        //     TakenCalorie: 1092,
+        //     CalorieExpenditure: 1289,
+        //     BadgeLevel: 129,
+        //     GoalWater: 9,
+        //     DailyWater: 7,
+        //     DailyCalories: 1987
+        // };
         this.userInfo = navParams.data;
 
     }
@@ -85,7 +99,6 @@ export class HomePage {
         this.GetActivityList();
         this.RefreshUser();
         this.SendActivityListToApi();
-        //this.SendWaterCountToApi();
     }
 
     RefreshUser() {

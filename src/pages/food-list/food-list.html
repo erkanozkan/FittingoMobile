@@ -1,9 +1,35 @@
 <ion-header>
   <ion-navbar>
-
     <ion-title>Yemek Listesi</ion-title>
   </ion-navbar>
 </ion-header>
+
+
+<ion-content class="list-mini-content">
+ 
+      <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 1 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
+  </ion-searchbar>
+    <ion-list [virtualScroll]="foodList">
+      <button class="list-item" ion-item  *virtualItem="let item" cursor="hand" 
+        detail-push (click)="OpenItemDetailsPage(item)">
+        <ion-row no-padding class="content-row one-line">
+       
+          <ion-col no-padding width-90 class="item-content">
+            <h3 class="item-title">{{item.ProductName}}</h3>
+            <p class="item-description">{{item.Kalori100Gram}}</p>
+          </ion-col>
+          <ion-col no-padding width-10 class="item-icon">
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </button>
+    </ion-list>
+  
+</ion-content>
+<!--
 <ion-content padding>
    <div *ngIf="searching" class="spinner-container">
     <ion-spinner></ion-spinner>
@@ -17,4 +43,4 @@
         {{item.ProductName}}
     </ion-item>
   </ion-list>
-</ion-content>
+</ion-content>-->

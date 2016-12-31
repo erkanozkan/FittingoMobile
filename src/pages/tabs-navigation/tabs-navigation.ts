@@ -5,7 +5,8 @@ import { HomePage } from '../home-page/home-page';
 
 
 @Component({
-    templateUrl: 'tabs.html'
+    selector:"tabs-navigation",
+    templateUrl: 'tabs-navigation.html'
 })
 export class TabsPage {
     tab1Root: any = HomePage;

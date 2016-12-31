@@ -20,7 +20,7 @@ import { Rating } from '../components/rating/rating';
 
 
 import { FoodListPage } from '../pages/food-list/food-list';
-import { TabsPage } from '../pages/tabs/tabs';
+import { TabsPage } from '../pages/tabs-navigation/tabs-navigation';
 import { FoodDetailPage } from '../pages/food-detail/food-detail';
 import { SportListPage } from '../pages/sport-list/sport-list';
 import { SportDetailPage } from '../pages/sport-detail/sport-detail';

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform,MenuController,App } from 'ionic-angular';
 import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
 
 import { LoginPage } from '../pages/login-page/login-page';
@@ -15,11 +15,13 @@ import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = WalkthroughPage;
+  rootPage: any = HomePage;
 
-  pages: Array<{ title: string, component: any }>;
+pages: Array<{title: string, icon: string, component: any}>;
+  pushPages: Array<{title: string, icon: string, component: any}>;
 
-  constructor(public platform: Platform, public sqlStorage: SqlStorageService) {
+  constructor(public platform: Platform, public menu: MenuController, 
+  public sqlStorage: SqlStorageService, public app: App) {
 
     platform.ready().then(() => {
       StatusBar.styleDefault();
@@ -28,15 +30,30 @@ export class MyApp {
       }
     });
     // used for an example of ngFor and navigation
+    
     this.pages = [
-      { title: 'Ana Sayfa', component: HomePage }
+      { title: 'Home', icon: 'home', component: HomePage },
+      // { title: 'Forms', icon: 'create', component: FormsPage }
+    ];
+
+    this.pushPages = [
+      { title: 'Layouts', icon: 'grid', component: HomePage },
+      // { title: 'Settings', icon: 'settings', component: SettingsPage }
     ];
   }
 
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
+    openPage(page) {
+    // close the menu when clicking a link from the menu
+    this.menu.close();
+    // navigate to the new page if it is not the current page
     this.nav.setRoot(page.component);
+  }
+
+  pushPage(page) {
+    // close the menu when clicking a link from the menu
+    this.menu.close();
+    // rootNav is now deprecated (since beta 11) (https://forum.ionicframework.com/t/cant-access-rootnav-after-upgrade-to-beta-11/59889)
+    this.app.getRootNav().push(page.component);
   }
 }
