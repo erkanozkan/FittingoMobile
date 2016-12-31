@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HomePage } from '../pages/home-page/home-page';
 import { LoginPage } from '../pages/login-page/login-page';
 import { FittingoServiceApi, FoodService, SportService, SqlStorageService } from '../pages/shared/shared';
+import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 
 
 import { PreloadImage } from '../components/preload-image/preload-image';
@@ -47,7 +48,8 @@ import { Home } from '../pages/test/test';
     ShowHideInput,
     ColorRadio,
     CounterInput,
-    Rating
+    Rating,
+    WalkthroughPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, { tabsPlacement: 'bottom' }),
@@ -65,7 +67,8 @@ import { Home } from '../pages/test/test';
     SportListPage,
     SportDetailPage,
     SignUpPage,
-    Home
+    Home,
+    WalkthroughPage
   ],
   providers: [
     FoodService,

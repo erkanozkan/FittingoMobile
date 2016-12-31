@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home-page/home-page';
 import { FoodListPage } from '../pages/food-list/food-list';
 import { SqlStorageService } from '../pages/shared/shared';
 import { Home } from '../pages/test/test';
+import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,7 +15,7 @@ import { Home } from '../pages/test/test';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any = WalkthroughPage;
 
   pages: Array<{ title: string, component: any }>;
 

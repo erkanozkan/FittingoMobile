@@ -10,10 +10,11 @@ import { Network } from 'ionic-native';
 declare var Connection: any;
 
 @Component({
+  selector:"login-page",
   templateUrl: 'login-page.html'
 })
 export class LoginPage implements OnInit {
-  myForm: FormGroup;
+  login: FormGroup;
   loading = false;
   userInfo: IUserInfo;
 
@@ -30,13 +31,13 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit(): any {
-    this.myForm = this.formBuilder.group({
+    this.login = this.formBuilder.group({
       'password': ['', [Validators.required, Validators.minLength(3)]],
       'email': ['', [Validators.required, this.emailValidator.bind(this)]]
     });
   }
 
-  onSubmit() {
+  doLogin() {
     this.loading = true;
     let loader = this.loadingController.create({
       content: 'Giriş yapılıyor...',
@@ -44,7 +45,7 @@ export class LoginPage implements OnInit {
     });
 
     loader.present().then(() => {
-      this.sqlService.getUser(this.myForm.value.email, this.myForm.value.password)
+      this.sqlService.getUser(this.login.value.email, this.login.value.password)
         .then(data => {
           console.log("sqlService.getUser");
           console.log(data);
@@ -71,7 +72,7 @@ export class LoginPage implements OnInit {
           } else {
 
             if (Network.connection != 'none') {
-              this.service.Login(this.myForm.value.email, this.myForm.value.password)
+              this.service.Login(this.login.value.email, this.login.value.password)
                 .subscribe(data => {
                   console.log("service.Login");
                   console.log(this.userInfo);
@@ -96,8 +97,11 @@ export class LoginPage implements OnInit {
     });
   }
 
+goToForgotPassword() {
+
+}
   isValid(field: string) {
-    let formField = this.myForm.get(field);
+    let formField = this.login.get(field);
     return formField.valid || formField.pristine;
   }
 
