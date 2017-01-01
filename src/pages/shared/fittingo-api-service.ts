@@ -78,7 +78,7 @@ export class FittingoServiceApi {
         var requestDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
 
         let body = 'ActivityDatetime=' + requestDate + '&UserId=' + this.userInfo.userId;
-        return this.http.post(this.baseUrl + '/activities/daily', body, options)
+         return this.http.post(this.baseUrl + '/activities/daily', body, options)
             .map((res: Response) => res.json().Activities as ActivityInfo[])
             .catch(this.handleError);
     }

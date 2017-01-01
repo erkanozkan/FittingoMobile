@@ -1,34 +1,41 @@
 <ion-header class="listing-header">
   <ion-navbar>
-    <button ion-button menuToggle>
+    <ion-row class="logo-row">
+      <ion-col width-20 class="category-item">
+        <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
-      <div class="header-logo">
-        Fittingo
-        <!--<preload-image [ratio]="{w:583, h:100}" src="./assets/images/Fittingo_Logo.png"></preload-image>-->
-      </div>
-    </ion-title>
+      </ion-col>
+      <ion-col width-60 class="category-item">
+        <ion-title>
+          <div class="header-logo">
+            Fittingo
+            <!--<preload-image [ratio]="{w:583, h:100}" src="./assets/images/Fittingo_Logo.png"></preload-image>-->
+          </div>
+
+        </ion-title>
+      </ion-col>
+      <ion-col width-20 class="category-item">
+        <button ion-button block icon-only clear icon-right class="choose-category-button" (click)="LogOut()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+      </ion-col>
+
+
+    </ion-row>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="listing-content">
   <ion-grid>
     <ion-row class="logo-row">
-      <ion-col width-50>
-      <img class="logo-image" src="assets/images/Fittingo_Logo.png" />
-      </ion-col>
-      <ion-col width-20 offset class="category-item">
+      <ion-col width-70 class="category-item">
         <h6 padding-left>{{userInfo.name}}</h6>
       </ion-col>
       <ion-col width-10 class="category-item">
         <h6>{{userInfo.Weight}}</h6>
       </ion-col>
-      <ion-col width-20 class="category-item">
-        <button iion-button block icon-right class="choose-category-button"  (click)="LogOut()">
-        <ion-icon name="log-out"></ion-icon>
-      </button>
-      </ion-col>
+   
     </ion-row>
 
     <ion-row class="grid-categories">
@@ -77,19 +84,19 @@
       <ion-col>
 
         <ion-list [virtualScroll]="activityList">
-          <button class="list-item" ion-item *virtualItem="let item" cursor="hand" detail-push (click)="OpenItemDetailsPage(item)">
-        <ion-row no-padding class="content-row one-line">
-       
-          <ion-col no-padding width-90 class="item-content">
-            <h3 class="item-title">{{item.ActivityDescription}}</h3>
-          </ion-col>
-          <ion-col no-padding width-10 class="item-icon">
-            <ion-icon *ngIf="IsFoodOrExercise(item.ProductType)" name="plus"></ion-icon>
-            <ion-icon *ngIf="IsFoodOrExercise(item.ProductType)" name="arrow-forward"></ion-icon>
+          <ion-item class="list-item" *virtualItem="let item">
+            <ion-row no-padding class="content-row one-line">
+              <ion-col no-padding width-10 class="item-icon">
+                <ion-icon *ngIf="IsFoodOrExercise(1,item.ProductType)" name="add"></ion-icon>
+                <ion-icon *ngIf="IsFoodOrExercise(2,item.ProductType)" name="remove"></ion-icon>
 
-          </ion-col>
-        </ion-row>
-      </button>
+              </ion-col>
+              <ion-col no-padding width-90 class="item-content">
+                <h3 class="item-title">{{item.ActivityDescription}}</h3>
+              </ion-col>
+
+            </ion-row>
+          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>

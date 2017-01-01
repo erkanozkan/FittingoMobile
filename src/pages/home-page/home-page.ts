@@ -84,8 +84,11 @@ export class HomePage {
         this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
     }
 
-    IsFoodOrExercise(productType: ProductType){
-        return productType == ProductType.Food;
+    IsFoodOrExercise(productType: ProductType,itemProductType: ProductType){
+        console.log(productType);
+        console.log(itemProductType);
+        
+        return productType == itemProductType;
     }
 
     GetActivitiesFromLocal() {
@@ -109,9 +112,7 @@ export class HomePage {
     RefreshUser() {
         //kullanıcıyı lokal den getir.
         this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
-            console.log("sqlService.getUser");
-
-            console.log(user);
+        
             if (user != null || user != undefined) {
                 this.userInfo = user;
             }
@@ -136,6 +137,7 @@ export class HomePage {
         if (Network.connection != "none") {
             this.api.GetActivities().subscribe(data => {
                 this.activityList = data;
+                console.log(this.activityList);
                 this.sqlService.InsertoReplaceActivities(data);
                 this.GetActivitiesFromLocal();
             });

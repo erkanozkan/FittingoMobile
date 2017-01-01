@@ -33,11 +33,15 @@ home-page {
 				.choose-category-button
 				{ 
 					background-color: $white;
-					margin: 10px 10px;
+					
                      ion-icon {
-							font-size: 2.9em;
-                            color: green;
+							font-size: 3em;
+                            color: white;
 						}
+
+                        .button-inner {
+                        color:white;
+                        }
 				}
 		.image-heading
 		{

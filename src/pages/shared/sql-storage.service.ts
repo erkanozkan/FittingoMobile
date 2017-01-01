@@ -179,47 +179,42 @@ export class SqlStorageService {
 
                         this.UpdateUser(activityInfo.Calorie, activityInfo.UserId, activityInfo.ProductType);
 
-                        //bu kısım bir kere olsun ve ana sayfaya geldiğinde olsun,
-                        //aksi halde hataya sebep olabilir
-                        // if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
-                        //     if (activityInfo.ProductType == ProductType.Food) {
-                        //         this.SyncFoodApiCall(activityInfo);
-                        //     } else if (activityInfo.ProductType == ProductType.Exercise) {
-                        //         this.SyncExerciseApiCall(activityInfo);
-                        //     }
-                        // }
                     }, (error) => {
                         console.log("ERROR: " + JSON.stringify(error.err));
                     });
         } else {
+            //bu kısım bir kere olsun ve ana sayfaya geldiğinde olsun,
+            if (Network.connection != "none") { //eğer internet varsa sunucuya göndermeyi dene.
+                if (activityInfo.ProductType == ProductType.Food) {
+                    this.SyncFoodApiCall(activityInfo);
+                } else if (activityInfo.ProductType == ProductType.Exercise) {
+                    this.SyncExerciseApiCall(activityInfo);
+                }
+            }
             return Promise.resolve(null);
         }
     }
 
     SyncExerciseApiCall(activityInfo: ActivityInfo) {
-        if (this.db) {
+       
             this.sportService.AddSportActivity(activityInfo).
                 subscribe(activityId => {
-                    if (activityId != 0) {
+                    if (activityId != 0  && this.db ) {
                         this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
                     }
                 });
-        } else {
-            return Promise.resolve(null);
-        }
+       
     }
 
     SyncFoodApiCall(activityInfo: ActivityInfo) {
-        if (this.db) {
+       
             this.foodService.AddFoodActivity(activityInfo).
                 subscribe(activityId => {
-                    if (activityId != 0) {
+                    if (activityId != 0 && this.db ) {
                         this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
                     }
                 });
-        } else {
-            return Promise.resolve(null);
-        }
+         
     }
 
     UpdateUserWaterCount(count: number, userId: number) {
