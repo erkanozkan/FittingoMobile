@@ -26,6 +26,7 @@ import { SportListPage } from '../pages/sport-list/sport-list';
 import { SportDetailPage } from '../pages/sport-detail/sport-detail';
 import { SignUpPage } from '../pages/signup/signup';
 import { ActivityListPage } from '../pages/activity-list/activity-list';
+import { ProfilePage } from '../pages/profile/profile';
 
 import { Home } from '../pages/test/test';
 
@@ -49,7 +50,8 @@ import { Home } from '../pages/test/test';
     ColorRadio,
     CounterInput,
     Rating,
-    WalkthroughPage
+    WalkthroughPage,
+    ProfilePage
   ],
   imports: [
     IonicModule.forRoot(MyApp, { tabsPlacement: 'bottom' }),
@@ -68,7 +70,8 @@ import { Home } from '../pages/test/test';
     SportDetailPage,
     SignUpPage,
     Home,
-    WalkthroughPage
+    WalkthroughPage,
+    ProfilePage
   ],
   providers: [
     FoodService,

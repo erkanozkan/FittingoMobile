@@ -12,4 +12,10 @@ export class IUserInfo {
     GoalWater:number;
     DailyWater:number;
     DailyCalories:number;
+    WeeklyGoal:number;
+    UserImageURL:string;
+    GoalWeight:number;
+    GenderId:number;
+    ExerciseIntensityId: number;
+    Height:number;
 } 
