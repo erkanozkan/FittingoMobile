@@ -28,6 +28,9 @@ pages: Array<{title: string, icon: string, component: any}>;
 
     platform.ready().then(() => {
       StatusBar.styleDefault();
+      setTimeout(() => {
+        Splashscreen.hide();
+    }, 1000);
       if (platform.is('cordova')) {
         sqlStorage.initializeDatabase();
       }
