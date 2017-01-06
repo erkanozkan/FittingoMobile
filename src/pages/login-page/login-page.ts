@@ -10,7 +10,7 @@ import { Network } from 'ionic-native';
 declare var Connection: any;
 
 @Component({
-  selector:"login-page",
+  selector: "login-page",
   templateUrl: 'login-page.html'
 })
 export class LoginPage implements OnInit {
@@ -62,11 +62,17 @@ export class LoginPage implements OnInit {
               DailyWater: data.DailyWater,
               TakenCalorie: data.TakenCalorie,
               CalorieExpenditure: data.CalorieExpenditure,
-              password:data.password,
+              password: data.password,
               success: true
+              // WeeklyGoal: data.WeeklyGoal,
+              // UserImageURL: data.UserImageURL,
+              // GoalWeight: data.GoalWeight,
+              // GenderId: data.GenderId,
+              // ExerciseIntensityId: data.ExerciseIntensityId,
+              // Height: data.Height
             };
             this.service.userInfo = this.userInfo;
-                    
+
             this.navCtrl.setRoot(TabsPage, this.userInfo);
             loader.dismiss();
           } else {
@@ -97,9 +103,9 @@ export class LoginPage implements OnInit {
     });
   }
 
-goToForgotPassword() {
+  goToForgotPassword() {
 
-}
+  }
   isValid(field: string) {
     let formField = this.login.get(field);
     return formField.valid || formField.pristine;
