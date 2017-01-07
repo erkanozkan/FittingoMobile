@@ -132,16 +132,23 @@ export class SqlStorageService {
 
     InsertUser(userInfo: IUserInfo) {
         if (this.db) {
+            console.log("insert user");
+            console.log(userInfo);
             return this.db.executeSql(`INSERT OR REPLACE into User(
                  userId, email,name,password, Weight,
                  RemainingCalorie,TakenCalorie, CalorieExpenditure,
-                 BadgeLevel, GoalWater, DailyWater, DailyCalories) 
-                 values (?,?,?,?,?,?,?,?,?,?,?,?)`,
+                 BadgeLevel, GoalWater, DailyWater, DailyCalories,
+                 WeeklyGoal,UserImageURL,GoalWeight,GenderId,
+              ExerciseIntensityId,Height) 
+                 values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                 [userInfo.userId, userInfo.email,
                 userInfo.name, userInfo.password, userInfo.Weight,
                 userInfo.RemainingCalorie,
                 userInfo.TakenCalorie, userInfo.CalorieExpenditure, userInfo.BadgeLevel,
-                userInfo.GoalWater, userInfo.DailyWater, userInfo.DailyCalories]).then((data) => {
+                userInfo.GoalWater, userInfo.DailyWater,
+                 userInfo.DailyCalories,
+                 userInfo.WeeklyGoal,userInfo.UserImageURL,userInfo.GoalWeight,userInfo.GenderId,
+              userInfo.ExerciseIntensityId,userInfo.Height]).then((data) => {
                     console.log("User Inserted: " + JSON.stringify(data));
                 }, (error) => {
                     console.log("ERROR: " + JSON.stringify(error.err));
@@ -338,7 +345,7 @@ export class SqlStorageService {
         this.db = new SQLite();
         if (this.db) {
             this.db.openDatabase({ name: 'fittingo.db', location: 'default' }).then(() => {
-                //this.resetDatabase();
+                this.resetDatabase();
                 this.CreateUserTable();
                 this.CreateFoodTable();
                 this.CreateServingTypeTable();
@@ -374,7 +381,9 @@ export class SqlStorageService {
         this.db.executeSql(`CREATE TABLE IF NOT EXISTS User 
             (userId Integer primary key, email text,name text,password text, Weight integer,
                 RemainingCalorie integer,TakenCalorie integer, CalorieExpenditure integer,
-                BadgeLevel integer, GoalWater integer, DailyWater integer, DailyCalories integer)`, {}).then(() => {
+                BadgeLevel integer, GoalWater integer, DailyWater integer, 
+                DailyCalories integer,WeeklyGoal integer,UserImageURL text,GoalWeight integer,
+                GenderId integer,ExerciseIntensityId integer,Height integer)`, {}).then(() => {
                 console.log('User CREATE TABLE SUCCESS');
             });
     }

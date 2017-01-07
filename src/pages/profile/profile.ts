@@ -29,43 +29,44 @@ export class ProfilePage {
     private sqlService: SqlStorageService
   ) {
     this.loading = this.loadingCtrl.create();
-
+console.log("girdi");
     this.settingsForm = new FormGroup({
-      name: new FormControl(),
-      email: new FormControl(),
-      RemainingCalorie: new FormControl(),
-      TakenCalorie: new FormControl(),
+      name: new FormControl(""),
+      email: new FormControl(""),
+      RemainingCalorie: new FormControl(0),
+      TakenCalorie: new FormControl(0),
       GoalWater: new FormControl(1, counterRangeValidator(20, 1)),
-      WeeklyGoal: new FormControl(),
-      GoalWeight: new FormControl(),
-      GenderId: new FormControl(),
-      ExerciseIntensityId: new FormControl(),
-      Height: new FormControl(),
-      Weight: new FormControl()
+      WeeklyGoal: new FormControl(0),
+      GoalWeight: new FormControl(0),
+      GenderId: new FormControl(1),
+      ExerciseIntensityId: new FormControl(1),
+      Height: new FormControl(0),
+      Weight: new FormControl(0)
     });
-
      this.userInfo = navParams.data;
-    //  this.userInfo = <IUserInfo>{
-    //    userId: 1,
-    //    email: "string",
-    //    name: "Erkan",
-    //    success: true,
-    //    password: "string",
-    //    Weight: 89,
-    //    RemainingCalorie: 1678,
-    //    TakenCalorie: 1092,
-    //    CalorieExpenditure: 1289,
-    //    BadgeLevel: 129,
-    //    GoalWater: 9,
-    //    DailyWater: 7,
-    //    DailyCalories: 1987,
-    //    GoalWeight: 1234,
-    //    WeeklyGoal: 554,
-    //    GenderId: 1,
-    //    ExerciseIntensityId: 2,
-    //    Height: 178,
-    //    UserImageURL: "http://www.fittingo.com/UserProfileImage/7a331cf93be344dab9cf711699a74e49.jpg"
-    //  };
+     console.log(this.userInfo);
+
+      // this.userInfo = <IUserInfo>{
+      //   userId: 1,
+      //   email: "string",
+      //   name: "Erkan",
+      //   success: true,
+      //   password: "string",
+      //   Weight: 89,
+      //   RemainingCalorie: 1678,
+      //   TakenCalorie: 1092,
+      //   CalorieExpenditure: 1289,
+      //   BadgeLevel: 129,
+      //   GoalWater: 9,
+      //   DailyWater: 7,
+      //   DailyCalories: 1987,
+      //   GoalWeight: 1234,
+      //   WeeklyGoal: 554,
+      //   GenderId: 1,
+      //   ExerciseIntensityId: 2,
+      //   Height: 178,
+      //   UserImageURL: "http://www.fittingo.com/UserProfileImage/7a331cf93be344dab9cf711699a74e49.jpg"
+      // };
     this.settingsForm.setValue({
       name: this.userInfo.name,
       email: this.userInfo.email,

@@ -53,7 +53,13 @@ export class FittingoServiceApi {
                         TakenCalorie: res.UserInfo.TakenCalorie,
                         CalorieExpenditure: res.UserInfo.CalorieExpenditure,
                         success: true,
-                        password: password
+                        password: password,
+                        WeeklyGoal: res.UserInfo.WeeklyGoal,
+                        UserImageURL: res.UserInfo.UserImageURL,
+                        GoalWeight: res.UserInfo.GoalWeight,
+                        GenderId: res.UserInfo.GenderId,
+                        ExerciseIntensityId: res.UserInfo.ExerciseIntensityId,
+                        Height: res.UserInfo.Height
                     }
                     return this.userInfo;
                 } else {
@@ -78,7 +84,7 @@ export class FittingoServiceApi {
         var requestDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
 
         let body = 'ActivityDatetime=' + requestDate + '&UserId=' + this.userInfo.userId;
-         return this.http.post(this.baseUrl + '/activities/daily', body, options)
+        return this.http.post(this.baseUrl + '/activities/daily', body, options)
             .map((res: Response) => res.json().Activities as ActivityInfo[])
             .catch(this.handleError);
     }

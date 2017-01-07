@@ -63,13 +63,13 @@ export class LoginPage implements OnInit {
               TakenCalorie: data.TakenCalorie,
               CalorieExpenditure: data.CalorieExpenditure,
               password: data.password,
-              success: true
-              // WeeklyGoal: data.WeeklyGoal,
-              // UserImageURL: data.UserImageURL,
-              // GoalWeight: data.GoalWeight,
-              // GenderId: data.GenderId,
-              // ExerciseIntensityId: data.ExerciseIntensityId,
-              // Height: data.Height
+              success: true,
+              WeeklyGoal: data.WeeklyGoal,
+              UserImageURL: data.UserImageURL,
+              GoalWeight: data.GoalWeight,
+              GenderId: data.GenderId,
+              ExerciseIntensityId: data.ExerciseIntensityId,
+              Height: data.Height
             };
             this.service.userInfo = this.userInfo;
 
@@ -80,10 +80,10 @@ export class LoginPage implements OnInit {
             if (Network.connection != 'none') {
               this.service.Login(this.login.value.email, this.login.value.password)
                 .subscribe(data => {
-                  console.log("service.Login");
-                  console.log(this.userInfo);
+                  console.log("service.Login1");
+                 
                   this.userInfo = data;
-
+ console.log(this.userInfo);
                   if (this.userInfo == null || this.userInfo.success == false) {
                     this.presentToast("Hatalı email veya şifre girdiniz.");
                   } else {
