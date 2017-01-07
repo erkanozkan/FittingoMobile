@@ -122,7 +122,6 @@ export class HomePage {
             this.api.SaveWater(this.userInfo.DailyWater).subscribe(data => {
                 console.log("su kaydı update edildi.")
             });
-
             if (this.userInfo.IsUserSynced == 0) {
                 this.api.UpdateUserInfo(this.userInfo).subscribe(data => {
                     console.log("kullanıcı update edildi.")

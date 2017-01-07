@@ -91,7 +91,7 @@
           <h2 class="range-label">Haftalık Hedef</h2>
           <h3 class="range-value">{{settingsForm.controls.WeeklyGoal.value}} gram</h3>
         </ion-label>
-        <ion-range formControlName="WeeklyGoal" min="0" max="2000" step="50" snaps="true" pin="false"></ion-range>
+        <ion-range formControlName="WeeklyGoal" min="0" max="2000" step="100" snaps="true" pin="false"></ion-range>
       </ion-item>
     </ion-list>
     <button ion-button block class="form-action-button create-event-button" type="submit" [disabled]="!settingsForm.valid">Kaydet</button>

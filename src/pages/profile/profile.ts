@@ -31,7 +31,6 @@ export class ProfilePage {
     private sqlService: SqlStorageService
   ) {
     this.loading = this.loadingCtrl.create();
-    console.log("girdi");
     this.settingsForm = new FormGroup({
       name: new FormControl(""),
       email: new FormControl(""),
@@ -86,8 +85,6 @@ export class ProfilePage {
   SaveProfile() {
 
     this.userInfo.name = this.settingsForm.value.name;
-    this.userInfo.RemainingCalorie = this.settingsForm.value.RemainingCalorie;
-    this.userInfo.TakenCalorie = this.settingsForm.value.TakenCalorie;
     this.userInfo.GoalWater = this.settingsForm.value.GoalWater;
     this.userInfo.GoalWeight = this.settingsForm.value.GoalWeight;
     this.userInfo.WeeklyGoal = this.settingsForm.value.WeeklyGoal;
@@ -100,8 +97,10 @@ export class ProfilePage {
     var date = new Date();
     var year = date.getFullYear();
 
-    var age = this.userInfo.BirthYear - year;
-    console.log("age");
+    var age = year - this.userInfo.BirthYear;
+    if (age < 0) {
+      age = 0;
+    }
 
     if (this.userInfo.GenderId == 1) {
       this.userInfo.DailyCalories =
@@ -115,15 +114,27 @@ export class ProfilePage {
         (1.850 * this.userInfo.Height) -
         (4.676 * age);
     }
-    this.userInfo.RemainingCalorie = this.userInfo.DailyCalories - this.userInfo.TakenCalorie;
+    switch (this.userInfo.ExerciseIntensityId) {
+      case 1: this.userInfo.DailyCalories = this.userInfo.DailyCalories * 1.2; break;
+      case 2: this.userInfo.DailyCalories = this.userInfo.DailyCalories * 1.3; break;
+      case 3: this.userInfo.DailyCalories = this.userInfo.DailyCalories * 1.4; break;
+      case 4: this.userInfo.DailyCalories = this.userInfo.DailyCalories * 1.5; break;
+      case 5: this.userInfo.DailyCalories = this.userInfo.DailyCalories * 1.6; break;
+    }
 
-    console.log("userInfo");
-    console.log(this.userInfo);
+    var dietPlan = this.userInfo.WeeklyGoal;
+
+    if (this.userInfo.Weight < this.userInfo.GoalWeight * 1)
+      dietPlan = -1 * dietPlan;
+    else if (this.userInfo.Weight == this.userInfo.GoalWeight * 1)
+      dietPlan = 0;
+
+    this.userInfo.DailyCalories = Math.floor(this.userInfo.DailyCalories - dietPlan);
+    this.userInfo.RemainingCalorie = this.userInfo.DailyCalories - this.userInfo.TakenCalorie;
 
     this.sqlService.InsertUser(this.userInfo).then(data => {
       this.service.userInfo = this.userInfo;
       this.presentToast("Kullanıcı bilgileri başarılı şekilde update edildi.");
-      this.nav.setRoot(HomePage);
     });
   }
 

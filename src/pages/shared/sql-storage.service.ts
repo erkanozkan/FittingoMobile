@@ -132,8 +132,6 @@ export class SqlStorageService {
 
     InsertUser(userInfo: IUserInfo) {
         if (this.db) {
-            console.log("insert user");
-            console.log(userInfo);
             return this.db.executeSql(`INSERT OR REPLACE into User(
                  userId, email,name,password, Weight,
                  RemainingCalorie,TakenCalorie, CalorieExpenditure,
