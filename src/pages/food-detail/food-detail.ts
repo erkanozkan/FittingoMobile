@@ -52,18 +52,6 @@ export class FoodDetailPage {
         private navParams: NavParams, private toastCtrl: ToastController,
         private sqlService: SqlStorageService) {
 
-        // this.productItem = new FoodInfo();
-        // this.productItem.ProductTypeId = 0;
-        // this.productItem.Fat=10;
-        // this.productItem.Kalori100Gram=100;
-        // this.productItem.ProductName="dana sosis";
-        // this.productItem.Protein=110;
-        // this.productItem.Carbonhydrate=10;
-        // this.productItem.Type1=1;
-        // this.productItem.Type1Gram=120;
-        // this.productItem.Type2=2;
-        // this.productItem.Type2Gram=20;
-
         this.productItem = this.navParams.data.product;
         this.userId = this.navParams.data.userId;
         this.MealDate = new Date().toISOString();

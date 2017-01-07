@@ -22,11 +22,18 @@ home-page {
 		}
 	}
 
+	.number-info-item{
+		margin-left:10px;
+	}
+		.center-item{
+			text-align: center;
+
+			h1{
+				font-size: 4rem;
+			}
+		}
 	.listing-content
 	{   
-        .logo-row{
-            margin-bottom: 50px;
-        }
          .logo-image{
              max-width: 85% !important;
          }

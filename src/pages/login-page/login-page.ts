@@ -1,6 +1,8 @@
 import { OnInit, Component } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { TabsPage } from '../tabs-navigation/tabs-navigation';
+import { HomePage } from '../home-page/home-page';
+
 import { LoadingController, NavController, ToastController, Platform } from 'ionic-angular';
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 import { SignUpPage } from '../signup/signup';
@@ -75,7 +77,7 @@ export class LoginPage implements OnInit {
             };
             this.service.userInfo = this.userInfo;
 
-            this.navCtrl.setRoot(TabsPage, this.userInfo);
+            this.navCtrl.setRoot(HomePage, this.userInfo);
             loader.dismiss();
           } else {
 
@@ -89,7 +91,7 @@ export class LoginPage implements OnInit {
                   } else {
                     this.sqlService.InsertUser(this.userInfo);
                     this.service.userInfo = this.userInfo;
-                    this.navCtrl.setRoot(TabsPage, this.userInfo);
+                    this.navCtrl.setRoot(HomePage, this.userInfo);
                   }
                   loader.dismiss();
                 });

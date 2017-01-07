@@ -5,6 +5,8 @@ import { FoodInfo } from '../food-list/foodInfo';
 import { ServingTypeInfo } from '../food-detail/serve-type-info';
 import { SportInfo } from '../sport-list/sportInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
+import { EventModel, EventDate } from '../activity-list/ActivityModel';
+
 import { Network } from 'ionic-native';
 
 import { FoodService, SportService, ProductType } from '../shared/shared';
@@ -16,6 +18,9 @@ const win: any = window;
 export class SqlStorageService {
     public db: SQLite;
     public isFoodListInserting: boolean = false;
+    monthNames = ["Oca", "Şub", "Mart", "Nis", "May", "Haz",
+        "Tem", "Agu", "Eyl", "Eki", "Kas", "Ara"
+    ];
     constructor(private foodService: FoodService,
         private sportService: SportService) {
         //  foodService = new FoodService();
@@ -49,15 +54,73 @@ export class SqlStorageService {
             return Promise.resolve(null);
         }
     }
-
+ parseDate(input) {
+  var parts = input.match(/(\d+)/g);
+  // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+  return new Date(parts[0], parts[1]-1, parts[2], parts[3], parts[4]); // months are 0-based
+}
     getAllActivityListToday(userId: number) {
         if (this.db) {
             var date = new Date().toISOString().substring(0, 10);
 
-            return this.db.executeSql('SELECT * FROM Activity where date(ActivityDatetime)=?  and UserId=?', [date, userId]).then(data => {
-                let results = new Array<ActivityInfo>();
+            return this.db.executeSql('SELECT ActivityDateTime,ActivityDescription,Calorie FROM Activity where date(ActivityDateTime)=?  and UserId=?', [date, userId]).then(data => {
+                let results = new Array<EventModel>();
                 for (let i = 0; i < data.rows.length; i++) {
-                    results.push(data.rows.item(i) as ActivityInfo);
+                    var eventModel = data.rows.item(i) as EventModel;
+                    var eventDate = new EventDate();
+
+                    var date = this.parseDate(data.rows.item(i).ActivityDateTime);
+
+                    eventDate.day = date.getDate();
+
+                    eventDate.month = date.getMonth();
+                    eventDate.time = date.getHours().toString() +":" + date.getMinutes().toString();
+                    eventDate.full = date.toLocaleString();
+                    eventDate.month_name = this.monthNames[date.getMonth()]
+
+                    eventModel.ActivityDateTime = eventDate;
+
+                    eventModel.ActivityDescription = data.rows.item(i).ActivityDescription;
+                    eventModel.Calorie = data.rows.item(i).Calorie;
+                    console.log("calorie: " + data.rows.item(i).Calorie);
+
+                    results.push(eventModel);
+                }
+                return results;
+            });
+        } else {
+            return Promise.resolve(null);
+        }
+    }
+
+
+    getAllActivityThisWeekly(userId: number) {
+        if (this.db) {
+            var startdate = new Date().toISOString().substring(0, 10);
+            var dateFormated = new Date();
+            dateFormated.setDate(dateFormated.getDate() - 7);
+            var endDate = dateFormated.toISOString().substr(0, 10);
+
+            return this.db.executeSql('SELECT ActivityDateTime,ActivityDescription,Calorie FROM Activity where date(ActivityDateTime)<=? and date(ActivityDateTime)>=?  and UserId=?', [startdate, endDate, userId]).then(data => {
+                let results = new Array<EventModel>();
+                for (let i = 0; i < data.rows.length; i++) {
+                    var eventModel = data.rows.item(i) as EventModel;
+                    var eventDate = new EventDate();
+
+                    var date = this.parseDate(data.rows.item(i).ActivityDateTime);
+
+                    eventDate.day = date.getDate();
+                    eventDate.month = date.getMonth();
+                    eventDate.time = date.getHours().toString() +":" + date.getMinutes().toString();
+                    eventDate.full = date.toLocaleString();
+
+                    eventModel.ActivityDateTime = eventDate;
+
+                    eventModel.ActivityDescription = data.rows.item(i).ActivityDescription;
+                    eventModel.Calorie = data.rows.item(i).Calorie;
+                    
+                    console.log("calorie: " + data.rows.item(i).Calorie);
+                    results.push(eventModel);
                 }
                 return results;
             });
@@ -144,10 +207,10 @@ export class SqlStorageService {
                 userInfo.RemainingCalorie,
                 userInfo.TakenCalorie, userInfo.CalorieExpenditure, userInfo.BadgeLevel,
                 userInfo.GoalWater, userInfo.DailyWater,
-                 userInfo.DailyCalories,
-                 userInfo.WeeklyGoal,userInfo.UserImageURL,userInfo.GoalWeight,userInfo.GenderId,
-              userInfo.ExerciseIntensityId,userInfo.Height,userInfo.GoalPlanId,
-              userInfo.BirthYear,userInfo.IsUserSynced]).then((data) => {
+                userInfo.DailyCalories,
+                userInfo.WeeklyGoal, userInfo.UserImageURL, userInfo.GoalWeight, userInfo.GenderId,
+                userInfo.ExerciseIntensityId, userInfo.Height, userInfo.GoalPlanId,
+                userInfo.BirthYear, userInfo.IsUserSynced]).then((data) => {
                     console.log("User Inserted: " + JSON.stringify(data));
                 }, (error) => {
                     console.log("ERROR: " + JSON.stringify(error.err));
@@ -202,25 +265,25 @@ export class SqlStorageService {
     }
 
     SyncExerciseApiCall(activityInfo: ActivityInfo) {
-       
-            this.sportService.AddSportActivity(activityInfo).
-                subscribe(activityId => {
-                    if (activityId != 0  && this.db ) {
-                        this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
-                    }
-                });
-       
+
+        this.sportService.AddSportActivity(activityInfo).
+            subscribe(activityId => {
+                if (activityId != 0 && this.db) {
+                    this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                }
+            });
+
     }
 
     SyncFoodApiCall(activityInfo: ActivityInfo) {
-       
-            this.foodService.AddFoodActivity(activityInfo).
-                subscribe(activityId => {
-                    if (activityId != 0 && this.db ) {
-                        this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
-                    }
-                });
-         
+
+        this.foodService.AddFoodActivity(activityInfo).
+            subscribe(activityId => {
+                if (activityId != 0 && this.db) {
+                    this.UpdateActivityAsSynced(activityInfo.ActivityId, activityId);
+                }
+            });
+
     }
 
     UpdateUserWaterCount(count: number, userId: number) {
@@ -344,7 +407,7 @@ export class SqlStorageService {
         this.db = new SQLite();
         if (this.db) {
             this.db.openDatabase({ name: 'fittingo.db', location: 'default' }).then(() => {
-                this.resetDatabase();
+                //this.resetDatabase();
                 this.CreateUserTable();
                 this.CreateFoodTable();
                 this.CreateServingTypeTable();

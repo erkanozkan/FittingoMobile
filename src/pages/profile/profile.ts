@@ -45,8 +45,9 @@ export class ProfilePage {
       Height: new FormControl(0),
       Weight: new FormControl(0)
     });
-    this.userInfo = navParams.data;
 
+    this.userInfo = this.service.userInfo;
+    // this.userInfo = navParams.data;
     this.settingsForm.setValue({
       name: this.userInfo.name,
       email: this.userInfo.email,

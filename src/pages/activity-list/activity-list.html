@@ -1,24 +1,77 @@
-<ion-content>
+<ion-header>
+  <ion-navbar>
+    <ion-title>Aktiviteler</ion-title>
+  </ion-navbar>
+</ion-header>
 
-  <ion-list [virtualScroll]="activityList">
-    <ion-item class="list-item" *virtualItem="let item">
-      <ion-row no-padding class="content-row one-line">
-        <ion-col no-padding width-10 class="item-icon">
-          <ion-icon *ngIf="IsFoodOrExercise(1,item.ProductType)" name="add"></ion-icon>
-          <ion-icon *ngIf="IsFoodOrExercise(2,item.ProductType)" name="remove"></ion-icon>
+<ion-content class="schedule-content">
+  <ion-segment class="schedule-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
+    <ion-segment-button value="today" (ionSelect)="onSegmentSelected($event)">
+      Günlük
+    </ion-segment-button>
+    <ion-segment-button value="week" (ionSelect)="onSegmentSelected($event)">
+      Haftalık
+    </ion-segment-button>
+  </ion-segment>
 
-        </ion-col>
-        <ion-col no-padding width-90 class="item-content">
-          <h3 class="item-title">{{item.ActivityDescription}}</h3>
-        </ion-col>
-
-      </ion-row>
-    </ion-item>
-  </ion-list>
-
-  <!--<ion-list [virtualScroll]="activityList">
-    <ion-item *virtualItem="let item">
-      <ion-icon name="add"></ion-icon>  {{item.ActivityDescription}}  
-    </ion-item>
-  </ion-list>
-  </div></ion-content>-->
+  <div [ngSwitch]="segment">
+    <div *ngSwitchCase="'today'">
+      <ion-list class="schedule-list">
+        <ion-item class="schedule-item" *ngFor="let item of activityModel.today">
+          <ion-row>
+            <ion-col width-20 class="schedule-date">
+              <h2 class="schedule-day">{{item.ActivityDateTime.day}}</h2>
+              <h3 class="schedule-month">{{item.ActivityDateTime.month_name}}</h3>
+              <h4 class="schedule-time">{{item.ActivityDateTime.time}}</h4>
+            </ion-col>
+            <ion-col width-80 class="schedule-data">
+              <div class="data-item">
+                <div class="item-content">
+                  <h2 class="item-title one-line">{{item.ActivityDescription}}</h2>
+                  <div class="item-description">
+                    <ion-icon class="description-icon" name="clock"></ion-icon>
+                    <p class="description-text">{{item.ActivityDateTime.full}}</p>
+                  </div>
+                  <div class="item-description">
+                    <ion-icon class="description-icon" name="navigate"></ion-icon>
+                    <p class="description-text one-line">{{item.Calorie}}</p>
+                  </div>
+                </div>
+                <!--<ion-icon class="item-icon" name="arrow-forward"></ion-icon>-->
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div *ngSwitchCase="'week'">
+      <ion-list class="schedule-list">
+        <ion-item class="schedule-item" *ngFor="let item of activityModel.week">
+           <ion-row>
+            <ion-col width-20 class="schedule-date">
+                          <h2 class="schedule-day">{{item.ActivityDateTime.day}}</h2>
+              <h3 class="schedule-month">{{item.ActivityDateTime.month_name}}</h3>
+              <h4 class="schedule-time">{{item.ActivityDateTime.time}}</h4>
+            </ion-col>
+            <ion-col width-80 class="schedule-data">
+              <div class="data-item">
+                <div class="item-content">
+                  <h2 class="item-title one-line">{{item.ActivityDescription}}</h2>
+                  <div class="item-description">
+                    <ion-icon class="description-icon" name="clock"></ion-icon>
+                    <p class="description-text">{{item.ActivityDateTime.full}}</p>
+                  </div>
+                  <div class="item-description">
+                    <ion-icon class="description-icon" name="navigate"></ion-icon>
+                    <p class="description-text one-line">{{item.Calorie}}</p>
+                  </div>
+                </div>
+                <!--<ion-icon class="item-icon" name="arrow-forward"></ion-icon>-->
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

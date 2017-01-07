@@ -27,7 +27,8 @@ export class HomePage {
         private toastCtrl: ToastController,
         private nav: Nav, private sqlService: SqlStorageService) {
 
-        this.userInfo = navParams.data;
+        this.userInfo = this.api.userInfo;
+        // this.userInfo = navParams.data;
 
     }
 
@@ -52,7 +53,7 @@ export class HomePage {
 
         this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
     }
- 
+
 
     RemoveWater() {
         var count = this.userInfo.DailyWater - 1;
@@ -71,9 +72,6 @@ export class HomePage {
     GetActivitiesFromLocal() {
         this.sqlService.getAllActivityListToday(this.userInfo.userId).then(
             data => {
-                console.log("sqlService.getAllActivityListToday");
-
-                console.log(data);
                 if (data != null || data != undefined) {
                     this.activityList = data;
                 }
@@ -81,11 +79,13 @@ export class HomePage {
     }
 
     ionViewDidEnter() {
-        //this.GetActivityList();
+        this.GetActivityList();
         this.RefreshUser();
         this.SendActivityListToApi();
     }
-
+    LogOut() {
+        this.nav.setRoot(LoginPage);
+    }
     RefreshUser() {
         //kullanıcıyı lokal den getir.
         this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
@@ -111,13 +111,13 @@ export class HomePage {
         if (Network.connection != "none") {
             this.api.GetActivities().subscribe(data => {
                 this.activityList = data;
-                console.log(this.activityList);
                 this.sqlService.InsertoReplaceActivities(data);
-                this.GetActivitiesFromLocal();
+                // this.GetActivitiesFromLocal();
             });
-        }else{
-              this.GetActivitiesFromLocal();
-        }
+        } 
+        // else {
+        //     this.GetActivitiesFromLocal();
+        // }
     }
 
     SendWaterCountToApi() {

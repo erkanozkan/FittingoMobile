@@ -1,94 +1,105 @@
 <ion-header class="listing-header">
   <ion-navbar>
-    <ion-row class="logo-row">
-      <ion-col width-20 class="category-item">
+    <ion-row>
+      <ion-col>
         <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
       </ion-col>
-      <ion-col width-80 class="category-item">
+      <ion-col class="category-item">
         <ion-title>
           <div class="header-logo">
             Fittingo
             <!--<preload-image [ratio]="{w:583, h:100}" src="./assets/images/Fittingo_Logo.png"></preload-image>-->
           </div>
-
         </ion-title>
+        <!--<ion-buttons end>
+          <button ion-button (click)="LogOut()">
+        Çıkış
+      </button>
+        </ion-buttons>-->
       </ion-col>
-      
+
     </ion-row>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="listing-content">
-  <ion-grid>
-    <ion-row class="logo-row">
-      <ion-col width-70 class="category-item">
-        <h6 padding-left>{{userInfo.name}}</h6>
-      </ion-col>
-      <ion-col width-10 class="category-item">
-        <h6>{{userInfo.Weight}}</h6>
-      </ion-col>
-   
-    </ion-row>
 
+  <ion-card>
+    <ion-card-content>
+      <ion-row class="grid-categories">
+        <ion-col class="category-item">
+          <background-image class="category-heading" src="assets/images/addFood.png" (click)="OpenFoodListPage()">
+          </background-image>
+        </ion-col>
+        <ion-col class="category-item">
+          <background-image class="category-heading" src="assets/images/addExercise.png" (click)="OpenSportsListPage()">
+          </background-image>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="center-item">
+          <h2>Alınan Kalori</h2>
+          <h1 style="color:green;">{{userInfo.TakenCalorie}}</h1>
+</ion-col>
+<ion-col class="center-item">
+  <h2>Yakılan Kalori</h2>
+  <h1 style="color:red;">{{userInfo.CalorieExpenditure}}</h1>
+</ion-col>
+</ion-row>
+</ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-content>
     <ion-row class="grid-categories">
-      <ion-col width-50 class="category-item">
-        <background-image class="category-heading" src="assets/images/addFood.png" (click)="OpenFoodListPage()">
-
-        </background-image>
+      <ion-col class="center-item">
+        <h2>Günlük Kalori Limiti</h2>
+        <h1>{{userInfo.RemainingCalorie}}</h1>
       </ion-col>
-      <ion-col width-50 class="category-item">
-        <background-image class="category-heading" src="assets/images/addExercise.png" (click)="OpenSportsListPage()">
-        </background-image>
+      <ion-col class="center-item">
+        <h2>Kalan Kalori Miktarı</h2>
+        <h1>{{userInfo.TakenCalorie}}</h1>
       </ion-col>
-    </ion-row>
 
-    <ion-row>
-      <ion-col width-50>{{userInfo.TakenCalorie}}</ion-col>
-      <ion-col width-50>{{userInfo.CalorieExpenditure}}</ion-col>
     </ion-row>
     <ion-row>
-      <ion-col width-50>
-        <ion-label>Günlük Kalori Limiti</ion-label>
-        <ion-label>Kalan</ion-label>
-        <ion-label>Günlük Su Miktarı</ion-label>
-        <ion-label>Hedeflenen Su Miktarı</ion-label>
+      <ion-col class="center-item">
+        <h2>Günlük Su Miktarı</h2>
+        <h1>{{userInfo.DailyWater}}</h1>
       </ion-col>
-      <ion-col width-25>
-        <ion-label>{{userInfo.DailyCalories}}</ion-label>
-        <ion-label>{{userInfo.RemainingCalorie}}</ion-label>
-        <ion-label>{{userInfo.DailyWater}}</ion-label>
-        <ion-label>{{userInfo.GoalWater}}</ion-label>
+      <ion-col class="center-item">
+        <h2>Hedeflenen Su Miktarı</h2>
+        <h1>{{userInfo.GoalWater}}</h1>
       </ion-col>
-      <ion-col width-25>
-        <div>
-          <button ion-button (click)="AddWater()"><ion-icon name="add"></ion-icon> </button><br>
-          <!--<button ion-button (click)="RemoveWater()"><ion-icon name="remove"></ion-icon> </button>-->
-        </div>
+      <ion-col class="center-item">
+        <button ion-button (click)="AddWater()"><ion-icon name="add"></ion-icon> </button><br>
       </ion-col>
     </ion-row>
+  </ion-card-content>
+</ion-card>
 
-    <!--<ion-row>
-      <ion-col>
+<!--<ion-row>
+  <ion-col>
 
-        <ion-list [virtualScroll]="activityList">
-          <ion-item class="list-item" *virtualItem="let item">
-            <ion-row no-padding class="content-row one-line">
-              <ion-col no-padding width-10 class="item-icon">
-                <ion-icon *ngIf="IsFoodOrExercise(1,item.ProductType)" name="add"></ion-icon>
-                <ion-icon *ngIf="IsFoodOrExercise(2,item.ProductType)" name="remove"></ion-icon>
+    <ion-list [virtualScroll]="activityList">
+      <ion-item class="list-item" *virtualItem="let item">
+        <ion-row no-padding class="content-row one-line">
+          <ion-col no-padding width-10 class="item-icon">
+            <ion-icon *ngIf="IsFoodOrExercise(1,item.ProductType)" name="add"></ion-icon>
+            <ion-icon *ngIf="IsFoodOrExercise(2,item.ProductType)" name="remove"></ion-icon>
 
-              </ion-col>
-              <ion-col no-padding width-90 class="item-content">
-                <h3 class="item-title">{{item.ActivityDescription}}</h3>
-              </ion-col>
+          </ion-col>
+          <ion-col no-padding width-90 class="item-content">
+            <h3 class="item-title">{{item.ActivityDescription}}</h3>
+          </ion-col>
 
-            </ion-row>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>-->
-  </ion-grid>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+</ion-row>-->
+
 
 </ion-content>

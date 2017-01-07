@@ -7,6 +7,8 @@ import { HomePage } from '../pages/home-page/home-page';
 import { FoodListPage } from '../pages/food-list/food-list';
 import { FoodDetailPage } from '../pages/food-detail/food-detail';
 import { SportDetailPage } from '../pages/sport-detail/sport-detail';
+import { ProfilePage } from '../pages/profile/profile';
+import { ActivityListPage } from '../pages/activity-list/activity-list';
 
 import { SqlStorageService } from '../pages/shared/shared';
 import { Home } from '../pages/test/test';
@@ -38,13 +40,12 @@ export class MyApp {
     // used for an example of ngFor and navigation
 
     this.pages = [
-      { title: 'Home', icon: 'home', component: HomePage },
-      // { title: 'Forms', icon: 'create', component: FormsPage }
+      { title: 'Ana Sayfa', icon: 'home', component: HomePage }
     ];
 
     this.pushPages = [
-      { title: 'Layouts', icon: 'grid', component: HomePage },
-      // { title: 'Settings', icon: 'settings', component: SettingsPage }
+      { title: 'Profil', icon: 'person', component: ProfilePage },
+      { title: 'Aktiviteler', icon: 'list', component: ActivityListPage }
     ];
   }
 
