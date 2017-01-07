@@ -1,11 +1,24 @@
-  <ion-content>
+<ion-content>
 
-  <div id='envelope' ion-fixed>
- 
- 
   <ion-list [virtualScroll]="activityList">
+    <ion-item class="list-item" *virtualItem="let item">
+      <ion-row no-padding class="content-row one-line">
+        <ion-col no-padding width-10 class="item-icon">
+          <ion-icon *ngIf="IsFoodOrExercise(1,item.ProductType)" name="add"></ion-icon>
+          <ion-icon *ngIf="IsFoodOrExercise(2,item.ProductType)" name="remove"></ion-icon>
+
+        </ion-col>
+        <ion-col no-padding width-90 class="item-content">
+          <h3 class="item-title">{{item.ActivityDescription}}</h3>
+        </ion-col>
+
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <!--<ion-list [virtualScroll]="activityList">
     <ion-item *virtualItem="let item">
       <ion-icon name="add"></ion-icon>  {{item.ActivityDescription}}  
     </ion-item>
   </ion-list>
-  </div></ion-content>
+  </div></ion-content>-->

@@ -71,7 +71,8 @@ import { Home } from '../pages/test/test';
     SignUpPage,
     Home,
     WalkthroughPage,
-    ProfilePage
+    ProfilePage,
+    ActivityListPage
   ],
   providers: [
     FoodService,

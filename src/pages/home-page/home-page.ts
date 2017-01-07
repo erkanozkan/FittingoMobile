@@ -27,22 +27,6 @@ export class HomePage {
         private toastCtrl: ToastController,
         private nav: Nav, private sqlService: SqlStorageService) {
 
-
-        // this.userInfo = <IUserInfo>{
-        //     userId: 1,
-        //     email: "string",
-        //     name: "Erkan",
-        //     success: true,
-        //     password: "string",
-        //     Weight: 89,
-        //     RemainingCalorie: 1678,
-        //     TakenCalorie: 1092,
-        //     CalorieExpenditure: 1289,
-        //     BadgeLevel: 129,
-        //     GoalWater: 9,
-        //     DailyWater: 7,
-        //     DailyCalories: 1987
-        // };
         this.userInfo = navParams.data;
 
     }
@@ -81,9 +65,6 @@ export class HomePage {
     }
 
     IsFoodOrExercise(productType: ProductType, itemProductType: ProductType) {
-        console.log(productType);
-        console.log(itemProductType);
-
         return productType == itemProductType;
     }
 
@@ -100,7 +81,7 @@ export class HomePage {
     }
 
     ionViewDidEnter() {
-        this.GetActivityList();
+        //this.GetActivityList();
         this.RefreshUser();
         this.SendActivityListToApi();
     }
@@ -134,6 +115,8 @@ export class HomePage {
                 this.sqlService.InsertoReplaceActivities(data);
                 this.GetActivitiesFromLocal();
             });
+        }else{
+              this.GetActivitiesFromLocal();
         }
     }
 
