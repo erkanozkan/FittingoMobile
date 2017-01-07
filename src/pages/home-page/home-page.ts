@@ -68,11 +68,7 @@ export class HomePage {
 
         this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
     }
-
-    LogOut() {
-        this.api.userInfo = null;
-        this.nav.setRoot(LoginPage);
-    }
+ 
 
     RemoveWater() {
         var count = this.userInfo.DailyWater - 1;
