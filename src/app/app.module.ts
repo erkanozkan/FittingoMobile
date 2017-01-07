@@ -54,7 +54,10 @@ import { Home } from '../pages/test/test';
     ProfilePage
   ],
   imports: [
-    IonicModule.forRoot(MyApp, { tabsPlacement: 'bottom' }),
+    IonicModule.forRoot(MyApp, {
+      tabsPlacement: 'bottom',
+      backButtonText: 'Geri'
+    }),
     BrowserModule,
     FormsModule
   ],

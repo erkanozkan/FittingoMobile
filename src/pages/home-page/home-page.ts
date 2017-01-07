@@ -51,7 +51,10 @@ export class HomePage {
         }
         this.userInfo.DailyWater = this.userInfo.DailyWater + 1;
 
-        this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
+        this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId).then(d=>
+        {
+            this.presentToast("Su eklendi.");
+        });
     }
 
 

@@ -1,7 +1,7 @@
 <ion-header class="listing-header">
   <ion-navbar>
     <ion-row>
-      <ion-col>
+      <ion-col class="category-item">
         <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -13,11 +13,11 @@
             <!--<preload-image [ratio]="{w:583, h:100}" src="./assets/images/Fittingo_Logo.png"></preload-image>-->
           </div>
         </ion-title>
-        <!--<ion-buttons end>
+        <ion-buttons end>
           <button ion-button (click)="LogOut()">
         Çıkış
       </button>
-        </ion-buttons>-->
+        </ion-buttons>
       </ion-col>
 
     </ion-row>
@@ -25,19 +25,42 @@
 </ion-header>
 
 <ion-content class="listing-content">
-
   <ion-card>
     <ion-card-content>
       <ion-row class="grid-categories">
-        <ion-col class="category-item">
-          <background-image class="category-heading" src="assets/images/addFood.png" (click)="OpenFoodListPage()">
-          </background-image>
+        <ion-col width-25>
+          <h3>{{userInfo.name}}</h3>
         </ion-col>
-        <ion-col class="category-item">
-          <background-image class="category-heading" src="assets/images/addExercise.png" (click)="OpenSportsListPage()">
-          </background-image>
+        <ion-col width-35>
+          <h2>Mevcut Ağırlık</h2>
+        </ion-col>
+        <ion-col class="center-item">
+          <ion-row>
+            <ion-col offset-50>
+              <ion-icon class="weight-info-icon" name="body"></ion-icon>
+            </ion-col>
+            <ion-col>
+              <h2 class="weight-info-h">{{userInfo.Weight}}</h2>
+
+            </ion-col>
+          </ion-row>
+
         </ion-col>
       </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <div class="horizontal-categories">
+        <ion-row class="categories-row">
+          <ion-col width-50 class="horizontal-item">
+            <preload-image [ratio]="{w:1, h:1}" src="assets/images/addFood.png" (click)="OpenFoodListPage()"></preload-image>
+          </ion-col>
+          <ion-col width-50 class="horizontal-item">
+            <preload-image [ratio]="{w:1, h:1}" src="assets/images/addExercise.png" (click)="OpenSportsListPage()"></preload-image>
+          </ion-col>
+        </ion-row>
+      </div>
       <ion-row>
         <ion-col class="center-item">
           <h2>Alınan Kalori</h2>
@@ -74,7 +97,8 @@
         <h1>{{userInfo.GoalWater}}</h1>
       </ion-col>
       <ion-col class="center-item">
-        <button ion-button (click)="AddWater()"><ion-icon name="add"></ion-icon> </button><br>
+        <button ion-button icon-only clear class="water-button" (click)="AddWater()"><ion-icon name="water"></ion-icon>
+         </button>
       </ion-col>
     </ion-row>
   </ion-card-content>

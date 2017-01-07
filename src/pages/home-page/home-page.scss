@@ -14,17 +14,32 @@ home-page {
 	$categories-grid-padding: 10px;
 	$categories-horizontal-list-padding: 10px;
 
-	.listing-header
-	{
-		.header-logo
-		{
-			width: 34vw;
-		}
-	}
+			.listing-header
+			{
+				.header-logo
+				{
+					width: 34vw;
+				}
+			}
+			.weight-info-icon{
+					color: green;
+				font-size: 3.2rem;
+				margin-top: -14px;
+			}
+			.weight-info-h{
+					color: green;
+				font-size: 3rem;
+				margin-top: -12px;
+			}
 
-	.number-info-item{
-		margin-left:10px;
-	}
+			.water-button{
+					background-color: $theme-color-1;
+					color:$white;
+			}
+
+			.number-info-item{
+				margin-left:10px;
+			}
 		.center-item{
 			text-align: center;
 
@@ -50,6 +65,7 @@ home-page {
                         color:white;
                         }
 				}
+
 		.image-heading
 		{
 			height: $categories-heading-image-height;
@@ -92,10 +108,10 @@ home-page {
 
 		.horizontal-categories
 		{
-			border-bottom: 10px solid $white-a;
-			@include element-shadow();
+			border-bottom: 0px solid $white-a;
+			// @include element-shadow();
 			padding-bottom: 16px;
-
+			text-align: center;
 			.scroll-content
 			{
 				position: relative;

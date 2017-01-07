@@ -124,6 +124,7 @@ export class ProfilePage {
 
     this.sqlService.InsertUser(this.userInfo).then(data => {
       this.service.userInfo = this.userInfo;
+      this.nav.setRoot(HomePage);
       this.presentToast("Kullanıcı bilgileri başarılı şekilde update edildi.");
     });
   }

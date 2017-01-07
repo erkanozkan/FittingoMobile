@@ -19,7 +19,7 @@
     <h3 class="image-action">{{userInfo.name}}</h3>
   </div>
 
-  <form [formGroup]="settingsForm" class="settings-form" (ngSubmit)="SaveProfile()">
+  <form [formGroup]="settingsForm" class="settings-form">
     <ion-list class="user-data-content">
       <ion-item>
         <ion-label stacked>Boy</ion-label>
@@ -94,7 +94,7 @@
         <ion-range formControlName="WeeklyGoal" min="0" max="2000" step="100" snaps="true" pin="false"></ion-range>
       </ion-item>
     </ion-list>
-    <button ion-button block class="form-action-button create-event-button" type="submit" [disabled]="!settingsForm.valid">Kaydet</button>
+    <button ion-button block class="form-action-button create-event-button" type="submit" (click)="SaveProfile()" >Kaydet</button>
 
   </form>
 
