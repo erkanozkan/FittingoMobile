@@ -7,7 +7,7 @@
 
 <ion-content class="list-mini-content">
  
-  <ion-searchbar [(ngModel)]="searchTerm" placeholder="En az 1 harf giriniz" [formControl]="searchControl" (input)="onSearchInput()">
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Arama" [formControl]="searchControl" (input)="onSearchInput()">
   </ion-searchbar>
     <ion-list [virtualScroll]="sportList">
       <button class="list-item" ion-item  *virtualItem="let item" cursor="hand" 
