@@ -4,6 +4,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { counterRangeValidator } from '../../components/counter-input/counter-input';
 
 import { WalkthroughPage } from '../walkthrough/walkthrough';
+
+import { HomePage } from '../home-page/home-page';
 import { IUserInfo } from '../login-page/userinfo';
 import { FittingoServiceApi, SqlStorageService } from '../shared/shared';
 
@@ -29,7 +31,7 @@ export class ProfilePage {
     private sqlService: SqlStorageService
   ) {
     this.loading = this.loadingCtrl.create();
-console.log("girdi");
+    console.log("girdi");
     this.settingsForm = new FormGroup({
       name: new FormControl(""),
       email: new FormControl(""),
@@ -43,30 +45,29 @@ console.log("girdi");
       Height: new FormControl(0),
       Weight: new FormControl(0)
     });
-     this.userInfo = navParams.data;
-     console.log(this.userInfo);
+    this.userInfo = navParams.data;
 
-      // this.userInfo = <IUserInfo>{
-      //   userId: 1,
-      //   email: "string",
-      //   name: "Erkan",
-      //   success: true,
-      //   password: "string",
-      //   Weight: 89,
-      //   RemainingCalorie: 1678,
-      //   TakenCalorie: 1092,
-      //   CalorieExpenditure: 1289,
-      //   BadgeLevel: 129,
-      //   GoalWater: 9,
-      //   DailyWater: 7,
-      //   DailyCalories: 1987,
-      //   GoalWeight: 1234,
-      //   WeeklyGoal: 554,
-      //   GenderId: 1,
-      //   ExerciseIntensityId: 2,
-      //   Height: 178,
-      //   UserImageURL: "http://www.fittingo.com/UserProfileImage/7a331cf93be344dab9cf711699a74e49.jpg"
-      // };
+    // this.userInfo = <IUserInfo>{
+    //   userId: 1,
+    //   email: "string",
+    //   name: "Erkan",
+    //   success: true,
+    //   password: "string",
+    //   Weight: 89,
+    //   RemainingCalorie: 1678,
+    //   TakenCalorie: 1092,
+    //   CalorieExpenditure: 1289,
+    //   BadgeLevel: 129,
+    //   GoalWater: 9,
+    //   DailyWater: 7,
+    //   DailyCalories: 1987,
+    //   GoalWeight: 1234,
+    //   WeeklyGoal: 554,
+    //   GenderId: 1,
+    //   ExerciseIntensityId: 2,
+    //   Height: 178,
+    //   UserImageURL: "http://www.fittingo.com/UserProfileImage/7a331cf93be344dab9cf711699a74e49.jpg"
+    // };
     this.settingsForm.setValue({
       name: this.userInfo.name,
       email: this.userInfo.email,
@@ -83,8 +84,8 @@ console.log("girdi");
   }
 
   SaveProfile() {
-    this.userInfo.userId = this.settingsForm.value.userId;
-    this.userInfo.name = this.settingsForm.value.userInfo.name;
+
+    this.userInfo.name = this.settingsForm.value.name;
     this.userInfo.RemainingCalorie = this.settingsForm.value.RemainingCalorie;
     this.userInfo.TakenCalorie = this.settingsForm.value.TakenCalorie;
     this.userInfo.GoalWater = this.settingsForm.value.GoalWater;
@@ -94,11 +95,45 @@ console.log("girdi");
     this.userInfo.ExerciseIntensityId = this.settingsForm.value.ExerciseIntensityId;
     this.userInfo.Height = this.settingsForm.value.Height;
     this.userInfo.Weight = this.settingsForm.value.Weight;
+    this.userInfo.IsUserSynced = 0;
+
+    var date = new Date();
+    var year = date.getFullYear();
+
+    var age = this.userInfo.BirthYear - year;
+    console.log("age");
+
+    if (this.userInfo.GenderId == 1) {
+      this.userInfo.DailyCalories =
+        66.5 +
+        (13.75 * this.userInfo.Weight) +
+        (5.003 * this.userInfo.Height) -
+        (6.775 * age);
+    } else {
+      this.userInfo.DailyCalories = 655.1 +
+        (9.563 * this.userInfo.Weight) +
+        (1.850 * this.userInfo.Height) -
+        (4.676 * age);
+    }
+    this.userInfo.RemainingCalorie = this.userInfo.DailyCalories - this.userInfo.TakenCalorie;
+
+    console.log("userInfo");
+    console.log(this.userInfo);
 
     this.sqlService.InsertUser(this.userInfo).then(data => {
       this.service.userInfo = this.userInfo;
-      //api kaydet.
+      this.presentToast("Kullanıcı bilgileri başarılı şekilde update edildi.");
+      this.nav.setRoot(HomePage);
     });
+  }
+
+  presentToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      cssClass: "toast"
+    });
+    toast.present();
   }
 }
 

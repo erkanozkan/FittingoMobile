@@ -47,8 +47,7 @@ export class LoginPage implements OnInit {
     loader.present().then(() => {
       this.sqlService.getUser(this.login.value.email, this.login.value.password)
         .then(data => {
-          console.log("sqlService.getUser");
-          console.log(data);
+       
           if (data != undefined && data != null) {
             this.userInfo = <IUserInfo>{
               userId: data.userId,
@@ -69,7 +68,10 @@ export class LoginPage implements OnInit {
               GoalWeight: data.GoalWeight,
               GenderId: data.GenderId,
               ExerciseIntensityId: data.ExerciseIntensityId,
-              Height: data.Height
+              Height: data.Height,
+              GoalPlanId: data.GoalPlanId,
+              BirthYear:data.BirthYear,
+              IsUserSynced: data.IsUserSynced
             };
             this.service.userInfo = this.userInfo;
 
@@ -80,10 +82,8 @@ export class LoginPage implements OnInit {
             if (Network.connection != 'none') {
               this.service.Login(this.login.value.email, this.login.value.password)
                 .subscribe(data => {
-                  console.log("service.Login1");
-                 
                   this.userInfo = data;
- console.log(this.userInfo);
+ 
                   if (this.userInfo == null || this.userInfo.success == false) {
                     this.presentToast("Hatalı email veya şifre girdiniz.");
                   } else {

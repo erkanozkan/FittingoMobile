@@ -84,10 +84,10 @@ export class HomePage {
         this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId);
     }
 
-    IsFoodOrExercise(productType: ProductType,itemProductType: ProductType){
+    IsFoodOrExercise(productType: ProductType, itemProductType: ProductType) {
         console.log(productType);
         console.log(itemProductType);
-        
+
         return productType == itemProductType;
     }
 
@@ -112,7 +112,6 @@ export class HomePage {
     RefreshUser() {
         //kullanıcıyı lokal den getir.
         this.sqlService.getUser(this.userInfo.email, this.userInfo.password).then(user => {
-        
             if (user != null || user != undefined) {
                 this.userInfo = user;
             }
@@ -120,16 +119,15 @@ export class HomePage {
 
         if (Network.connection != "none") {
             //api den kullanıyı çek
-            this.api.Login(this.userInfo.email, this.userInfo.password)
-                .subscribe(data => {
-                    if (this.userInfo.DailyWater > data.DailyWater) { //Send water to api
-                        this.api.SaveWater(this.userInfo.DailyWater).subscribe(data => {
-                        });
-                    } else if (this.userInfo.DailyWater < data.DailyWater) {
-                        this.sqlService.UpdateUserWaterCount(data.DailyWater, this.userInfo.userId);
-                        this.userInfo.DailyWater = data.DailyWater;
-                    }
+            this.api.SaveWater(this.userInfo.DailyWater).subscribe(data => {
+                console.log("su kaydı update edildi.")
+            });
+
+            if (this.userInfo.IsUserSynced == 0) {
+                this.api.UpdateUserInfo(this.userInfo).subscribe(data => {
+                    console.log("kullanıcı update edildi.")
                 });
+            }
         }
     }
 

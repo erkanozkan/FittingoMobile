@@ -18,4 +18,7 @@ export class IUserInfo {
     GenderId:number;
     ExerciseIntensityId: number;
     Height:number;
+    GoalPlanId:number;
+    BirthYear:number;
+    IsUserSynced:number;
 } 

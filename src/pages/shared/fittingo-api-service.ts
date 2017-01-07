@@ -59,7 +59,10 @@ export class FittingoServiceApi {
                         GoalWeight: res.UserInfo.GoalWeight,
                         GenderId: res.UserInfo.GenderId,
                         ExerciseIntensityId: res.UserInfo.ExerciseIntensityId,
-                        Height: res.UserInfo.Height
+                        Height: res.UserInfo.Height,
+                        GoalPlanId: res.UserInfo.GoalPlanId,
+                        BirthYear: res.UserInfo.BirthYear,
+                        IsUserSynced: 1
                     }
                     return this.userInfo;
                 } else {
@@ -130,6 +133,39 @@ export class FittingoServiceApi {
             + '&SurName=' + surname
             + '&Password=' + password;
         return this.http.post(this.baseUrl + '/accounts/create', body, options)
+            .map((response: Response) => {
+                let res = <any>response.json();
+                return <ResponseBase>{
+                    success: res.IsSuccess,
+                    message: res.Message
+                }
+            })
+            .catch(this.handleError);
+    }
+
+    UpdateUserInfo(userInfo: IUserInfo): Observable<ResponseBase> {
+        let headers = new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        let options = new RequestOptions({
+            headers: headers
+        });
+
+        let body = 'UserId=' + userInfo.userId
+            + '&GenderId=' + userInfo.GenderId
+            + '&GoalPlanId=' + userInfo.GoalPlanId
+            + '&WeeklyGoal=' + userInfo.WeeklyGoal
+            + '&Weight=' + userInfo.Weight
+            + '&GoalWeight=' + userInfo.GoalWeight
+            + '&ExerciseIntensityId=' + userInfo.ExerciseIntensityId
+            + '&Height=' + userInfo.Height
+            + '&WaterGoal=' + userInfo.GoalWater
+            + '&BirthYear=' + userInfo.BirthYear;
+
+        console.log("kullanıcı update başladı");
+        console.log(body);
+
+        return this.http.post(this.baseUrl + '/user/update', body, options)
             .map((response: Response) => {
                 let res = <any>response.json();
                 return <ResponseBase>{
