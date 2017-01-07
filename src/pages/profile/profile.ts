@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { counterRangeValidator } from '../../components/counter-input/counter-input';
+import { Network } from 'ionic-native';
 
 import { WalkthroughPage } from '../walkthrough/walkthrough';
 
@@ -21,7 +22,7 @@ export class ProfilePage {
   rootPage: any = WalkthroughPage;
   loading: any;
   userInfo: IUserInfo;
-
+  userImageUrl: string;
   constructor(
     public nav: NavController,
     public modal: ModalController,
@@ -46,27 +47,6 @@ export class ProfilePage {
     });
     this.userInfo = navParams.data;
 
-    // this.userInfo = <IUserInfo>{
-    //   userId: 1,
-    //   email: "string",
-    //   name: "Erkan",
-    //   success: true,
-    //   password: "string",
-    //   Weight: 89,
-    //   RemainingCalorie: 1678,
-    //   TakenCalorie: 1092,
-    //   CalorieExpenditure: 1289,
-    //   BadgeLevel: 129,
-    //   GoalWater: 9,
-    //   DailyWater: 7,
-    //   DailyCalories: 1987,
-    //   GoalWeight: 1234,
-    //   WeeklyGoal: 554,
-    //   GenderId: 1,
-    //   ExerciseIntensityId: 2,
-    //   Height: 178,
-    //   UserImageURL: "http://www.fittingo.com/UserProfileImage/7a331cf93be344dab9cf711699a74e49.jpg"
-    // };
     this.settingsForm.setValue({
       name: this.userInfo.name,
       email: this.userInfo.email,
@@ -80,6 +60,15 @@ export class ProfilePage {
       Height: this.userInfo.Height,
       Weight: this.userInfo.Weight
     });
+    if (Network.connection == 'none') {
+      if (this.userInfo.GenderId == 1) {
+        this.userImageUrl = "assets/images/men.png";
+      } else {
+        this.userImageUrl = "assets/images/women.png";
+      }
+    } else {
+      this.userImageUrl = this.userInfo.UserImageURL;
+    }
   }
 
   SaveProfile() {
