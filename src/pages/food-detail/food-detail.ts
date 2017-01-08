@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { FoodInfo } from '../food-list/foodInfo';
 import { ActivityInfo } from '../food-list/activityInfo';
 import { NavController, NavParams } from 'ionic-angular';
-import { LoadingController, ToastController } from 'ionic-angular';
+import { LoadingController, Loading, ToastController } from 'ionic-angular';
 import { ServingTypeInfo } from '../food-detail/serve-type-info';
 import { Network } from 'ionic-native';
 
@@ -45,6 +45,7 @@ export class FoodDetailPage {
     errorMessages: any[];
     servingTypeName: string;
     servingTypeNumber: number;
+    loader: Loading;
 
     constructor(private navCtrl: NavController,
         public dataService: FoodService,
@@ -205,19 +206,27 @@ export class FoodDetailPage {
             return;
         }
 
-        var activityName = this.amount.toString() + " " + this.servingTypeName;
-        var activtyDescription = activityName + " " + this.productItem.ProductName;
-        var activityId = Guid.newGuid();
-        this.activityInfo = new ActivityInfo(activityId, this.MealDate,
-            this.MealType, this.amount,
-            this.userId, Math.floor(this.calorie), 0, activityName,
-            activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food, this.servingType);
+        this.loader = this.loadingController.create({
+            content: 'Yemek ekleniyor...',
+        });
 
-        this.sqlService.InsertActivity(this.activityInfo).then(value => {
-            console.log("InsertActivity");
+        this.loader.present().then(() => {
+            var activityName = this.amount.toString() + " " + this.servingTypeName;
+            var activtyDescription = activityName + " " + this.productItem.ProductName;
+            var activityId = Guid.newGuid();
+            this.activityInfo = new ActivityInfo(activityId, this.MealDate,
+                this.MealType, this.amount,
+                this.userId, Math.floor(this.calorie), 0, activityName,
+                activtyDescription, 1, this.productItem.ProductsId, 0, ProductType.Food, this.servingType);
 
-            this.success = true;
-            this.presentToast("Yemek eklendi.");
+            this.sqlService.InsertActivity(this.activityInfo).then(value => {
+                console.log("InsertActivity");
+
+                this.success = true;
+                this.loader.dismiss();
+                this.presentToast("Yemek eklendi.");
+
+            });
         });
     }
 

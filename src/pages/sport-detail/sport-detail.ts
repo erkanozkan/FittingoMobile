@@ -4,12 +4,12 @@ import { FormControl } from '@angular/forms';
 import { SportInfo } from '../sport-list/sportInfo';
 import { ExerciseInfo } from '../sport-list/exerciseInfo';
 import { NavController, NavParams } from 'ionic-angular';
-import { LoadingController, ToastController } from 'ionic-angular';
+import { LoadingController, Loading, ToastController } from 'ionic-angular';
 import { ServingTypeInfo } from '../food-detail/serve-type-info';
 import { ActivityInfo } from '../food-list/activityInfo';
 
 @Component({
-    selector:"sport-detail-page",
+    selector: "sport-detail-page",
     templateUrl: "sport-detail.html"
 })
 
@@ -26,13 +26,14 @@ export class SportDetailPage {
     servingType: number = 0;
     isCalorieSet: boolean = false;
     errorMessages: any[];
+    loader: Loading;
 
     constructor(private navCtrl: NavController,
         private dataService: SportService,
         private loadingController: LoadingController,
         private navParams: NavParams, private toastCtrl: ToastController,
         private sqlService: SqlStorageService) {
- 
+
         this.productItem = this.navParams.data.product;
         this.userId = this.navParams.data.userId;
         this.Weight = this.navParams.data.Weight;
@@ -102,23 +103,31 @@ export class SportDetailPage {
         if (value == false) {
             return;
         }
-        var description = this.totalTime.toString() + " Dakika " + this.productItem.ExerciseName;
 
-        var activityInfo1 = new ExerciseInfo(this.productItem, this.SportDate,
-            description, this.totalTime,
-            this.userId, Math.floor(this.calorie));
-
-        var activityId = Guid.newGuid();
-
-        var activityInfo = new ActivityInfo(activityId, this.SportDate,
-            0, this.totalTime, this.userId, this.calorie, this.productItem.ExerciseId, this.productItem.ExerciseName,
-            description, 1, 0, 0, ProductType.Exercise, 0);
-
-        this.sqlService.InsertActivity(activityInfo).then(value => {
-                this.success = true;
-                this.presentToast("Spor eklendi.");
+        this.loader = this.loadingController.create({
+            content: 'Spor ekleniyor...',
         });
 
+        this.loader.present().then(() => {
+
+            var description = this.totalTime.toString() + " Dakika " + this.productItem.ExerciseName;
+
+            var activityInfo1 = new ExerciseInfo(this.productItem, this.SportDate,
+                description, this.totalTime,
+                this.userId, Math.floor(this.calorie));
+
+            var activityId = Guid.newGuid();
+
+            var activityInfo = new ActivityInfo(activityId, this.SportDate,
+                0, this.totalTime, this.userId, this.calorie, this.productItem.ExerciseId, this.productItem.ExerciseName,
+                description, 1, 0, 0, ProductType.Exercise, 0);
+
+            this.sqlService.InsertActivity(activityInfo).then(value => {
+                this.success = true;
+                this.loader.dismiss();
+                this.presentToast("Spor eklendi.");
+            });
+        });
     }
 
     presentToast(message: string) {
