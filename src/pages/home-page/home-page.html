@@ -4,15 +4,16 @@
       <ion-col class="category-item">
         <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-    </button>
+        </button>
       </ion-col>
       <ion-col class="category-item">
         <ion-title>
           <div class="header-logo">
             Fittingo
-            <!--<preload-image [ratio]="{w:583, h:100}" src="./assets/images/Fittingo_Logo.png"></preload-image>-->
           </div>
         </ion-title>
+      </ion-col>
+      <ion-col class="category-item">
         <ion-buttons end>
           <button ion-button (click)="LogOut()">
         Çıkış
@@ -54,10 +55,10 @@
       <div class="horizontal-categories">
         <ion-row class="categories-row">
           <ion-col width-50 class="horizontal-item">
-            <preload-image [ratio]="{w:1, h:1}" src="/assets/images/addFood.png" (click)="OpenFoodListPage()"></preload-image>
+            <preload-image [ratio]="{w:1, h:1}" src="assets/images/addFood.png" (click)="OpenFoodListPage()"></preload-image>
           </ion-col>
           <ion-col width-50 class="horizontal-item">
-            <preload-image [ratio]="{w:1, h:1}" src="/assets/images/addExercise.png" (click)="OpenSportsListPage()"></preload-image>
+            <preload-image [ratio]="{w:1, h:1}" src="assets/images/addExercise.png" (click)="OpenSportsListPage()"></preload-image>
           </ion-col>
         </ion-row>
       </div>

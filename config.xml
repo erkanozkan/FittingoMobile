@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.fittingomobile965566" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.mints.fittingomobile" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>FittingoMobile</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <description>Mints Global Fittingo Mobil Uygulaması.</description>
+    <author email="ozkn.erkan@gmail.com" href="http://fittingo.com/">Mints Global Takımı</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

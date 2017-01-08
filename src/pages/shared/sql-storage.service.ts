@@ -54,11 +54,11 @@ export class SqlStorageService {
             return Promise.resolve(null);
         }
     }
- parseDate(input) {
-  var parts = input.match(/(\d+)/g);
-  // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
-  return new Date(parts[0], parts[1]-1, parts[2], parts[3], parts[4]); // months are 0-based
-}
+    parseDate(input) {
+        var parts = input.match(/(\d+)/g);
+        // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+        return new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4]); // months are 0-based
+    }
     getAllActivityListToday(userId: number) {
         if (this.db) {
             var date = new Date().toISOString().substring(0, 10);
@@ -74,7 +74,7 @@ export class SqlStorageService {
                     eventDate.day = date.getDate();
 
                     eventDate.month = date.getMonth();
-                    eventDate.time = date.getHours().toString() +":" + date.getMinutes().toString();
+                    eventDate.time = date.getHours().toString() + ":" + date.getMinutes().toString();
                     eventDate.full = date.toLocaleString();
                     eventDate.month_name = this.monthNames[date.getMonth()]
 
@@ -111,14 +111,14 @@ export class SqlStorageService {
 
                     eventDate.day = date.getDate();
                     eventDate.month = date.getMonth();
-                    eventDate.time = date.getHours().toString() +":" + date.getMinutes().toString();
+                    eventDate.time = date.getHours().toString() + ":" + date.getMinutes().toString();
                     eventDate.full = date.toLocaleString();
 
                     eventModel.ActivityDateTime = eventDate;
 
                     eventModel.ActivityDescription = data.rows.item(i).ActivityDescription;
                     eventModel.Calorie = data.rows.item(i).Calorie;
-                    
+
                     console.log("calorie: " + data.rows.item(i).Calorie);
                     results.push(eventModel);
                 }
@@ -289,11 +289,13 @@ export class SqlStorageService {
     UpdateUserWaterCount(count: number, userId: number) {
         if (this.db) {
             var q = `update User set DailyWater = ? where userId = ?`;
-            this.db.executeSql(q,
+            return this.db.executeSql(q,
                 [count, userId]).then((data) => {
                     console.log("user water update edildi.");
+                    return true;
                 }, (error) => {
                     console.log("update User ERROR: " + JSON.stringify(error.err));
+                    return false;
                 });
         } else {
             return Promise.resolve(null);

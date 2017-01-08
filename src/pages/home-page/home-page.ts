@@ -50,9 +50,7 @@ export class HomePage {
             return;
         }
         this.userInfo.DailyWater = this.userInfo.DailyWater + 1;
-
-        this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId).then(d=>
-        {
+        this.sqlService.UpdateUserWaterCount(count, this.userInfo.userId).then(d => {
             this.presentToast("Su eklendi.");
         });
     }
@@ -117,7 +115,7 @@ export class HomePage {
                 this.sqlService.InsertoReplaceActivities(data);
                 // this.GetActivitiesFromLocal();
             });
-        } 
+        }
         // else {
         //     this.GetActivitiesFromLocal();
         // }
