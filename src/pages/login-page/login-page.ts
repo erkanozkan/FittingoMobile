@@ -73,7 +73,8 @@ export class LoginPage implements OnInit {
               Height: data.Height,
               GoalPlanId: data.GoalPlanId,
               BirthYear:data.BirthYear,
-              IsUserSynced: data.IsUserSynced
+              IsUserSynced: data.IsUserSynced,
+              StartWeight:data.StartWeight
             };
             this.service.userInfo = this.userInfo;
 

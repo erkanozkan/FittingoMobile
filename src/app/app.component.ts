@@ -11,7 +11,6 @@ import { ProfilePage } from '../pages/profile/profile';
 import { ActivityListPage } from '../pages/activity-list/activity-list';
 
 import { SqlStorageService } from '../pages/shared/shared';
-import { Home } from '../pages/test/test';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 
 @Component({

@@ -28,8 +28,6 @@ import { SignUpPage } from '../pages/signup/signup';
 import { ActivityListPage } from '../pages/activity-list/activity-list';
 import { ProfilePage } from '../pages/profile/profile';
 
-import { Home } from '../pages/test/test';
-
 @NgModule({
   declarations: [
     MyApp,
@@ -42,7 +40,6 @@ import { Home } from '../pages/test/test';
     SportDetailPage,
     SignUpPage,
     ActivityListPage,
-    Home,
     PreloadImage,
     BackgroundImage,
     ShowHideContainer,
@@ -72,7 +69,6 @@ import { Home } from '../pages/test/test';
     SportListPage,
     SportDetailPage,
     SignUpPage,
-    Home,
     WalkthroughPage,
     ProfilePage,
     ActivityListPage

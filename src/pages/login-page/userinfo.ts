@@ -21,4 +21,5 @@ export class IUserInfo {
     GoalPlanId:number;
     BirthYear:number;
     IsUserSynced:number;
+    StartWeight:number;
 } 

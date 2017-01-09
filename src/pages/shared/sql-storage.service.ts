@@ -200,8 +200,8 @@ export class SqlStorageService {
                  RemainingCalorie,TakenCalorie, CalorieExpenditure,
                  BadgeLevel, GoalWater, DailyWater, DailyCalories,
                  WeeklyGoal,UserImageURL,GoalWeight,GenderId,
-              ExerciseIntensityId,Height,GoalPlanId,BirthYear,IsUserSynced) 
-                 values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              ExerciseIntensityId,Height,GoalPlanId,BirthYear,IsUserSynced,StartWeight) 
+                 values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                 [userInfo.userId, userInfo.email,
                 userInfo.name, userInfo.password, userInfo.Weight,
                 userInfo.RemainingCalorie,
@@ -210,7 +210,7 @@ export class SqlStorageService {
                 userInfo.DailyCalories,
                 userInfo.WeeklyGoal, userInfo.UserImageURL, userInfo.GoalWeight, userInfo.GenderId,
                 userInfo.ExerciseIntensityId, userInfo.Height, userInfo.GoalPlanId,
-                userInfo.BirthYear, userInfo.IsUserSynced]).then((data) => {
+                userInfo.BirthYear, userInfo.IsUserSynced,userInfo.StartWeight]).then((data) => {
                     console.log("User Inserted: " + JSON.stringify(data));
                 }, (error) => {
                     console.log("ERROR: " + JSON.stringify(error.err));
@@ -409,7 +409,7 @@ export class SqlStorageService {
         this.db = new SQLite();
         if (this.db) {
             this.db.openDatabase({ name: 'fittingo.db', location: 'default' }).then(() => {
-                //this.resetDatabase();
+                this.resetDatabase();
                 this.CreateUserTable();
                 this.CreateFoodTable();
                 this.CreateServingTypeTable();
@@ -449,7 +449,7 @@ export class SqlStorageService {
                 DailyCalories integer,WeeklyGoal integer,UserImageURL text,GoalWeight integer,
                 GenderId integer,ExerciseIntensityId integer,Height integer,
                 GoalPlanId integer,
-                BirthYear integer,IsUserSynced integer)`, {}).then(() => {
+                BirthYear integer,IsUserSynced integer,StartWeight integer)`, {}).then(() => {
                 console.log('User CREATE TABLE SUCCESS');
             });
     }

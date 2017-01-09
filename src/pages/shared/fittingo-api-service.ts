@@ -62,7 +62,8 @@ export class FittingoServiceApi {
                         Height: res.UserInfo.Height,
                         GoalPlanId: res.UserInfo.GoalPlanId,
                         BirthYear: res.UserInfo.BirthYear,
-                        IsUserSynced: 1
+                        IsUserSynced: 1,
+                        StartWeight: res.UserInfo.StartWeight
                     }
                     return this.userInfo;
                 } else {
